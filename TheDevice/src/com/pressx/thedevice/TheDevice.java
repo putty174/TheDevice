@@ -3,57 +3,62 @@ package com.pressx.thedevice;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.pressx.managers.Graphics;
+import com.pressx.managers.Sounds;
+import com.pressx.managers.Textures;
+import com.pressx.screens.BaseState;
+import com.pressx.screens.CutsceneScreen;
+import com.pressx.screens.GameOverScreen;
+import com.pressx.screens.GameScreen;
+import com.pressx.screens.LoadingScreen;
+import com.pressx.screens.MainMenuScreen;
+import com.pressx.screens.TutorialScreen;
 
-public class TheDevice implements ApplicationListener {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private Texture texture;
-	private Sprite sprite;
+public final class TheDevice implements ApplicationListener {
+	static int currentState;
+	static BaseState[] posStates;
+	GameStats stats;
+	Textures manager;
+	
+	public static float[] renderInfo = 
+		{
+		100,				//Game Width
+		100, 	//Game Height
+		0,					//Scalar
+		0,					//Camera X
+		0,					//Camera Y
+		};
+	
+	public TheDevice(){
+	}
 	
 	@Override
-	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+	public void create() {
+		Texture.setEnforcePotImages(false);
+		//These MUST be called, even if you do nothing with it;
+		Sounds gameSounds = new Sounds();
+		Textures gameTextures = new Textures();
+		Graphics gameGraphics = new Graphics();
 		
-		camera = new OrthographicCamera(1, h/w);
-		batch = new SpriteBatch();
+		posStates = new BaseState[8];
 		
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		float width = Gdx.graphics.getWidth();
+		renderInfo[1] = Graphics.screenHeight * 100 / Graphics.screenWidth;
+		renderInfo[2] = width/renderInfo[0];
 		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
+		moveToMain();
+		//posStates[1]=new OptionsScreen(this, sounds, manager);
 		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		
+		currentState = 0;
+		//sounds.playMusicLooping(1);
 	}
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		texture.dispose();
-	}
-
-	@Override
-	public void render() {		
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		sprite.draw(batch);
-		batch.end();
-	}
-
-	@Override
-	public void resize(int width, int height) {
+		posStates[currentState].dispose();
 	}
 
 	@Override
@@ -61,6 +66,93 @@ public class TheDevice implements ApplicationListener {
 	}
 
 	@Override
+	public void render() {
+		Graphics.clearAll();
+		
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		SpriteBatch batch = new SpriteBatch();
+		batch.begin();
+		posStates[currentState].update();
+		posStates[currentState].render(batch);
+		Graphics.draw();
+		batch.end();
+		batch.dispose();
+	}
+
+	@Override
+	public void resize(int arg0, int arg1) {
+	}
+
+	@Override
 	public void resume() {
+	}
+	
+	public static void moveToLoading() {
+		Textures.unloadArtAssets();
+		Textures.loadArtAssets("Loading");
+		posStates[7] = new LoadingScreen();
+		posStates[7].create();
+		currentState = 7;
+	}
+	
+	public static void moveToMain(){
+		Sounds.stopBGM();
+		Sounds.stopSound();
+		Sounds.unloadSoundAssets();
+		Sounds.loadSoundAssets(Sounds.PACKS.MAIN);
+		Sounds.playBGM();
+		Textures.unloadArtAssets();
+		Textures.loadArtAssets("Main");
+		posStates[0] = new MainMenuScreen();
+		posStates[0].create();
+		currentState = 0;
+	}
+
+	public static void moveToSequence(String seq){
+		Textures.unloadArtAssets();
+		if(seq.equals("Intro")){
+			Textures.loadArtAssets("Intro");
+			posStates[2]=new CutsceneScreen("Intro", 5);
+			currentState = 2;
+		}
+		else if(seq.equals("Outro")){
+			Textures.loadArtAssets("Outro");
+			posStates[6]=new CutsceneScreen("Outro", 3);
+			currentState = 6;
+		}
+	}
+	
+	public static void moveToGame(){
+		Sounds.stopBGM();
+		Sounds.stopSound();
+		Sounds.unloadSoundAssets();
+		Sounds.loadSoundAssets(Sounds.PACKS.GAME);
+		Sounds.playBGM();
+		Textures.unloadArtAssets();
+		Textures.loadArtAssets("Game");
+		posStates[3] = new GameScreen();
+		posStates[3].create();
+		currentState = 3;
+	}
+	
+	public static void moveToTutorial(){
+		Textures.unloadArtAssets();
+		Textures.loadArtAssets("Tut");
+		posStates[4] = new TutorialScreen();
+		posStates[4].create();
+		currentState = 4;
+	}
+	
+	public static void endGame(){
+		Sounds.stopBGM();
+		Sounds.stopSound();
+		Sounds.unloadSoundAssets();
+		Sounds.loadSoundAssets(Sounds.PACKS.END);
+		Sounds.play("laugh");
+		Textures.unloadArtAssets();
+		Textures.loadArtAssets("End");
+		posStates[5] = new GameOverScreen();
+		posStates[5].create();
+		currentState = 5;
 	}
 }

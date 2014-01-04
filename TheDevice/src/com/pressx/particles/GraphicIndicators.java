@@ -1,0 +1,134 @@
+package com.pressx.particles;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.pressx.draw.Animator;
+import com.pressx.managers.Textures;
+import com.pressx.objects.GameObject;
+import com.pressx.objects.player.Player;
+
+public class GraphicIndicators {
+	/* Indicator 1 */
+	private Sprite sprite_1;
+	private Animator animation_1;
+	
+	/* Indicator 2 */
+	private Sprite sprite_2;
+	private Animator animation_2;
+	private boolean selectedDevice;
+	
+	/* Draw */
+	private float drawWidth = 7, drawHeight = 7;
+	private float drawOffsetX = 0, drawOffsetY = 1;
+	private float drawWidth2 = 7, drawHeight2 = 7;
+	
+	/* Position */
+	float x, y;
+	private Player player;
+	private GameObject device;
+	
+	/* Constructor */
+	public GraphicIndicators(Player player)
+	{
+		this.player = player;
+		
+		/* Sprites */
+		this.sprite_1 = new Sprite(Textures.getArtAsset("indicate")); 
+		this.animation_1 = new Animator("indicator",this.sprite_1, 50, 50);
+		this.sprite_2 = new Sprite(Textures.getArtAsset("indicate"));
+		this.animation_2 = new Animator("indicator2",this.sprite_2, 50, 50);
+		
+		/* Add Animations */
+		this.animation_1.add_animation("test0",0,0,5,10, false);
+		this.animation_1.add_animation("test1",0,0,5,10, false);
+		this.animation_1.add_animation("test2",5, 1, 5, 10, false);
+		this.animation_1.add_animation("test3",0, 2, 8, 5, true);
+		this.animation_1.set_animation("test2", false);
+		
+		this.animation_2.add_animation("test0",0, 0, 5, 10, false);
+		this.animation_2.add_animation("test1",5, 1, 5, 10, false);
+		this.animation_2.set_animation("test0", false);
+	}//END GraphicIndicators
+	
+	public void initialize_device(GameObject device)
+	{
+		this.device = device;
+	}//END initialize_device
+	
+	/* Update */
+	public void update(float dt)
+	{
+		this.animation_1.update(dt);
+		this.animation_2.update(dt);
+	}//END update
+	
+	/* Render */
+	public void render(SpriteBatch spritebatch, float[] renderInfo)
+	{
+		this.selectedDevice = false;
+		GameObject target = player.get_target();
+		if(target == null || this.player.isIdle())
+		{
+			if(!this.animation_1.get_currentAnimation().equals("test3"))
+			{
+				this.animation_1.set_animation("test3", true);
+				this.animation_1.setCurrentFrame(0);
+				this.drawHeight = 7;
+				this.drawWidth = 7;
+				this.drawOffsetY = 1;
+				
+			}//fi
+			Vector2 heading = player.get_heading();
+			this.x = heading.x;
+			this.y = heading.y;
+		}//fi
+		else
+		{
+			if(target.getID() == 3 && !this.animation_1.get_currentAnimation().equals("test1"))
+			{
+				this.animation_1.set_animation("test1", false);
+				this.animation_1.setCurrentFrame(1);
+				this.drawHeight = 5;
+				this.drawWidth = 5;
+				this.drawOffsetY = 0.5f;
+			}//fi
+			if (target.getID() == 1 && !this.player.isIdle())
+			{
+				if(!this.animation_2.get_currentAnimation().equals("test1"))
+				{
+					this.animation_2.set_animation("test1", false);
+				}//fi
+				this.selectedDevice = true;
+			}//fi esle
+			this.x = target.get_positionX();
+			this.y = target.get_positionY();
+		}//esle
+		
+		if(this.selectedDevice == false && !this.animation_2.get_currentAnimation().equals("test0"))
+		{
+			this.animation_2.set_animation("test0", true);
+		}//fi
+		
+		if(!this.player.isIdle() && !this.selectedDevice)
+		{
+			/* Sprite 1 */
+			this.sprite_1.setOrigin(renderInfo[2] * (this.drawWidth/4),
+					renderInfo[2] * (this.drawHeight/4));
+			this.sprite_1.setSize(renderInfo[2] * (this.drawWidth),
+					renderInfo[2] * (this.drawHeight));
+			this.sprite_1.setPosition(renderInfo[2] * (this.x - this.drawWidth/2 + this.drawOffsetX),
+					renderInfo[2] * (this.y - this.drawHeight/2  + this.drawOffsetY));
+			this.sprite_1.draw(spritebatch);
+		}//fi
+		
+		/* Sprite 2 */
+		this.sprite_2.setOrigin(renderInfo[2] * (this.drawWidth2/2),
+				renderInfo[2] * (this.drawHeight2/2));
+		this.sprite_2.setSize(renderInfo[2] * (this.drawWidth2),
+				renderInfo[2] * (this.drawHeight2));
+		this.sprite_2.setPosition(renderInfo[2] * (this.device.get_positionX() - this.drawWidth2/2 + this.drawOffsetX),
+				renderInfo[2] * (this.device.get_positionY() - this.drawHeight2/2  - 1));
+		this.sprite_2.draw(spritebatch);
+	}//END render
+}
