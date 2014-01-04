@@ -1,0 +1,16 @@
+numAnimators
+setName
+filePath
+numAnimsInSet
+animOne
+numFrames
+x1 y1 x2 y2
+...
+frameOrder
+frame1 frame2 frame3 ...
+animTwo
+numFrames
+x1 y1 x2 y2
+...
+frameOrder
+frame1 frame2 frame3 ...
