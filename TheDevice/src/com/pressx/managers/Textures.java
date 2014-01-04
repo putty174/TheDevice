@@ -36,14 +36,14 @@ public final class Textures {
 		addPath(
 				"Game",
 				"game_bg","data/art/game/grass.png",
-				"fuzz1", "data/art/game/monsters/fuzzies/1/Fuzzies1.png",
-				"fuzz2", "data/art/game/monsters/fuzzies/2/Fuzzies2.png",
-				"dust","data/art/game/monsters/fuzzies/2/dust.png",
-				"fuzz3", "data/art/game/monsters/fuzzies/3/Fuzzies3.png",
-				"shock_wave","data/art/game/monsters/fuzzies/3/shock_wave.png",
-				"plant1", "data/art/game/monsters/plants/1/plant_one.png",
-				"plant2", "data/art/game/monsters/plants/2/plant_two.png",
-				"gas_cloud", "data/art/game/monsters/plants/2/gas_cloud.png",
+				"fuzz1", "data/art/game/monsters/Fuzzies/1/Fuzzies1.png",
+				"fuzz2", "data/art/game/monsters/Fuzzies/2/Fuzzies2.png",
+				"dust","data/art/game/monsters/Fuzzies/2/dust.png",
+				"fuzz3", "data/art/game/monsters/Fuzzies/3/Fuzzies3.png",
+				"shock_wave","data/art/game/monsters/Fuzzies/3/shock_wave.png",
+				"plant1", "data/art/game/monsters/Plants/1/plant_one.png",
+				"plant2", "data/art/game/monsters/Plants/2/plant_two.png",
+				"gas_cloud", "data/art/game/monsters/Plants/2/gas_cloud.png",
 				"device", "data/art/game/objects/device/device.png",
 				"device_hit", "data/art/game/objects/device/device_hit.png",
 				"device_spawn", "data/art/game/objects/device/device_spawn.png",
@@ -71,17 +71,17 @@ public final class Textures {
 		
 		addPath(
 				"Intro",
-				"sc0","data/art/cutscene/intro/sketch_scene1-2.png",
-				"sc1", "data/art/cutscene/intro/sketch_scene2.png",
-				"sc2", "data/art/cutscene/intro/sketch_scene3-2.png",
-				"sc3", "data/art/cutscene/intro/sketch_scene4-2.png",
-				"sc4", "data/art/cutscene/intro/sketch_scene5.png");
+				"sc0","data/art/cutscene/Intro/sketch_scene1-2.png",
+				"sc1", "data/art/cutscene/Intro/sketch_scene2.png",
+				"sc2", "data/art/cutscene/Intro/sketch_scene3-2.png",
+				"sc3", "data/art/cutscene/Intro/sketch_scene4-2.png",
+				"sc4", "data/art/cutscene/Intro/sketch_scene5.png");
 		
 		addPath(
 				"Outro",
-				"sc0", "data/art/cutscene/outro/sketch_scene6-2.png",
-				"sc1", "data/art/cutscene/outro/sketch_scene7.png",
-				"sc2", "data/art/cutscene/outro/sketch_scene8.png");
+				"sc0", "data/art/cutscene/Outro/sketch_scene6-2.png",
+				"sc1", "data/art/cutscene/Outro/sketch_scene7.png",
+				"sc2", "data/art/cutscene/Outro/sketch_scene8.png");
 		
 		addPath(
 				"End",
