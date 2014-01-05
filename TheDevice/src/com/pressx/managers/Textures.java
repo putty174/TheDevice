@@ -23,7 +23,9 @@ public final class Textures {
 				"Main",
 				"main_play","data/art/main/buttons/play.png",
 				"main_bg","data/art/main/screen/TitleScreen.png",
-				"main_help","data/art/main/buttons/help.png");
+				"main_help","data/art/main/buttons/help.png",
+				"exp", "data/art/game/objects/device/exp.png"
+				);
 		
 		addPath(
 				"Tut",

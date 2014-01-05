@@ -8,5 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="/TheDevice/libs/gdx.jar" sourcepath="/TheDevice/libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="lib" path="C:/Program Files/adt-bundle-windows-x86_64-20130917/sdk/extras/android/support/v4/android-support-v4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

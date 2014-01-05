@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.pressx.facebook.FacebookInterface;
 import com.pressx.managers.Graphics;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
@@ -21,6 +22,7 @@ public final class TheDevice implements ApplicationListener {
 	static BaseState[] posStates;
 	GameStats stats;
 	Textures manager;
+	static FacebookInterface fb;
 	
 	public static float[] renderInfo = 
 		{
@@ -31,9 +33,10 @@ public final class TheDevice implements ApplicationListener {
 		0,					//Camera Y
 		};
 	
-	public TheDevice(){
+	public TheDevice(FacebookInterface facebook) {
+		fb = facebook;
 	}
-	
+
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(false);
@@ -103,7 +106,7 @@ public final class TheDevice implements ApplicationListener {
 		Sounds.playBGM();
 		Textures.unloadArtAssets();
 		Textures.loadArtAssets("Main");
-		posStates[0] = new MainMenuScreen();
+		posStates[0] = new MainMenuScreen(fb);
 		posStates[0].create();
 		currentState = 0;
 	}
