@@ -3,19 +3,19 @@ package com.pressx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.pressx.facebook.FacebookInterface;
 import com.pressx.managers.Graphics;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
+import com.pressx.social.Social;
 import com.pressx.thedevice.TheDevice;
 
 public class MainMenuScreen extends BaseState {
 	Sprite bgArt, play, help, post;
-	FacebookInterface fb;
+	Social fb;
 	String key;
 	boolean touch;
 
-	public MainMenuScreen(FacebookInterface facebook){
+	public MainMenuScreen(Social facebook){
 		super();
 		play = new Sprite(Textures.getArtAsset("main_play"));
 		bgArt = new Sprite(Textures.getArtAsset("main_bg"));

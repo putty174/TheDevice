@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">The Device</string>
     <string name="app_id">228239587356038</string>
+    <string name="share">Share</string>
+    <string name="settings">Settings</string>
+    <string name="get_started">To get started, log in using Facebook</string>
 </resources>

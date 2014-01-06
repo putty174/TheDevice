@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.pressx.facebook.FacebookInterface;
 import com.pressx.managers.Graphics;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
@@ -16,13 +15,14 @@ import com.pressx.screens.GameScreen;
 import com.pressx.screens.LoadingScreen;
 import com.pressx.screens.MainMenuScreen;
 import com.pressx.screens.TutorialScreen;
+import com.pressx.social.Social;
 
 public final class TheDevice implements ApplicationListener {
 	static int currentState;
 	static BaseState[] posStates;
 	GameStats stats;
 	Textures manager;
-	static FacebookInterface fb;
+	static Social fb;
 	
 	public static float[] renderInfo = 
 		{
@@ -33,7 +33,7 @@ public final class TheDevice implements ApplicationListener {
 		0,					//Camera Y
 		};
 	
-	public TheDevice(FacebookInterface facebook) {
+	public TheDevice(Social facebook) {
 		fb = facebook;
 	}
 
@@ -41,9 +41,9 @@ public final class TheDevice implements ApplicationListener {
 	public void create() {
 		Texture.setEnforcePotImages(false);
 		//These MUST be called, even if you do nothing with it;
-		Sounds gameSounds = new Sounds();
-		Textures gameTextures = new Textures();
-		Graphics gameGraphics = new Graphics();
+		new Sounds();
+		new Textures();
+		new Graphics();
 		
 		posStates = new BaseState[8];
 		
@@ -146,7 +146,7 @@ public final class TheDevice implements ApplicationListener {
 		currentState = 4;
 	}
 	
-	public static void endGame(){
+	public static void moveToEnd(){
 		Sounds.stopBGM();
 		Sounds.stopSound();
 		Sounds.unloadSoundAssets();

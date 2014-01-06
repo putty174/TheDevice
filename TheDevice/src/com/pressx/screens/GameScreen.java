@@ -100,7 +100,7 @@ public class GameScreen extends BaseState {
 			
 			if(box.getHp() <= 0){
 				//helper.dispose();
-				TheDevice.endGame();
+				TheDevice.moveToEnd();
 				return;
 			}
 			
@@ -128,6 +128,7 @@ public class GameScreen extends BaseState {
 		Graphics.draw(batch);
 		
 		g.updateTimeElapsed();
+		TheDevice.moveToEnd();
 	}
 	
 	public void update() {
