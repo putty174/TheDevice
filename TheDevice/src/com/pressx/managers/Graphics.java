@@ -21,13 +21,12 @@ public final class Graphics {
 	private static HashSet<Sprite> extras = new HashSet<Sprite>();
 	private static TreeMap<Point, String> text = new TreeMap<Point, String>();
 	
-	public static BitmapFont font;
+	public static final BitmapFont font = new BitmapFont(Gdx.files.internal("data/fonts/bearz/bearz.fnt"),Gdx.files.internal("data/fonts/bearz/bearz.png"), false);
 	
 	public static enum TYPES { BACKGROUND, ACTOR, HPBAR, UI, BUTTON, EXTRAS }
 	
 	public Graphics()
 	{
-		font = new BitmapFont(Gdx.files.internal("data/fonts/bearz/bearz.fnt"),Gdx.files.internal("data/fonts/bearz/bearz.png"), false);
 		font.setScale((float)screenHeight / 500, (float)screenHeight / 500);
 	}
 	

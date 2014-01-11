@@ -13,7 +13,6 @@ public class MainMenuScreen extends BaseState {
 	Sprite bgArt, play, help, post;
 	Social fb;
 	String key;
-	boolean touch;
 
 	public MainMenuScreen(Social facebook){
 		super();
@@ -36,8 +35,6 @@ public class MainMenuScreen extends BaseState {
 		Graphics.draw(Graphics.TYPES.BUTTON, play, 0.61f, 0.06f, 0.15f, 0.25f);
 		Graphics.draw(Graphics.TYPES.BUTTON, help, 0.79f, 0.06f, 0.15f, 0.25f);
 		Graphics.draw(Graphics.TYPES.EXTRAS, post, 0.1f, 0.1f, 0.1f, 0.1f);
-		if(touch)
-			Graphics.write("HA HA", 0.1f, 0.1f);
 	}
 	
 	public void update()
@@ -58,7 +55,6 @@ public class MainMenuScreen extends BaseState {
 			}
 			else if(post.getBoundingRectangle().contains(x,y))
 			{
-				touch = !touch;
 				fb.switchActivity();
 			}
 		}

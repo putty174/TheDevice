@@ -32,6 +32,7 @@ public class GuiList_Wave extends GuiList<SingleFormation>{
 		values = currentWave.formations;
 		numFormationsVariator.setValue(currentWave.numFormationsUsed);
 		waveDelayVariator.setValue((int)(currentWave.delayBetweenFormations/WaveDelayVariator.VALUEMULTIPLIER));
+		instance.selectIndex(instance.selectedIndex);
 	}
 	public static void setWaveNumFormationsUsed(byte b){
 		currentWave.numFormationsUsed = b;
