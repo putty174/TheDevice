@@ -149,6 +149,7 @@ public class UI {
 	
 	public void render()
 	{
+		//Graphics.textRefresh();
 		//Draw UIBase
 		Graphics.draw(Graphics.TYPES.UI, UIBase,0.8f,0,0.2f,1);
 		

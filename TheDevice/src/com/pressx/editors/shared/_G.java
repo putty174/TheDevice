@@ -24,7 +24,7 @@ public class _G {
 	public static final float PI = (float)Math.PI;
     public static final float TAU = PI*2;
     
-    public static final String DATAFOLDER = "data/leveldata/";
+    public static final String DATAFOLDER = "./data/leveldata/";
     
     public static long timeElapsed;
     public static int cycle = 0;

@@ -16,8 +16,7 @@ import com.pressx.thedevice.GameStats;
 import com.pressx.thedevice.TheDevice;
 
 public class GameScreen extends BaseState {
-	String levelName;//Temporary until we make a way for the game to choose the map to use
-	
+	String LEVELPATH;//Temporary until we make a way for the game to choose the map to use
 	
 	UI gameUI;
 	Player player;
@@ -26,7 +25,7 @@ public class GameScreen extends BaseState {
 	private Sprite background;
 	
 	public GameScreen() {
-		levelName = "Level1";
+		LEVELPATH = Gdx.files.internal("./data/leveldata/levels/Level1.devicelevel").toString();
 	}
 	
 	/* Game */
@@ -69,7 +68,7 @@ public class GameScreen extends BaseState {
 		this.room.add_object(this.box);
 		this.room.add_object(player);
 		
-		//spawner = new CustomSpawner(levelName,box,room);//temporary path
+		spawner = new CustomSpawner(LEVELPATH,box,room);//temporary path
 		
 		//Spawn Management for dev tool
 		//helper = new DesignHelper(new MonsterManager(box, this.room), this.room, box, gameUI);
@@ -108,7 +107,7 @@ public class GameScreen extends BaseState {
 			//boolean gameIsOver = this.room.update(dt);
 			g.updateTimeElapsed();
 			
-			//spawner.update(dt);
+			spawner.update(dt);
 			if(g.nukeState())
 			{
 				this.room.wipe();
@@ -129,6 +128,7 @@ public class GameScreen extends BaseState {
 		Graphics.draw(batch);
 		
 		g.updateTimeElapsed();
+		TheDevice.moveToEnd();
 	}
 	
 	public void update() {
