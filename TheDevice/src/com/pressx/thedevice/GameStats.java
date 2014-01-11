@@ -6,17 +6,17 @@ import com.pressx.objects.player.Player;
 public final class GameStats {
 	private static int monsterCount = 0;
 	private static int score = 0;
-	private int xpCount = 0;
-	private int xpMax=20;
-	private int level = 1;
+	private static int xpCount = 0;
+	private static int xpMax=20;
+	private static int level = 1;
 	private static int mineCount = 3;
 	private static int vortCount = 3;
 	private static int nukeCount = 3;
 	private static float nukeCD = 0;
-	private int maxItemCount;
-	private float boxHP;
+	private static int maxItemCount;
+	private static float boxHP;
 	private static float totalTimeElapsed;
-	private Player player;
+	private static Player player;
 	private static boolean pause = false;
 	private static int placeItem = 0;
 	private static boolean nukeState = false;
@@ -40,7 +40,7 @@ public final class GameStats {
 		nukeState = false;
 	}
 	
-	public void addMonsterKill()
+	public static void addMonsterKill()
 	{
 		monsterCount++;
 	}
@@ -49,7 +49,7 @@ public final class GameStats {
 		return monsterCount;
 	}
 	
-	public void addScore(int scoreAdd){
+	public static void addScore(int scoreAdd){
 		score += scoreAdd;
 	}
 	
@@ -61,7 +61,7 @@ public final class GameStats {
 		return xpCount;
 	}
 	
-	public void addXP(int XP){
+	public static void addXP(int XP){
 		xpCount += XP;
 		if (xpCount > xpMax)
 		{
@@ -73,11 +73,11 @@ public final class GameStats {
 		}
 	}
 	
-	public int getXPMax(){
+	public static int getXPMax(){
 		return xpMax;
 	}
 	
-	public void setXPMax(int XP){
+	public static void setXPMax(int XP){
 		xpMax = XP;
 	}
 	
@@ -85,7 +85,7 @@ public final class GameStats {
 		return (float)xpCount/xpMax;
 	}
 	
-	public int getLevel(){
+	public static int getLevel(){
 		return level;
 	}
 	
@@ -97,7 +97,7 @@ public final class GameStats {
 		return boxHP;
 	}
 	
-	public void setBoxHP(float f){
+	public static void setBoxHP(float f){
 		boxHP = f;
 	}
 	
@@ -113,7 +113,7 @@ public final class GameStats {
 		return (int)totalTimeElapsed;
 	}
 	
-	public void updateTimeElapsed(){
+	public static void updateTimeElapsed(){
 		float dt = Gdx.graphics.getDeltaTime();
 		totalTimeElapsed += dt;
 		nukeCD -= dt;
@@ -143,7 +143,7 @@ public final class GameStats {
 		return (mineCount > 0 && placeItem != 1);
 	}
 	
-	public boolean addMine(){
+	public static boolean addMine(){
 		if(mineCount + 1 > maxItemCount){
 			return false;
 		}
@@ -172,7 +172,7 @@ public final class GameStats {
 		return (vortCount > 0 && placeItem != 2);
 	}
 	
-	public boolean addVortex() {
+	public static boolean addVortex() {
 		if(vortCount + 1 > maxItemCount){
 			return false;
 		}
@@ -191,11 +191,11 @@ public final class GameStats {
 		return false;
 	}
 	
-	public void nukeStateOff(){
+	public static void nukeStateOff(){
 		nukeState = false;
 	}
 	
-	public boolean nukeState(){
+	public static boolean nukeState(){
 		return nukeState;
 	}
 	

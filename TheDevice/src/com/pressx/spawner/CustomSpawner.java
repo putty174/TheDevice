@@ -120,6 +120,14 @@ public class CustomSpawner {
 			}
 		}
 	}
+	
+	public float getProgress(){
+		return levelManager.getProgress() + levelLoader.getProgress(); 
+	}
+	
+	public boolean getUpdate(){
+		return levelManager.update() && levelLoader.getUpdate();
+	}
 	}
 	
 class VectorMath{

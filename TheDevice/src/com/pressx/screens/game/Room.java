@@ -35,7 +35,6 @@ public class Room implements Controllable {
 	private Player player;
 	private GameObject device;
 	public int monsterCount;
-	public GameStats stats;
 	
 	/* Drop Chance */
 	private float mineChance = 0.3f;
@@ -67,7 +66,7 @@ public class Room implements Controllable {
 	private boolean canSpawn = true;
 	
 	/* Constructor */
-	public Room(Player player, GameStats stats)
+	public Room(Player player)
 	{
 		this.background = new Sprite(Textures.getArtAsset("game_bg"));
 		this.background.setOrigin(0, 0);
@@ -76,7 +75,6 @@ public class Room implements Controllable {
 		
 		this.deathRing = new Sprite(Textures.getArtAsset("deathRing"));
 		this.player = player;
-		this.stats = stats;
 		this.indicators = new GraphicIndicators(player);
 		
 		warningS = new Sprite(Textures.getArtAsset("ui_warn"));
@@ -186,7 +184,7 @@ public class Room implements Controllable {
 			if(obj.getID() == 2)
 			{
 				gameIsLost = false;
-				stats.setBoxHP(obj.getHp());
+				GameStats.setBoxHP(obj.getHp());
 			}//fi
 			
 			this.objects.add(obj);
@@ -209,23 +207,23 @@ public class Room implements Controllable {
 			{
 				if(obj.getID() == 2 || obj.getID() == 3)
 				{
-					stats.addScore(obj.worth);
-					stats.addXP(obj.worth);
+					GameStats.addScore(obj.worth);
+					GameStats.addXP(obj.worth);
 				}
 				
 				if(obj.getID() == 3)
 				{
-					if(stats.getLevel() > 2 && Math.random() < mineChance)
+					if(GameStats.getLevel() > 2 && Math.random() < mineChance)
 					{
-						drops.add(new MineDrop(obj.get_positionX(), obj.get_positionY(), stats));
+						drops.add(new MineDrop(obj.get_positionX(), obj.get_positionY()));
 					}
-					if(stats.getLevel() > 5 && Math.random() < vortexChance)
+					if(GameStats.getLevel() > 5 && Math.random() < vortexChance)
 					{
-						drops.add(new VortexDrop(obj.get_positionX(), obj.get_positionY(), stats));
+						drops.add(new VortexDrop(obj.get_positionX(), obj.get_positionY()));
 					}
 					if(obj.getHp() == 0)
 					{
-						stats.addMonsterKill();
+						GameStats.addMonsterKill();
 					}
 				}
 				iter.remove();

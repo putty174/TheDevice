@@ -9,15 +9,13 @@ import com.pressx.objects.GameObject;
 import com.pressx.thedevice.GameStats;
 
 public class MineDrop extends AnimatedObject {
-	GameStats stats;
 	GameTimer timeToExpire = new GameTimer(10);
 	boolean isActive;
 	
-	public MineDrop(float posX, float posY, GameStats stats){
+	public MineDrop(float posX, float posY){
 		super("mine",99, posX, posY, 1, 90, 5, 5, 0, 0,
 				false, 5, false, 5, 5,
 				Textures.getArtAsset("mine_drop"), 200, 200);
-		this.stats = stats;
 		this.movement.speedcap = 100;
 		this.isActive = false;
 		this.add_animation("mine_item", 0, 0, 4, 8, true);
@@ -28,7 +26,7 @@ public class MineDrop extends AnimatedObject {
 	@Override
 	public void behavior_collision(GameObject obj){
 		if(obj.getID() == 0){
-			if(stats.addMine()){
+			if(GameStats.addMine()){
 				this.terminate();
 			}
 		}	

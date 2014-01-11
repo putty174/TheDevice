@@ -5,9 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.pressx.control.Controller;
 import com.pressx.managers.Graphics;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
+import com.pressx.objects.GameObject;
+import com.pressx.objects.player.Player;
 import com.pressx.screens.BaseState;
 import com.pressx.screens.CutsceneScreen;
 import com.pressx.screens.GameOverScreen;
@@ -15,7 +18,10 @@ import com.pressx.screens.GameScreen;
 import com.pressx.screens.LoadingScreen;
 import com.pressx.screens.MainMenuScreen;
 import com.pressx.screens.TutorialScreen;
+import com.pressx.screens.game.Room;
+import com.pressx.screens.game.UI;
 import com.pressx.social.Social;
+import com.pressx.spawner.CustomSpawner;
 
 public final class TheDevice implements ApplicationListener {
 	static int currentState;
@@ -128,15 +134,13 @@ public final class TheDevice implements ApplicationListener {
 		}
 	}
 	
-	public static void moveToGame(){
+	public static void moveToGame(Player player, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller){
 		Sounds.stopBGM();
 		Sounds.stopSound();
 		Sounds.unloadSoundAssets();
 		Sounds.loadSoundAssets(Sounds.PACKS.GAME);
 		Sounds.playBGM();
-		Textures.unloadArtAssets();
-		Textures.loadArtAssets("Game");
-		posStates[3] = new GameScreen();
+		posStates[3] = new GameScreen(player, gameUI, box, spawner, room, controller);
 		posStates[3].create();
 		currentState = 3;
 	}

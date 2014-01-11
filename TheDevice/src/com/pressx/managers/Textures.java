@@ -16,27 +16,7 @@ public final class Textures {
 				"Loading",
 				"bg","data/art/game/grass.png",
 				"exp", "data/art/game/objects/device/exp.png",
-				"play", "data/art/main/buttons/play.png"
-				);
-		
-		addPath(
-				"Main",
-				"main_play","data/art/main/buttons/play.png",
-				"main_bg","data/art/main/screen/TitleScreen.png",
-				"main_help","data/art/main/buttons/help.png",
-				"exp", "data/art/game/objects/device/exp.png"
-				);
-		
-		addPath(
-				"Tut",
-				"tut_pg1", "data/art/tutorial/screen/tut1.png",
-				"tut_pg2", "data/art/tutorial/screen/tut2.png",
-				"tut_nav_left", "data/art/tutorial/buttons/nav_left.png",
-				"tut_nav_right","data/art/tutorial/buttons/nav_right.png",
-				"tut_nav_exit", "data/art/tutorial/buttons/nav_exit.png");
-		
-		addPath(
-				"Game",
+				"play", "data/art/main/buttons/play.png",
 				"game_bg","data/art/game/grass.png",
 				"fuzz1", "data/art/game/monsters/Fuzzies/1/Fuzzies1.png",
 				"fuzz2", "data/art/game/monsters/Fuzzies/2/Fuzzies2.png",
@@ -70,6 +50,27 @@ public final class Textures {
 				"ui_pause", "data/art/game/UI/uibase/Pause.png",
 				"ui_base","data/art/game/UI/uibase/UIBase.png"
 				);
+		
+		addPath(
+				"Main",
+				"main_play","data/art/main/buttons/play.png",
+				"main_bg","data/art/main/screen/TitleScreen.png",
+				"main_help","data/art/main/buttons/help.png",
+				"exp", "data/art/game/objects/device/exp.png"
+				);
+		
+		addPath(
+				"Tut",
+				"tut_pg1", "data/art/tutorial/screen/tut1.png",
+				"tut_pg2", "data/art/tutorial/screen/tut2.png",
+				"tut_nav_left", "data/art/tutorial/buttons/nav_left.png",
+				"tut_nav_right","data/art/tutorial/buttons/nav_right.png",
+				"tut_nav_exit", "data/art/tutorial/buttons/nav_exit.png");
+		
+//		addPath(
+//				"Game",
+//				
+//				);
 		
 		addPath(
 				"Intro",

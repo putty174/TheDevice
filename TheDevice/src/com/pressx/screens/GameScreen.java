@@ -1,13 +1,13 @@
 package com.pressx.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
 import com.pressx.managers.Graphics;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
-import com.pressx.objects.device.Device;
 import com.pressx.objects.player.Player;
 import com.pressx.screens.game.Room;
 import com.pressx.screens.game.UI;
@@ -25,16 +25,21 @@ public class GameScreen extends BaseState {
 	
 	private Sprite background;
 	
-	public GameScreen() {
+	public GameScreen(Player player, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller) {
 		levelName = "Level1";
+		this.player = player;
+		this.room = room;
+		this.box = box;
+		this.spawner = spawner;
+		this.gameUI = gameUI;
+		this.controller = controller;
 	}
 	
 	/* Game */
 	private GameObject box;
 	private CustomSpawner spawner;
 	
-	public Room room;
-	private GameStats g;
+	private Room room;
 	
 	//Controller
 	Controller controller;
@@ -43,44 +48,6 @@ public class GameScreen extends BaseState {
 	public void create()
 	{
 		this.background = new Sprite(Textures.getArtAsset("game_bg"));
-		/* Start Room */
-		player = new Player(
-				0, //ID
-				50, 30, //Position
-				1, //Mass
-				100, //Friction
-				5, 2, //Hitbox
-				0, 0, //Hitoffset
-				true, //Solid
-				8, //Touch Radius
-				false, //Touchability
-				8, (16 + 2/3) * 0.8f, //Draw width and height
-				150, 250
-				);	
-		
-		//UI
-		this.g = new GameStats(player);
-		//Set XP Fill
-		
-		
-		this.room = new Room(player, this.g);
-		
-		box = new Device(25,25, room);
-		this.room.add_object(this.box);
-		this.room.add_object(player);
-		
-		//spawner = new CustomSpawner(levelName,box,room);//temporary path
-		
-		//Spawn Management for dev tool
-		//helper = new DesignHelper(new MonsterManager(box, this.room), this.room, box, gameUI);
-		
-		
-		gameUI = new UI(g, this.room);
-		
-		/* Controls */
-		this.controller = new Controller(TheDevice.renderInfo);
-		this.controller.add_controllable(room);
-		Gdx.input.setInputProcessor(this.controller);
 	}
 	
 	public void dispose() {
@@ -106,13 +73,13 @@ public class GameScreen extends BaseState {
 			}
 			
 			//boolean gameIsOver = this.room.update(dt);
-			g.updateTimeElapsed();
+			GameStats.updateTimeElapsed();
 			
-			//spawner.update(dt);
-			if(g.nukeState())
+			spawner.update(dt);
+			if(GameStats.nukeState())
 			{
 				this.room.wipe();
-				g.nukeStateOff();
+				GameStats.nukeStateOff();
 			}
 			this.room.update(dt);
 		}
@@ -128,7 +95,9 @@ public class GameScreen extends BaseState {
 		
 		Graphics.draw(batch);
 		
-		g.updateTimeElapsed();
+		GameStats.updateTimeElapsed();
+		BitmapFont test = new BitmapFont();
+		test.draw(batch, "HA", 0.1f, 0.1f);
 	}
 	
 	public void update() {

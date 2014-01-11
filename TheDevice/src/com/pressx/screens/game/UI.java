@@ -29,7 +29,7 @@ public class UI {
 	private String time;
 	private String score;
 	
-	public UI(GameStats stats, Room room){
+	public UI(Room room){
 		this.room = room;
 		UIBase = new Sprite(Textures.getArtAsset("ui_base"));
 		pause = new Sprite(Textures.getArtAsset("ui_pause"));

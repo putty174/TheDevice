@@ -105,4 +105,12 @@ public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,Le
 		}
 		return data;
 	}
+	
+	public float getProgress(){
+		return formationManager.getProgress(); 
+	}
+	
+	public boolean getUpdate(){
+		return formationManager.update();
+	}
 }

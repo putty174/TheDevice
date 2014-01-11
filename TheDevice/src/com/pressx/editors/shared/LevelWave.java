@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class LevelWave{
 	public ArrayList<SingleFormation> formations;
 	public byte numFormationsUsed = 5;
-	public float delayBetweenFormations = 5;
+	public float delayBetweenFormations = 15;
 	
 	public LevelWave(){
 		formations = new ArrayList<SingleFormation>();

@@ -9,15 +9,13 @@ import com.pressx.objects.GameObject;
 import com.pressx.thedevice.GameStats;
 
 public class VortexDrop extends AnimatedObject {
-	GameStats stats;
 	GameTimer existTimer = new GameTimer(5);
 	
-	public VortexDrop(float posX, float posY, GameStats stats) {
+	public VortexDrop(float posX, float posY) {
 		super("vortexicon",14, posX, posY, 0, 0, 5, 5, 0, 0,
 				false, 2.5f, false, 5, 5, Textures.getArtAsset("vortex_drop"),
 				200, 200);
 		
-		this.stats = stats;
 		this.add_animation("vortex_item",0, 0, 4, 8, true);
 		this.set_animation("vortex_item", true);
 	}
@@ -25,7 +23,7 @@ public class VortexDrop extends AnimatedObject {
 	@Override
 	public void behavior_collision(GameObject obj){
 		if(obj.getID() == 0){
-			if(stats.addVortex()){
+			if(GameStats.addVortex()){
 				{
 					this.terminate();
 				}
