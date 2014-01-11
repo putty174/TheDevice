@@ -1,9 +1,3 @@
-You need these plugins on Eclipse in order to compile the projects properly:
-http://www.gwtproject.org/
-http://www.robovm.org/
-
-Even after you install these plugins, you will get errors from robovm. Ignore them because we don't have any iOS devices to test on.
-
 Simply make a new workspace, and then from the empty project directory:
 
 Right Mouse Click > Import > Existing Projects > ../TheDevice
