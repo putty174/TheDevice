@@ -33,6 +33,9 @@ public final class TheDevice implements ApplicationListener {
 		0,					//Camera Y
 		};
 	
+	public TheDevice() {
+	}
+	
 	public TheDevice(Social facebook) {
 		fb = facebook;
 	}

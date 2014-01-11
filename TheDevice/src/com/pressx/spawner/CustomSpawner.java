@@ -1,17 +1,13 @@
 package com.pressx.spawner;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.math.Vector2;
 import com.pressx.editors.shared.LevelWave;
 import com.pressx.editors.shared.SingleFormation;
-import com.pressx.editors.shared._G;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.enemy.Enemy;
 import com.pressx.objects.enemy.MonsterManager;
@@ -22,8 +18,6 @@ public class CustomSpawner {
 	static final boolean APPLYRANDOMDIRECTIONTOWAVES = true;//makes each wave of enemies appear in a random direction while keeping their formation
 	static final boolean LOOPWHENFINISHED = true;//Will start over if it is finished
 	static final float LOOPDELAY = 3;//Delay when looping
-	static final String FORMATIONFILEPATH = _G.DATAFOLDER+"formations/";
-	static final String FORMATIONFILENAMEEXTENSION = ".spawnformation";
 	/////The following two constants are temporary until we figure out a way to get the map size.
 	/////They should depend on the size of the field.
 	static final Vector2 center = new Vector2(45,30);//The center of the map
@@ -31,6 +25,7 @@ public class CustomSpawner {
 	//////////END Constants
 	
 	GameObject gameObject;
+	//GraphicsManager graphicsManager;
 	Room room;
 	
 	MonsterManager monsterManager;
@@ -38,21 +33,22 @@ public class CustomSpawner {
 	private Random rand;
 	private VectorMath vmath;
 	
-	private String levelFilePath;
-	
+	private String levelName;
 	
 	private float timer;
 	private int currentWaveIndex,currentFormationIndex;
+	//private HashMap<String,FormationLoader.FormationData> formationNameToData = new HashMap<String,FormationLoader.FormationData>();
+	private LevelLoader levelLoader;
+	private AssetManager levelManager = new AssetManager();
 	private ArrayList<LevelWave> waves;
-	private ArrayList<String> formationNames;
-	private HashMap<String,ArrayList<SpawnData>> formationNameToData = new HashMap<String,ArrayList<SpawnData>>();
 	
-	public CustomSpawner(String levelfilepath,GameObject gameObject,Room room){
-		levelFilePath = levelfilepath;
+	public CustomSpawner(String levelname,GameObject gameObject/*,GraphicsManager graphicsManager*/,Room room){
+		this.levelName = levelname;
 		this.gameObject = gameObject;
+		//this.graphicsManager = graphicsManager;
 		this.room = room;
 	
-		this.monsterManager = new MonsterManager(gameObject, room);
+		this.monsterManager = new MonsterManager(gameObject, /*graphicsManager,*/ room);
 		
 		rand = new Random();
 		vmath = new VectorMath();
@@ -65,7 +61,7 @@ public class CustomSpawner {
 		System.out.println("GL HF!");
 		currentWaveIndex = 0;
 		timer = 0;
-		loadLevelFromFile(levelFilePath);
+		loadLevelFromFile(levelName);
 	}
 	
 	public void onLevelFinished(){//Don't know what to do here yet
@@ -77,92 +73,18 @@ public class CustomSpawner {
 		}
 	}
 	
-	/////File Loading
-	void loadFormationFromFile(String filename){
-		String filepath = FORMATIONFILEPATH+filename+FORMATIONFILENAMEEXTENSION;
-		DataInputStream stream = null;
-	  ArrayList<SpawnData> ans = new ArrayList<SpawnData>();
-		try{
-		    stream = new DataInputStream(new BufferedInputStream(Gdx.files.internal(filepath).read()));
-		    byte version = stream.readByte();
-		    for(int i = 0; i < 9999; i++){
-			    byte type = stream.readByte();
-			    float x = stream.readFloat();
-			    Vector2 pos = new Vector2(x,stream.readFloat());
-			    ans.add(new SpawnData(type,pos));
-		    }
-		}catch(java.io.EOFException _){
-		    //Completed sucessfully
-		}catch(Exception e){
-			System.out.println("Formation loading threw exception: "+e);
-			System.out.println("Check if the file "+filename+" is missing. If it isn't, please inform Masana that his formation-loading system sucks.");
-		}finally{
-		    try{
-		    	stream.close();
-		    }catch(Exception e){
-		    	System.out.println("Well this sucks.");
-		    }
-		}
-		formationNames.add(filename);
-		formationNameToData.put(filename,ans);
-	  System.out.println(filename+" : "+formationNames.size());
-	}
-	
-	public void loadLevelFromFile(String filename){		
-		waves = new ArrayList<LevelWave>();
-		formationNames = new ArrayList<String>();
-		
-		DataInputStream stream = null;
-		try{
-		    stream = new DataInputStream(new BufferedInputStream(new FileInputStream(filename)));
-		    byte version = stream.readByte();
-		    System.out.println("version: "+version);
-		    
-		    byte numFormationTypes = stream.readByte();
-		    System.out.println("numFormationTypes: "+numFormationTypes);
-		    for(byte b = 0; b < numFormationTypes; b++)
-		    	loadFormationFromFile(stream.readUTF());
-		    
-		    byte numWaves = stream.readByte();
-		    System.out.println("numWaves: "+numWaves);
-		    for(byte i = 0; i < numWaves; i++){
-		    	System.out.println("i: "+i);
-	  		LevelWave wave = new LevelWave();
-		    	byte numFormationsInWave = stream.readByte();
-		    	System.out.println("numFormationsInWave: "+numFormationsInWave);
-		    	for(byte j = 0; j < numFormationsInWave; j++){
-		    		System.out.println("j: "+j);
-		    		SingleFormation form = new SingleFormation();
-		    		byte formationnameindex = stream.readByte();
-		    		System.out.println("formationnameindex: "+formationnameindex);
-		    		form.name = formationNames.get(formationnameindex);
-		    		System.out.println("formation name: "+form.name);
-		    		form.spawnAngle = stream.readByte();
-		    		wave.formations.add(form);
-		    	}
-		    	wave.numFormationsUsed = stream.readByte();
-		    	wave.delayBetweenFormations = stream.readFloat();
-		    	waves.add(wave);
-		    }
-		}catch(java.io.EOFException _){
-		    //Completed sucessfully
-		}catch(Exception e){
-			System.out.println("Map loading threw exception: "+e);
-			System.out.println("Check if the file "+filename+" is missing. If it isn't, please inform Masana that his level-loading system sucks.");
-		}finally{
-		    try{
-		    	stream.close();
-		    }catch(Exception e){
-		    	System.out.println("Well this sucks.");
-		    }
-		}
+	public void loadLevelFromFile(String filepath){
+		levelLoader = new LevelLoader(new InternalFileHandleResolver());
+		levelManager.setLoader(LevelLoader.LevelData.class,levelLoader);
+		levelManager.load(filepath,LevelLoader.LevelData.class);
+		levelManager.finishLoading();
+		waves = levelManager.get(filepath,LevelLoader.LevelData.class).waves;
 	}
 	
 	/////Spawning Functions
-	void spawnEnemy(SpawnData data,float rotation){
+	void spawnEnemy(FormationLoader.SpawnData data,float rotation){
 		Vector2 pos = vmath.rotate(data.position,rotation);
 		pos = new Vector2(center.x+pos.x*baseDistance,center.y-pos.y*baseDistance);//Negative Y because GDX's system has a positive Y go upward rather than downward
-		System.out.println("Spawning "+data.type+" at "+pos);
 		Enemy enemy = monsterManager.spawnMonster(data.type+1,pos.x,pos.y);
 		room.spawn_object(enemy);
 	}
@@ -170,11 +92,10 @@ public class CustomSpawner {
 		SingleFormation formation = currentWave.formations.get(rand.nextInt(currentWave.formations.size()));
 		float rotation = SingleFormation.spawnAngleToRadians(formation.spawnAngle,rand);
 		int num = 0;
-		for(SpawnData spawn : formationNameToData.get(formation.name)){
+		for(FormationLoader.SpawnData spawn : levelLoader.getFormationManager().get(formation.name,FormationLoader.FormationData.class).list){
 			++num;
 			spawnEnemy(spawn,rotation);
 		}
-		System.out.println("num: "+num);
 	}
 	
 	/////Update
@@ -201,16 +122,7 @@ public class CustomSpawner {
 	}
 	}
 	
-	class SpawnData{
-	public byte type;
-	public Vector2 position;
-	public SpawnData(byte t,Vector2 p){
-		type = t;
-		position = p;
-	}
-	}
-	
-	class VectorMath{//Masana's Vector Math class
+class VectorMath{
 	static final float pi = (float)Math.PI;
 	
 	public float x,y;
@@ -251,6 +163,7 @@ public class CustomSpawner {
 	//Example:
 	//Vector2.normalize(new Vector2(0,10)).magnitude() -->1
 	//Vector2.normalize(new Vector2(23409,234987)).magnitude() -->1
+	//Vector2.normalize(new Vector2(1337,9001)).magnitude() -->1
 	public Vector2 normalize(Vector2 v){return fromAngle(toAngle(v));}
 	public Vector2 normalize(Vector2 v,float magnitude){return mul(normalize(v),magnitude);}//Will multiply for you
 	public Vector2 normalize(Vector2 v1,Vector2 v2){return normalize(sub(v2,v1));}
