@@ -32,10 +32,6 @@ public final class TheDevice implements ApplicationListener {
 		0,					//Camera X
 		0,					//Camera Y
 		};
-	
-	public TheDevice(Social facebook) {
-		fb = facebook;
-	}
 
 	@Override
 	public void create() {
