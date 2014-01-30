@@ -45,6 +45,10 @@ public abstract class GuiList<T> extends GuiObject{
     }
     
     /////Selection
+    T getSelectedValue(){
+    	return getValueAtIndex(selectedIndex);
+    }
+    
     T getValueAtIndex(int index){
 		if(index < getValues().size() && index >= 0)
 		    return getValues().get(index);
