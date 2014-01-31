@@ -11,10 +11,10 @@ import com.pressx.editors.shared._G;
 
 public class GuiList_Level extends GuiList<LevelWave>{
 	public static final Vector2 GUILIST_LEVEL_OFFSET = BASEOFFSET;
-	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_X = 5;
-	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y = 45;
+	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_X = BASEOFFSET.x;
+	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y = EXTRABUTTONOFFSETY;
 
-	public static GuiList_Level instance;	
+	public static GuiList_Level instance;
 	static ArrayList<LevelWave> values = new ArrayList<LevelWave>();
 	
 	public static void newLevel(){
@@ -23,6 +23,11 @@ public class GuiList_Level extends GuiList<LevelWave>{
 	}
 	
 	public static void addWave(LevelWave wave){
+		values.add(instance.selectedIndex+1,wave);
+		if(values.size() == 1)
+			GuiList_ImportedFormations.instance.selectFirstOpenIndexFrom(0);
+	}	
+	public static void addWave_fromloading(LevelWave wave){
 		values.add(wave);
 		if(values.size() == 1)
 			GuiList_ImportedFormations.instance.selectFirstOpenIndexFrom(0);
@@ -65,9 +70,9 @@ public class GuiList_Level extends GuiList<LevelWave>{
 		//find default name
 		wave.name = getWaveNameFromBase("New Wave");
 		
-		values.add(wave);
+		addWave(wave);
 		
-		selectIndex(values.size()-1);
+		selectIndex(selectedIndex+1);
 		if(values.size() == 1)
 			GuiList_ImportedFormations.instance.selectFirstOpenIndexFrom(0);
 	}

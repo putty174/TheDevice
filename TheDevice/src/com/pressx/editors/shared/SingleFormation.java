@@ -5,7 +5,17 @@ import java.util.Random;
 import com.pressx.editors.leveleditor.ImportedFormation;
 
 public class SingleFormation{
+	public static float spawnAngleToRadians_animation(byte spawnangle){
+		if(spawnangle == SPAWNANGLE_RANDOM)
+			return (float)_G.cycle/5;
+		else if(spawnangle == SPAWNANGLE_RANDOMRIGHT)
+			return (_G.cycle/8)*_G.PI/2;
+		else
+			return SingleFormation.spawnAngleToRadians(spawnangle,null);
+	}
 	public static float spawnAngleToRadians(byte spawnangle,Random random){
+		//if(spawnangle < 0) System.out.println("!!!!");
+		//System.out.println(""+spawnangle+":"+_G.PI*2/SPAWNANGLE_NUMSEGMENTS*spawnangle);
 		if(spawnangle == SPAWNANGLE_RANDOM)
 			return random.nextFloat()*(_G.PI*2);
 		if(spawnangle == SPAWNANGLE_RANDOMRIGHT)

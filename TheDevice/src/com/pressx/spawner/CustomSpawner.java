@@ -15,13 +15,10 @@ import com.pressx.screens.game.Room;
 
 public class CustomSpawner {
 	//////////Constants
-	static final boolean APPLYRANDOMDIRECTIONTOWAVES = true;//makes each wave of enemies appear in a random direction while keeping their formation
 	static final boolean LOOPWHENFINISHED = true;//Will start over if it is finished
 	static final float LOOPDELAY = 3;//Delay when looping
-	/////The following two constants are temporary until we figure out a way to get the map size.
-	/////They should depend on the size of the field.
 	static final Vector2 center = new Vector2(45,30);//The center of the map
-	static final float baseDistance = 27;//The distance from the center to the corner; the basis of the SpawnLocation position system
+	static final float baseDistance = 27;//The distance from the center to the corner
 	//////////END Constants
 	
 	GameObject gameObject;
@@ -74,10 +71,12 @@ public class CustomSpawner {
 	}
 	
 	public void loadLevelFromFile(String filepath){
-		levelLoader = new LevelLoader(new InternalFileHandleResolver());
-		levelManager.setLoader(LevelLoader.LevelData.class,levelLoader);
-		levelManager.load(filepath,LevelLoader.LevelData.class);
-		levelManager.finishLoading();
+		if(levelLoader == null){
+			levelLoader = new LevelLoader(new InternalFileHandleResolver());
+			levelManager.setLoader(LevelLoader.LevelData.class,levelLoader);
+			levelManager.load(filepath,LevelLoader.LevelData.class);
+			levelManager.finishLoading();
+		}
 		waves = levelManager.get(filepath,LevelLoader.LevelData.class).waves;
 	}
 	
@@ -88,12 +87,14 @@ public class CustomSpawner {
 		Enemy enemy = monsterManager.spawnMonster(data.type+1,pos.x,pos.y);
 		room.spawn_object(enemy);
 	}
-	void spawnFormationFrom(LevelWave currentWave){
-		SingleFormation formation = currentWave.formations.get(rand.nextInt(currentWave.formations.size()));
+	void spawnFormationFrom(LevelWave currentWave,int currentFormationIndex){//currentFormationIndex is only needed if the wave isn't randomized
+		SingleFormation formation;
+		if(currentWave.isRandomized)
+			formation = currentWave.formations.get(rand.nextInt(currentWave.formations.size()));
+		else
+			formation = currentWave.formations.get(currentFormationIndex);
 		float rotation = SingleFormation.spawnAngleToRadians(formation.spawnAngle,rand);
-		int num = 0;
 		for(FormationLoader.SpawnData spawn : levelLoader.getFormationManager().get(formation.name,FormationLoader.FormationData.class).list){
-			++num;
 			spawnEnemy(spawn,rotation);
 		}
 	}
@@ -102,22 +103,23 @@ public class CustomSpawner {
 	public void update(float dseconds){
 		timer += dseconds;
 		
-		if(waves.size() == 0)
+		if(waves.size() == 0){
 			System.out.println("PLEASE USE A LEVEL THAT ACTUALLY HAS WAVES IN IT!!!!");
+			return;
+		}
 		LevelWave currentWave = waves.get(currentWaveIndex);
 		
 		if(timer > currentWave.delayBetweenFormations){
 			timer = 0;
-			++currentFormationIndex;
 			if(currentFormationIndex == currentWave.numFormationsUsed){
 				currentFormationIndex = 0;
 				++currentWaveIndex;
-				if(currentWaveIndex == waves.size()){
+				if(currentWaveIndex == waves.size())
 					onLevelFinished();
-				}
 			}else{
-				spawnFormationFrom(currentWave);
+				spawnFormationFrom(currentWave,currentFormationIndex);
 			}
+			++currentFormationIndex;
 		}
 	}
 	

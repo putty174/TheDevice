@@ -9,7 +9,7 @@ import com.pressx.editors.shared._G;
 
 public abstract class WaveSettingVariator extends GuiVariator{
 	public static final Vector2 SIZE = new Vector2(GuiList.SIZE.x,30);
-	public static final Vector2 WSV_BASEOFFSET = new Vector2(GuiList_Wave.GUILIST_WAVE_OFFSET.x,GuiList.BASEOFFSET.y+GuiList.SIZE.y);
+	public static final Vector2 WSV_BASEOFFSET = new Vector2(GuiList_Wave.GUILIST_WAVE_OFFSET.x,GuiList.EXTRABUTTONOFFSETY);
 	
 	static final Color BASECOLOR = new Color(1f,1,0);
 	
@@ -59,6 +59,10 @@ class NumFormationsUsedVariator extends WaveSettingVariator{
 	public void setValue(int v){
 		super.setValue(v);
 		GuiList_Wave.setWaveNumFormationsUsed((byte)v);
+	}
+	
+	public boolean checkActive(){
+		return super.checkActive() && GuiList_Wave.checkWaveIsRandomized();
 	}
 	
 	public int getMinValue(){
@@ -117,6 +121,10 @@ class FormationAngleVariator extends GuiVariator{
 	}
 	
 	public void setValue(int v){
+		if(v < 0)
+			v += getMaxValue();
+		else if(v > SingleFormation.SPAWNANGLE_MAX)
+			v = 0;
 		super.setValue(v);
 		GuiList_Wave.instance.setFormationSpawnAngle((byte)v);
 	}
@@ -151,15 +159,7 @@ class FormationAngleVariator extends GuiVariator{
 		if(!checkActive()) return;
 		GraphicsDraw.boldFont();
 		GraphicsDraw.centerText(getText(),getCenter());
-		float angle;
-		byte val = (byte)value;
-		if(val == SingleFormation.SPAWNANGLE_RANDOM)
-			angle = (float)_G.cycle/5;
-		else if(val == SingleFormation.SPAWNANGLE_RANDOMRIGHT)
-			angle = (_G.cycle/8)*_G.PI/2;
-		else
-			angle = SingleFormation.spawnAngleToRadians(val,null);
-		angle = -angle;//Negative because LibGDX would make angles go counterclockwise, but this system goes clockwise
+		float angle = -SingleFormation.spawnAngleToRadians_animation((byte)value);//Negative because LibGDX would make angles go counterclockwise, but this system goes clockwise
 		Vector2 center = new Vector2(position.x+size.x+size.y*2/3,position.y+size.y/2);
 		GraphicsDraw.circle(center,size.y/20);
 		GraphicsDraw.arrow(center.add(Vector2.fromAngle(angle,size.y/3)),size.y/5,angle-_G.PI/2);

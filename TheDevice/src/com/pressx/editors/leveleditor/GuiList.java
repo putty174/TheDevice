@@ -9,13 +9,13 @@ import com.pressx.editors.shared.Vector2;
 import com.pressx.editors.shared._G;
 
 public abstract class GuiList<T> extends GuiObject{
-    public static final Vector2 BASEOFFSET = new Vector2(240,20);
+    public static final Vector2 BASEOFFSET = new Vector2(28,20);
     public static final Vector2 SIZE = new Vector2(200,400);
     public static final Vector2 ADDITIONALOFFSET = new Vector2(SIZE.x+80,0);
     public static final Vector2 BARSIZE = new Vector2(SIZE.x,20);//size of a single bar thing
     public static final float ARROWSQUARESIZE = 20;
     public static final int MAXBARS = 20;
-    public static final float EXTRABUTTONOFFSETY = BASEOFFSET.y+SIZE.y+5;
+    public static final float EXTRABUTTONOFFSETY = BASEOFFSET.y+SIZE.y+2;
     
     public static final int SCROLLSPEED = 8;
     
@@ -146,16 +146,19 @@ public abstract class GuiList<T> extends GuiObject{
 		float a = ((float)Math.sin((float)_G.cycle/4)+1)/8;
 		return new Color(1,.6f+a,a);
     }
+    protected Color getUnitDefaultDrawColor(){
+		return Color.WHITE;
+    }
     protected Color getUnitDrawColor(int realindex,int relativeindex,T val){
 		if(realindex == selectedIndex)
 			return getSelectedUnitDrawColor(realindex,relativeindex,val);
-		return Color.WHITE;
+		return getUnitDefaultDrawColor();
     }
     protected void drawSingleUnit(int realindex,int relativeindex,T val){
 		Vector2 pos = new Vector2(getCenter().x-SIZE.x/2+BARSIZE.x/2,getCenter().y-SIZE.y/2+BARSIZE.y*(.5f+relativeindex));
 		
 		//Draw a bar every five realindex positions
-		if(realindex%5 == 4){
+		if(realindex%5 == 4 && relativeindex != MAXBARS-1){
 		    GraphicsDraw.setColor(Color.BLACK);
 		    GraphicsDraw.fillRectangle(new Vector2(pos.x,pos.y+BARSIZE.y/2),new Vector2(BARSIZE.x,4));
 		    /*

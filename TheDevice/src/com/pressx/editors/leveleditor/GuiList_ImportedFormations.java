@@ -28,17 +28,25 @@ public class GuiList_ImportedFormations extends GuiList<ImportedFormation>{//For
 	}
 	static boolean valueShouldBeGrayed(ImportedFormation val){
 		if(!GuiList_Wave.ready) return true;
+		if(!GuiList_Wave.checkWaveIsRandomized()) return false;
 		for(SingleFormation f : GuiList_Wave.values)
 			if(f.name.equals(val.name))
 				return true;
 		return false;
 	}
 	
+	static final Color UNITDEFAULTDRAWCOLOR_RANDOMIZED = new Color(.85f,1,.95f);	
+	static final Color UNITDEFAULTDRAWCOLOR_UNRANDOMIZED = new Color(1,.95f,.85f);
+    protected Color getUnitDefaultDrawColor(){
+		return GuiList_Wave.checkWaveIsRandomized() ? UNITDEFAULTDRAWCOLOR_RANDOMIZED : UNITDEFAULTDRAWCOLOR_UNRANDOMIZED;//super.getUnitDefaultDrawColor();
+    }
+	
 	/////NON-STATICS
 	public void addSelectedFormationToWave(){
 		if(selectedIndex == -1 || !GuiList_Wave.ready) return;
 		GuiList_Wave.addFormationFromImportedFormation(values.get(selectedIndex));
-		selectFirstOpenIndexFrom(selectedIndex+1);
+		if(GuiList_Wave.checkWaveIsRandomized())
+			selectFirstOpenIndexFrom(selectedIndex+1);
 	}
 	
 	public void selectFirstOpenIndexFrom(int index){

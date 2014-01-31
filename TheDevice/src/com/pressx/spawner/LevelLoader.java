@@ -52,6 +52,7 @@ public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,Le
 		return formationManager;
 	}
 	
+	int convbyte(byte b){return b & 0xff;}
 	public LevelLoader.LevelData load(AssetManager assetManager,String filename,FileHandle cheese,LevelInput uselessparam){
 		formationManager = new AssetManager();
     	formationManager.setLoader(FormationLoader.FormationData.class,new FormationLoader(new InternalFileHandleResolver()));
@@ -64,30 +65,38 @@ public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,Le
 		try{
 		    stream = new DataInputStream(new BufferedInputStream(file.read()));
 		    byte version = stream.readByte();
+		    System.out.println("Level version: "+version);
 		    
-		    byte numFormationTypes = stream.readByte();
-		    System.out.println("numFormationTypes: "+numFormationTypes);
-		    for(byte b = 0; b < numFormationTypes; b++){
+		    int numFormationTypes = convbyte(stream.readByte());
+		    for(int b = 0; b < numFormationTypes; b++){
 		    	String formationname = stream.readUTF(); 
 		    	formationNames.add(formationname);
 		    	formationManager.load(formationname,FormationLoader.FormationData.class);
 		    }
 			formationManager.finishLoading();
 		    
-		    byte numWaves = stream.readByte();
-		    for(byte i = 0; i < numWaves; i++){
-		    	System.out.println("i: "+i);
+		    int numWaves = convbyte(stream.readByte());
+		    System.out.println(""+numWaves);
+		    for(int i = 0; i < numWaves; i++){
 	    		LevelWave wave = new LevelWave();
-		    	byte numFormationsInWave = stream.readByte();
-		    	for(byte j = 0; j < numFormationsInWave; j++){
-			    	System.out.println("j: "+j);
+		    	int numFormationsInWave = convbyte(stream.readByte());
+		    	for(int j = 0; j < numFormationsInWave; j++){
 		    		SingleFormation form = new SingleFormation();
-		    		byte formationnameindex = stream.readByte();
+		    		int formationnameindex = convbyte(stream.readByte());
 		    		form.name = formationNames.get(formationnameindex);
 		    		form.spawnAngle = stream.readByte();
 		    		wave.formations.add(form);
 		    	}
-		    	wave.numFormationsUsed = stream.readByte();
+		    	if(version == 1){//version 1, which added wave name (editor only) and randomized waves
+		    		stream.readUTF();//The wave's name, which is only needed by the designers
+		    		wave.isRandomized = stream.readBoolean();
+		    	}else{//for backward compatibility with version 0, which only had randomized waves
+		    		wave.isRandomized = true;
+		    	}
+	    		if(wave.isRandomized)
+			    	wave.numFormationsUsed = convbyte(stream.readByte());
+	    		else
+	    			wave.numFormationsUsed = wave.formations.size();
 		    	wave.delayBetweenFormations = stream.readFloat();
 		    	data.waves.add(wave);
 		    }
@@ -95,7 +104,7 @@ public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,Le
 		    //Completed sucessfully
 		}catch(Exception e){
 			System.out.println("Map loading threw exception: "+e);
-			System.out.println("Check if the file "+filename+" is missing. If it isn't, please inform Masana that his level-loading system sucks.");
+			System.out.println("Check if the file "+filename+" is missing. If it isn't, please kindly inform Masana that his level-loading system sucks.");
 		}finally{
 		    try{
 		    	stream.close();
