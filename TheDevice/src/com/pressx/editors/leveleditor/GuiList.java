@@ -9,7 +9,7 @@ import com.pressx.editors.shared.Vector2;
 import com.pressx.editors.shared._G;
 
 public abstract class GuiList<T> extends GuiObject{
-    public static final Vector2 BASEOFFSET = new Vector2(20,20);
+    public static final Vector2 BASEOFFSET = new Vector2(240,20);
     public static final Vector2 SIZE = new Vector2(200,400);
     public static final Vector2 ADDITIONALOFFSET = new Vector2(SIZE.x+80,0);
     public static final Vector2 BARSIZE = new Vector2(SIZE.x,20);//size of a single bar thing

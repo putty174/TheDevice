@@ -46,6 +46,6 @@ public class _G {
     public static final Vector2 FORMATIONEDITOR_SCREENSIZE = new Vector2(FORMATIONEDITOR_WIDTH,FORMATIONEDITOR_HEIGHT);
     
     /////Match Editor
-    public static int LEVELEDITOR_WIDTH = 800,LEVELEDITOR_HEIGHT = 700;
+    public static int LEVELEDITOR_WIDTH = 1020,LEVELEDITOR_HEIGHT = 700;
     public static final Vector2 LEVELEDITOR_SCREENSIZE = new Vector2(LEVELEDITOR_WIDTH,LEVELEDITOR_HEIGHT);
 }

@@ -11,6 +11,8 @@ import com.pressx.editors.shared._G;
 
 public class GuiList_Level extends GuiList<LevelWave>{
 	public static final Vector2 GUILIST_LEVEL_OFFSET = BASEOFFSET;
+	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_X = 5;
+	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y = 45;
 
 	public static GuiList_Level instance;	
 	static ArrayList<LevelWave> values = new ArrayList<LevelWave>();
@@ -43,10 +45,18 @@ public class GuiList_Level extends GuiList<LevelWave>{
 			}
 		}
 		String wantedname = base+" (1)";
-		if(!values.isEmpty())
-			for(LevelWave otherwave : values)
-				if(otherwave.name.equals(wantedname))
-					wantedname = base+" ("+(++wantednameindex)+')';
+		if(!values.isEmpty()){
+			boolean bad = true;
+			while(bad){
+				bad = false;
+				for(LevelWave otherwave : values){
+					if(otherwave.name.equals(wantedname)){
+						wantedname = base+" ("+(++wantednameindex)+')';
+						bad = true;
+					}
+				}
+			}
+		}
 		return wantedname;
 	}
 	
@@ -149,7 +159,7 @@ public class GuiList_Level extends GuiList<LevelWave>{
 
 class NewWaveButton extends GuiButton{
 	static final Vector2 SIZE = new Vector2(GuiList.SIZE.x,25);
-	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY);
+	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y);
 	static final String TEXT = "New Wave [N]";
 	CenteredText text;
 	GuiList_Level parent;
@@ -182,7 +192,7 @@ class NewWaveButton extends GuiButton{
 
 class RemoveWaveButton extends GuiButton{
 	static final Vector2 SIZE = NewWaveButton.SIZE;
-	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y);
+	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y);
 	static final String TEXT = "Delete Wave [CTRL+DEL]";
 	CenteredText text;
 	GuiList_Level parent;
@@ -223,7 +233,7 @@ class RemoveWaveButton extends GuiButton{
 }
 class CopyWaveButton extends GuiButton{
 	static final Vector2 SIZE = NewWaveButton.SIZE;
-	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y*2);
+	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y*2);
 	static final String TEXT = "Duplicate Wave [CTRL+D]";
 	CenteredText text;
 	GuiList_Level parent;
@@ -265,8 +275,8 @@ class CopyWaveButton extends GuiButton{
 
 class MoveWaveButton extends GuiButton{
 	static final Vector2 SIZE = NewWaveButton.SIZE;
-	static final Vector2 OFFSET_UP = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y*3);
-	static final Vector2 OFFSET_DOWN = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y*4);
+	static final Vector2 OFFSET_UP = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y*3);
+	static final Vector2 OFFSET_DOWN = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y*4);
 	static final String TEXT_UP = "Raise Wave [CTRL+UP]";
 	static final String TEXT_DOWN = "Lower Wave [CTRL+DOWN]";
 	CenteredText text;

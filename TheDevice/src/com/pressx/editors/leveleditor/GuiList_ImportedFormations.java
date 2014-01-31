@@ -129,7 +129,7 @@ public class GuiList_ImportedFormations extends GuiList<ImportedFormation>{//For
 class FileManager_ReimportFormationsButton extends GuiButton{
 	static final Vector2 SIZE = new Vector2(GuiList.SIZE.x,25);
 	static final Vector2 OFFSET = new Vector2(GuiList_ImportedFormations.GUILIST_IMPORTEDFORMATIONS_OFFSET.x,GuiList.EXTRABUTTONOFFSETY);
-	static final String TEXT = "Reimport Formations [R]";
+	static final String TEXT = "Reimport Formations [CTRL+R]";
 	CenteredText text;
 	GuiList_ImportedFormations parent;
 	public FileManager_ReimportFormationsButton(GuiList_ImportedFormations parent){
@@ -153,7 +153,7 @@ class FileManager_ReimportFormationsButton extends GuiButton{
 	}
 	
 	public boolean checkMouseClicked(){
-		return super.checkMouseClicked() || Center.getKey(Keys.R);
+		return super.checkMouseClicked() || Center.getKey(Keys.CONTROL) && Center.getKey(Keys.R);
 	}
 	
 	public void draw(){

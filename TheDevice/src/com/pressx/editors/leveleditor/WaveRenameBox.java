@@ -33,8 +33,8 @@ public class WaveRenameBox{
 
 class RenameWaveButton extends GuiButton{
 	static final Vector2 SIZE = NewWaveButton.SIZE;
-	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y*5);
-	static final String TEXT = "Rename Wave []";
+	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y*5);
+	static final String TEXT = "Rename Wave [R]";
 	CenteredText text;
 	GuiList_Level parent;
 	public RenameWaveButton(GuiList_Level parent){
@@ -59,7 +59,7 @@ class RenameWaveButton extends GuiButton{
 	}
 
 	public boolean checkMouseClicked(){
-		return super.checkMouseClicked() || Center.getKey(Keys.CONTROL) && Center.keyPressed(Keys.D);
+		return super.checkMouseClicked() || Center.keyPressed(Keys.R);
 	}
 	
 	boolean debounce;
