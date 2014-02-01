@@ -59,7 +59,7 @@ class RenameWaveButton extends GuiButton{
 	}
 
 	public boolean checkMouseClicked(){
-		return super.checkMouseClicked() || Center.keyPressed(Keys.R);
+		return super.checkMouseClicked() || (Center.keyPressed(Keys.R) && !Center.getKey(Keys.CONTROL));
 	}
 	
 	boolean debounce;
