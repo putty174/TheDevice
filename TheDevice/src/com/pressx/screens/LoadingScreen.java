@@ -39,7 +39,7 @@ public class LoadingScreen extends BaseState{
 	}
 	
 	public void create() {
-		levelName = "Level1";
+		levelName = "level1";
 		player = new Player(
 				0, //ID
 				50, 30, //Position

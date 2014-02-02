@@ -52,6 +52,7 @@ public class FormationLoader extends SynchronousAssetLoader<FormationLoader.Form
 	
 	public FormationLoader.FormationData load(AssetManager assetmanager,String filename,FileHandle fakefile,FormationLoaderInput whateverparam){
     	String filepath = FORMATIONFILEPATH+filename+FORMATIONFILENAMEEXTENSION;
+    	System.out.println(filepath);
     	
 		FileHandle file = resolve(filepath);
 		
