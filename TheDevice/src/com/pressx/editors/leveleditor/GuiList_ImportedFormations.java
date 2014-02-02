@@ -14,11 +14,33 @@ public class GuiList_ImportedFormations extends GuiList<ImportedFormation>{//For
 	/////STATICS
 	static ArrayList<ImportedFormation> values = new ArrayList<ImportedFormation>();
 	static GuiList_ImportedFormations instance;
-	public static void tryAddImportedFormation(ImportedFormation newform){
-		ImportedFormation form = checkValueAlreadyImported(newform.name);
-		if(form == null)
-			values.add(form = newform);
-		//instance.selectValue(form);
+	
+	static int getNumberFromName(String name){
+		int ans = -1;
+		for(int i = 0; i < name.length(); i++){
+			byte c = (byte)name.charAt(i);
+			if(c < 48 || c > 57) break;
+			if(ans == -1)
+				ans = c;
+			else
+				ans = ans*10+c;
+		}
+		return ans;
+	}
+	public static void tryAddImportedFormation(ImportedFormation form){
+		if(checkValueAlreadyImported(form.name)!= null);
+		int num = getNumberFromName(form.name);
+		if(num == -1)
+			values.add(form);
+		else{//sort according to Khai's naming system (names start with the number of enemies)
+			for(int i = 0; i < values.size(); i++){
+				int othernum = getNumberFromName(values.get(i).name);
+				if(othernum == -1 || num < othernum){
+					values.add(i,form);
+					break;
+				}
+			}
+		}
 	}
 	static ImportedFormation checkValueAlreadyImported(String name){
 		for(ImportedFormation value : values)

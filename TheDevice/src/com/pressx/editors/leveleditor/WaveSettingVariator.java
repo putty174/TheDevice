@@ -122,46 +122,91 @@ class FormationAngleVariator extends GuiVariator{
 	
 	public void setValue(int v){
 		if(v < 0)
-			v += getMaxValue();
-		else if(v > SingleFormation.SPAWNANGLE_MAX)
+			v = 2;
+		else if(v > 2)
 			v = 0;
 		super.setValue(v);
-		GuiList_Wave.instance.setFormationSpawnAngle((byte)v);
+		if(v == 0)
+			GuiList_Wave.instance.setFormationSpawnAngle(SingleFormation.SPAWNANGLE_RANDOMRIGHT);
+		else if(v == 1)
+			GuiList_Wave.instance.setFormationSpawnAngle(SingleFormation.SPAWNANGLE_RANDOM);
+		else
+			GuiList_Wave.instance.setFormationSpawnAngle((byte)0);
 	}
 	
 	public int getMinValue(){
 		return 0;
 	}
 	public int getMaxValue(){
-		return SingleFormation.SPAWNANGLE_MAX;
+		return 2;
 	}
 	
     public int getHoldDelay(){
     	return 10;
     }
     public float getHoldIncrementThreshold(){
-    	return (byte)value >= SingleFormation.SPAWNANGLE_RANDOM ? 24000 : 30;
+    	return 30;//(byte)value >= SingleFormation.SPAWNANGLE_RANDOM ? 24000 : 30;
     }
     public float getHoldIncrementerIncrease(){
     	return .4f;
     }
     
+    SingleFormation currentFormation;
     public void setData(SingleFormation f){
-    	setValue(f.spawnAngle);
+    	currentFormation = f;
+    	if(f.spawnAngle == SingleFormation.SPAWNANGLE_RANDOMRIGHT)
+    		setValue(0);
+    	else if(f.spawnAngle == SingleFormation.SPAWNANGLE_RANDOM)
+    		setValue(1);
+    	else
+    		setValue(2);
+    	//setValue(f.spawnAngle);
     }
 	
 	public String getText(){
-		return SingleFormation.spawnAngleToString((byte)value);
+		if(currentFormation == null) return "--";
+		/*if(value == 0)
+			return "Spawn at random right angle";
+		if(value == 1)
+			return "Spawn at random angle";*/
+		return SingleFormation.spawnAngleToString((byte)currentFormation.spawnAngle);
+	}
+	
+	public void update(){
+		super.update();
 	}
 
 	public void draw(){
 		super.draw();
 		if(!checkActive()) return;
+		float radius = size.y;
 		GraphicsDraw.boldFont();
 		GraphicsDraw.centerText(getText(),getCenter());
-		float angle = -SingleFormation.spawnAngleToRadians_animation((byte)value);//Negative because LibGDX would make angles go counterclockwise, but this system goes clockwise
-		Vector2 center = new Vector2(position.x+size.x+size.y*2/3,position.y+size.y/2);
-		GraphicsDraw.circle(center,size.y/20);
-		GraphicsDraw.arrow(center.add(Vector2.fromAngle(angle,size.y/3)),size.y/5,angle-_G.PI/2);
+		float angle = -SingleFormation.spawnAngleToRadians_animation(currentFormation.spawnAngle);//Negative because LibGDX would make angles go counterclockwise, but this system goes clockwise
+		GraphicsDraw.setColor(value == 2 ? Color.WHITE : Color.GRAY);
+		Vector2 center = new Vector2(position.x+size.x+radius+5,position.y+size.y/2);
+		GraphicsDraw.fillCircle(center,radius);//GraphicsDraw.circle(center,size.y/20);
+		GraphicsDraw.setColor(value == 2 ? Color.GRAY : Color.BLACK);
+		//GraphicsDraw.arrow(center.add(Vector2.fromAngle(angle,size.y/3)),size.y/5,angle-_G.PI/2);
+		GraphicsDraw.line(center,center.add(Vector2.fromAngle(angle,radius)));
+		GraphicsDraw.setColor(new Color(.5f,1f,1f));
+		GraphicsDraw.circle(center,radius/2);//GraphicsDraw.circle(center,size.y/20);
+		GraphicsDraw.setColor(Color.BLUE);
+		GraphicsDraw.circle(center,1);
+		GraphicsDraw.circle(center.add(Vector2.fromAngle(angle,radius)),1);
+		GraphicsDraw.circle(center,radius);//GraphicsDraw.circle(center,size.y/20);
+
+		Vector2 mousepos = Center.mousePosition();
+		if(Vector2.distanceLessThan(mousepos,center,radius)){
+			Vector2 diff = center.sub(mousepos);
+			float mouseangle = Vector2.toAngle(new Vector2(-diff.x,diff.y));
+			GraphicsDraw.setColor(Color.BLACK);
+			GraphicsDraw.smallBoldFont();
+			GraphicsDraw.text(""+(15*(int)(mouseangle/3.14159265f*180/15)),mousepos);
+			if(Center.leftMouseDown()){
+	    		setValue(2);
+	    		GuiList_Wave.instance.setFormationSpawnAngle(SingleFormation.radiansToSpawnAngle(mouseangle));
+			}
+		}
 	}
 }
