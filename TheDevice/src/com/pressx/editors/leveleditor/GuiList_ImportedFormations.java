@@ -28,7 +28,7 @@ public class GuiList_ImportedFormations extends GuiList<ImportedFormation>{//For
 		return ans;
 	}
 	public static void tryAddImportedFormation(ImportedFormation form){
-		if(checkValueAlreadyImported(form.name)!= null);
+		if(checkValueAlreadyImported(form.name) != null) return;
 		int num = getNumberFromName(form.name);
 		if(num == -1)
 			values.add(form);
