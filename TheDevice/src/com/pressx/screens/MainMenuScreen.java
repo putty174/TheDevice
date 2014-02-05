@@ -12,7 +12,7 @@ import com.pressx.social.Social;
 import com.pressx.thedevice.TheDevice;
 
 public class MainMenuScreen extends BaseState {
-	Sprite bgArt, play, help, post;
+	Sprite bgArt, play, help, post, shop;
 	Social fb;
 	String key;
 	File blah;
@@ -24,6 +24,7 @@ public class MainMenuScreen extends BaseState {
 		help = new Sprite(Textures.getArtAsset("main_help"));
 		post = new Sprite(Textures.getArtAsset("exp"));
 		post.setRegion(0, 0, 30, 30);
+		shop = new Sprite(Textures.getArtAsset("shopbutton"));
 		fb = facebook;
 		
 		String filename = "../TheDevice-android/assets/data/leveldata/formations/FuzzieArmy.spawnformation";
@@ -42,6 +43,8 @@ public class MainMenuScreen extends BaseState {
 		Graphics.draw(Graphics.TYPES.BUTTON, play, 0.61f, 0.06f, 0.15f, 0.25f);
 		Graphics.draw(Graphics.TYPES.BUTTON, help, 0.79f, 0.06f, 0.15f, 0.25f);
 		Graphics.draw(Graphics.TYPES.EXTRAS, post, 0.1f, 0.1f, 0.1f, 0.1f);
+		Graphics.draw(Graphics.TYPES.BUTTON, shop, .23f, .67f, .1f, .135f);
+		Graphics.write("Shop is open!", .1f, .9f);
 		
 		if(blah.exists())
 			Graphics.write("Yes", 0.3f, 0.3f);
@@ -68,6 +71,8 @@ public class MainMenuScreen extends BaseState {
 			else if(post.getBoundingRectangle().contains(x,y))
 			{
 				fb.switchActivity();
+			}else if(shop.getBoundingRectangle().contains(x,y)){
+				TheDevice.moveToShop();
 			}
 		}
 	}

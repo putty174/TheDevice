@@ -56,7 +56,8 @@ public final class Textures {
 				"main_play","data/art/main/buttons/play.png",
 				"main_bg","data/art/main/screen/titlescreen.png",
 				"main_help","data/art/main/buttons/help.png",
-				"exp", "data/art/game/objects/device/exp.png"
+				"exp", "data/art/game/objects/device/exp.png",
+				"shopbutton", "data/art/shop/shop_button.png"
 				);
 		
 		addPath(
@@ -91,6 +92,17 @@ public final class Textures {
 				"end_bg", "data/art/end/gameover.png",
 				"end_retry", "data/art/end/buttons/retry.png",
 				"end_quit", "data/art/end/buttons/quitter.png");
+		
+		final String path = "data/art/shop/";
+		addPath(
+				"Shop",
+				"shop_background",path+"shop_background.png",
+				"itembackground",path+"item_background.png",
+				"item0",path+"item0.png",
+				"item1",path+"item1.png",
+				"item2",path+"item2.png",
+				"item3",path+"item3.png",
+				"item4",path+"item4.png");
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.

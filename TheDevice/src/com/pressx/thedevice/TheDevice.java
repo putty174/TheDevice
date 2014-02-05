@@ -17,6 +17,7 @@ import com.pressx.screens.GameOverScreen;
 import com.pressx.screens.GameScreen;
 import com.pressx.screens.LoadingScreen;
 import com.pressx.screens.MainMenuScreen;
+import com.pressx.screens.ShopScreen;
 import com.pressx.screens.TutorialScreen;
 import com.pressx.screens.game.Room;
 import com.pressx.screens.game.UI;
@@ -24,6 +25,8 @@ import com.pressx.social.Social;
 import com.pressx.spawner.CustomSpawner;
 
 public final class TheDevice implements ApplicationListener {
+	static final int NUMSTATES = 9;
+	
 	static int currentState;
 	static BaseState[] posStates;
 	GameStats stats;
@@ -54,7 +57,7 @@ public final class TheDevice implements ApplicationListener {
 		new Textures();
 		new Graphics();
 		
-		posStates = new BaseState[8];
+		posStates = new BaseState[NUMSTATES];
 		
 		float width = Gdx.graphics.getWidth();
 		renderInfo[1] = Graphics.screenHeight * 100 / Graphics.screenWidth;
@@ -164,5 +167,13 @@ public final class TheDevice implements ApplicationListener {
 		posStates[5] = new GameOverScreen();
 		posStates[5].create();
 		currentState = 5;
+	}
+	
+	public static void moveToShop(){
+		Textures.unloadArtAssets();
+		Textures.loadArtAssets("Shop");
+		posStates[8] = new ShopScreen();
+		posStates[8].create();
+		currentState = 8;
 	}
 }
