@@ -97,12 +97,18 @@ public final class Textures {
 		addPath(
 				"Shop",
 				"shop_background",path+"shop_background.png",
+				"shop_backbutton",path+"backbutton.png",
 				"itembackground",path+"item_background.png",
+				"itembackground_selected",path+"item_background_selected.png",
+				"itembutton_buy",path+"itembutton_buy.png",
+				"itembutton_equip",path+"itembutton_equip.png",
+				"itembutton_unequip",path+"itembutton_unequip.png",
 				"item0",path+"item0.png",
 				"item1",path+"item1.png",
 				"item2",path+"item2.png",
 				"item3",path+"item3.png",
-				"item4",path+"item4.png");
+				"item4",path+"item4.png",
+				"item5",path+"item5.png");
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.
