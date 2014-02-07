@@ -103,6 +103,7 @@ public final class Textures {
 				"itembutton_buy",path+"itembutton_buy.png",
 				"itembutton_equip",path+"itembutton_equip.png",
 				"itembutton_unequip",path+"itembutton_unequip.png",
+				"exp", "data/art/game/objects/device/exp.png",
 				"item0",path+"item0.png",
 				"item1",path+"item1.png",
 				"item2",path+"item2.png",

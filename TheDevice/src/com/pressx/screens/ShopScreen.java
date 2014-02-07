@@ -64,12 +64,13 @@ public class ShopScreen extends BaseState {
 	static final float ITEMICON_OFFSETY = ITEMICON_EXTRASPACE;
 	static final float ITEMTITLE_OFFSETX = ITEMUNIT_OFFSETX+ITEMICON_OFFSETX*2+ITEMICON_WIDTH;
 	static final float ITEMTITLE_OFFSETY = ITEMUNIT_HEIGHT/2+.05f;
-	static final float ITEMBUTTON_WIDTH = ITEMUNIT_WIDTH/2;
-	static final float ITEMBUTTON_HEIGHT = ITEMUNIT_HEIGHT/5;
+	static final float ITEMBUTTON_WIDTH = ITEMUNIT_WIDTH/2.25f;
+	static final float ITEMBUTTON_HEIGHT = ITEMUNIT_HEIGHT/3;
 	static final float ITEMBUTTON_OFFSETX = ITEMUNIT_OFFSETX+.2f;
-	static final float ITEMBUTTON_OFFSETY = ITEMUNIT_HEIGHT/20;
+	static final float ITEMBUTTON_OFFSETY = 0;//ITEMUNIT_HEIGHT/20;
 	
-	Sprite spr_background,spr_backbutton,spr_itemselectback;
+	int numExperience = 1337;//temporary
+	Sprite spr_background,spr_backbutton,spr_itemselectback,spr_experience;
 	ShopItem[] items;
 	
 	ShopItem selectedItem = null;
@@ -81,6 +82,7 @@ public class ShopScreen extends BaseState {
 		spr_background = getspr("shop_background");
 		spr_backbutton = getspr("shop_backbutton");
 		spr_itemselectback = getspr("itembackground_selected");
+		spr_experience = getspr("exp");
 		items = new ShopItem[6];//temporary
 		items[0] = new ShopItem("Mine","item0");
 		items[0].setState(ItemState.EQUIPPED);
@@ -96,9 +98,15 @@ public class ShopScreen extends BaseState {
 
 	float itemscrollvelocity = 5;
 	float itemscroll = 0;
+	int expanim = 0;
 	public void render(SpriteBatch batch){
 		Graphics.draw(Graphics.TYPES.BACKGROUND,spr_background,0,0,1f,1f);
 		Graphics.draw(Graphics.TYPES.BUTTON,spr_backbutton,.05f,.9f,.15f,.075f);
+		expanim = (expanim+1)%20;
+		int expanim2 = expanim/5;
+		spr_experience.setRegion(30*(expanim2 == 0 ? 0 : expanim2 == 2 ? 2 : 1), 0, 30, 30);
+		Graphics.draw(Graphics.TYPES.BUTTON,spr_experience,.275f,.9f,1f/20,/*.075f*/1f/15f);
+		Graphics.write(""+numExperience,.33f,.975f);
 		//Draw items
 		for(int i = (int)itemscroll; i < (int)itemscroll+NUMITEMSPERPAGE_MAX; i++){
 			if(i >= items.length) break;
@@ -107,7 +115,7 @@ public class ShopScreen extends BaseState {
 			if(items[i] == selectedItem){
 				float sizex = ITEMUNIT_WIDTH*SELECTEDITEMUNITBACKGROUNDRATIO_X;
 				float sizey = ITEMUNIT_HEIGHT*SELECTEDITEMUNITBACKGROUNDRATIO_Y;
-				Graphics.draw(Graphics.TYPES.UI,spr_itemselectback,ITEMUNIT_OFFSETX+ITEMUNIT_WIDTH/2-sizex/2,posy+ITEMUNIT_HEIGHT/2-sizey/2,sizex,sizey);
+				Graphics.draw(Graphics.TYPES.EXTRAS,spr_itemselectback,ITEMUNIT_OFFSETX+ITEMUNIT_WIDTH/2-sizex/2,posy+ITEMUNIT_HEIGHT/2-sizey/2,sizex,sizey);
 			}
 			Graphics.draw(Graphics.TYPES.BUTTON,items[i].background,ITEMUNIT_OFFSETX,posy,ITEMUNIT_WIDTH,ITEMUNIT_HEIGHT);
 			Graphics.draw(Graphics.TYPES.EXTRAS,items[i].icon,ITEMUNIT_OFFSETX+ITEMICON_OFFSETX,posy+ITEMICON_OFFSETY,ITEMICON_WIDTH,ITEMICON_HEIGHT);
