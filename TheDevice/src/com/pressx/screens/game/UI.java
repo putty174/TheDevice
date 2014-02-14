@@ -2,22 +2,15 @@ package com.pressx.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.pressx.items.*;
 import com.pressx.managers.Graphics;
 import com.pressx.managers.Textures;
-import com.pressx.objects.items.Mine;
-import com.pressx.objects.items.Vortex;
 import com.pressx.thedevice.GameStats;
 
 public class UI {
 	private Sprite UIBase;
 	
 	private Sprite pause;
-	
-	private Sprite mine;
-	private Sprite mineCount;
-	
-	private Sprite vortex;
-	private Sprite vortexCount;
 	
 	private Sprite nukeCount1;
 	private Sprite nukeCount2;
@@ -37,10 +30,9 @@ public class UI {
 		nukeCount1 = new Sprite(Textures.getArtAsset("ui_bombcount"));
 		nukeCount2 = new Sprite(Textures.getArtAsset("ui_bombcount"));
 		nukeCount3 = new Sprite(Textures.getArtAsset("ui_bombcount"));
-		mine = new Sprite(Textures.getArtAsset("ui_mine"));
-		mineCount = new Sprite(Textures.getArtAsset("ui_minecount"));
-		vortex = new Sprite(Textures.getArtAsset("ui_vortex"));
-		vortexCount = new Sprite(Textures.getArtAsset("ui_minecount"));
+		
+		GameStats.item0.setRoom(room);		
+		GameStats.item1.setRoom(room);
 	}
 	
 	public void create()
@@ -66,7 +58,7 @@ public class UI {
 	}
 	
 	private void updateButtons()
-	{
+	{	
 		//Update Nuke Button
 		if(GameStats.nukeReady())
 			nuke.setRegion(0,0,134,105);
@@ -92,20 +84,6 @@ public class UI {
 			pause.setRegion(0,0,57,57);
 		else
 			pause.setRegion(58,0,57,57);
-		
-		//Update Mine
-		if(GameStats.mineReady())
-			mine.setRegion(0,0,124,95);
-		else
-			mine.setRegion(124,0,124,95);
-		mineCount.setRegion(39*(3-GameStats.getMineCount()),0,39,38);
-		
-		//Update Vortex
-		if(GameStats.vortexReady())
-			vortex.setRegion(0,0,124,95);
-		else
-			vortex.setRegion(124,0,124,95);
-		vortexCount.setRegion(39*(3-GameStats.getVortCount()),0,39,38);
 	}
 	
 	private void checkInput()
@@ -118,29 +96,10 @@ public class UI {
 				GameStats.pauseToggle();
 			if(!GameStats.pauseState())
 			{
-				if(GameStats.placeItem() == 0)
-				{
-					if(mine.getBoundingRectangle().contains(touchX, touchY)&& GameStats.mineReady())
-						GameStats.useMine();
-					else if(vortex.getBoundingRectangle().contains(touchX, touchY) && GameStats.vortexReady())
-						GameStats.useVort();
-				}
-				else
-				{
-					if(touchX < Gdx.graphics.getWidth() * 0.8f)
-					{
-						if(GameStats.placeItem() == 1)
-						{
-							GameStats.placeMine();
-							room.add_object(new Mine(touchX / Gdx.graphics.getWidth() * 100, touchY / Gdx.graphics.getHeight() * 66));
-						}
-						else if(GameStats.placeItem() == 2)
-						{
-							GameStats.placeVort();
-							room.add_object(new Vortex(touchX / Gdx.graphics.getWidth() * 100, touchY / Gdx.graphics.getHeight() * 66));
-						}
-					}
-				}
+				//update the two items
+				GameStats.item0.update();
+				GameStats.item1.update();
+
 				if(nuke.getBoundingRectangle().contains(touchX, touchY) && GameStats.nukeReady())
 					GameStats.useNuke();
 			}
@@ -155,11 +114,9 @@ public class UI {
 		//Draw Pause
 		Graphics.draw(Graphics.TYPES.BUTTON, pause, 0.90f, 0.90f, 0.05f, 0.09f);
 		
-		//Draw Mine
-		Graphics.draw(Graphics.TYPES.BUTTON, mine, 0.83f, 0.57f, 0.17f, 0.165f);
-		
-		//Draw Vortex
-		Graphics.draw(Graphics.TYPES.BUTTON, vortex, 0.83f, 0.35f, 0.17f, 0.165f);
+		//Draw Items
+		GameStats.item0.drawButton(0);
+		GameStats.item1.drawButton(1);
 		
 		//Draw Nuke
 		Graphics.draw(Graphics.TYPES.BUTTON, nuke, 0.84f, 0.06f,0.15f,0.18f);
@@ -174,17 +131,5 @@ public class UI {
 		
 		//Draw Score
 		Graphics.write(score, ((Graphics.screenWidth * 0.99f) - Graphics.font.getBounds(score).width) / Graphics.screenWidth, 0.825f);
-		
-		//Draw Mine Button with Count
-		if(GameStats.mineReady())
-			Graphics.draw(Graphics.TYPES.EXTRAS, mineCount, 0.935f, 0.62f, 0.04f, 0.06f);
-		else
-			Graphics.draw(Graphics.TYPES.EXTRAS, mineCount, 0.935f, 0.60f, 0.04f, 0.06f);
-		
-		//Draw Vortex Button with Count
-		if(GameStats.vortexReady())
-			Graphics.draw(Graphics.TYPES.EXTRAS, vortexCount, 0.935f, 0.40f, 0.04f, 0.06f);
-		else
-			Graphics.draw(Graphics.TYPES.EXTRAS, vortexCount, 0.935f, 0.38f, 0.04f, 0.06f);
 	}
 }

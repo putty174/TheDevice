@@ -9,10 +9,17 @@ public class ShopItem{
 	public String name,description;
 	public Sprite icon,background,button;
 	private ShopItemState state = ShopItemState.NULL;
+	
+	String iconname;
+	
 	public ShopItem(String name,String icon/*,String description*/){
 		this.name = name;
-		this.icon = ShopScreen.getspr(icon);
-		this.description = name.toUpperCase()+" DESCRIPTION HERE";//description;
+		iconname = icon;
+	}
+
+	public void initializeForShop(){
+		this.icon = ShopScreen.getspr(iconname);
+		this.description = "DESCRIPTION HERE";//description;
 		background = ShopScreen.getspr("itembackground");
 		setState(ShopItemState.LOCKED);
 	}

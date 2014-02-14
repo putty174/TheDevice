@@ -1,5 +1,6 @@
 package com.pressx.thedevice;
 import com.badlogic.gdx.Gdx;
+import com.pressx.items.*;
 import com.pressx.managers.Sounds;
 import com.pressx.objects.player.Player;
 
@@ -9,8 +10,6 @@ public final class GameStats {
 	private static int xpCount = 0;
 	private static int xpMax=20;
 	private static int level = 1;
-	private static int mineCount = 3;
-	private static int vortCount = 3;
 	private static int nukeCount = 3;
 	private static float nukeCD = 0;
 	private static int maxItemCount;
@@ -21,6 +20,8 @@ public final class GameStats {
 	private static int placeItem = 0;
 	private static boolean nukeState = false;
 	
+	public static Item item0,item1;
+	
 	public GameStats(Player p){
 		player = p;
 		
@@ -29,8 +30,6 @@ public final class GameStats {
 		xpCount = 0;
 		xpMax = 20;
 		level = 1;
-		mineCount = 3;
-		vortCount = 3;
 		nukeCount = 3;
 		nukeCD = 0;
 		maxItemCount = 3;
@@ -38,6 +37,18 @@ public final class GameStats {
 		pause = false;
 		placeItem = 0;
 		nukeState = false;
+		
+		item0 = new Item_Vortex();
+		item1 = new Item_Mine();
+	}
+	
+	public static boolean addAmmo(String itemname){//adds ammo for the specified item; the itemname is the "name" parameter for Item's constructor
+		if(item0.name.equals(itemname))
+			if(item0.changeAmmo(1))//So that if we have two of the same item, it will be able to add ammo to both
+				return true;
+		if(item1.name.equals(itemname))
+			return item1.changeAmmo(1);
+		return false;
 	}
 	
 	public static void addMonsterKill()
@@ -119,67 +130,6 @@ public final class GameStats {
 		nukeCD -= dt;
 	}
 	
-	public static int getMineCount(){
-		return mineCount;
-	}
-	
-	public static boolean useMine(){
-		if(mineCount > 0 && placeItem == 0){
-			mineCount--;
-			placeItem = 1;
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean placeMine()
-	{
-		placeItem = 0;
-		return true;
-	}
-	
-	public static boolean mineReady()
-	{
-		return (mineCount > 0 && placeItem != 1);
-	}
-	
-	public static boolean addMine(){
-		if(mineCount + 1 > maxItemCount){
-			return false;
-		}
-		mineCount ++;
-		return true;
-	}
-	
-	public static int getVortCount(){
-		return vortCount;
-	}
-	
-	public static boolean useVort(){
-		if(vortCount > 0 && placeItem == 0){
-			vortCount--;
-			placeItem = 2;
-			return true;
-		}
-		return false;
-	}
-	
-	public static void placeVort(){
-		placeItem = 0;
-	}
-	
-	public static boolean vortexReady(){
-		return (vortCount > 0 && placeItem != 2);
-	}
-	
-	public static boolean addVortex() {
-		if(vortCount + 1 > maxItemCount){
-			return false;
-		}
-		vortCount ++;
-		return true;
-	}
-	
 	public static boolean useNuke(){
 		if (nukeCount > 0)
 		{
@@ -217,5 +167,9 @@ public final class GameStats {
 	
 	public static int placeItem(){
 		return placeItem;
+	}
+	
+	public static void pausePlayerTouchToMove(){
+		player.pause_touch();
 	}
 }

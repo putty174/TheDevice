@@ -11,36 +11,47 @@ import com.pressx.thedevice.TheDevice;
 
 
 public class ShopScreen extends BaseState {
-	static final int NUMITEMS = 6;
-	static final int NUMITEMSPERPAGE = 5;
-	static final int NUMITEMSPERPAGE_MAX = NUMITEMSPERPAGE+1;
+	final int NUMITEMS = 6;
+	final float NUMITEMSPERPAGE = 5.4f;//exactly 5 could look confusing
+	final float NUMITEMSPERPAGE_MAX = NUMITEMSPERPAGE+1;
 	
-	static final float ITEMSCROLL_MAX = NUMITEMS-NUMITEMSPERPAGE;
-	static final float ITEMSCROLL_SLIPPERINESS = .1f;//velocity multiplier per second
-	static final float ITEMSCROLL_BOUNCINESSONMAX = .002f;//how much it "stretches" when hitting the top or bottom
+	final float ITEMSCROLL_MAX = NUMITEMS-NUMITEMSPERPAGE;
+	final float ITEMSCROLL_SLIPPERINESS = .1f;//velocity multiplier per second
+	final float ITEMSCROLL_BOUNCINESSONMAX = .002f;//how much it "stretches" when hitting the top or bottom
 	
-	static final float ITEMUNIT_OFFSETX = .5f;
-	static final float ITEMUNIT_OFFSETMULTY = 1f/NUMITEMSPERPAGE;
-	static final float ITEMUNIT_WIDTH = .45f;
-	static final float ITEMUNIT_HEIGHT = ITEMUNIT_OFFSETMULTY-.02f;
-	static final float ITEMUNIT_OFFSETMULTY_HEIGHT_DIFF = ITEMUNIT_OFFSETMULTY-ITEMUNIT_HEIGHT;
-	static final float SELECTEDITEMUNITBACKGROUNDRATIO_X = 680f/634;
-	static final float SELECTEDITEMUNITBACKGROUNDRATIO_Y = 255f/209;
-	static final float ITEMICON_EXTRASPACE = .015f;
-	static final float ITEMICON_HEIGHT = ITEMUNIT_HEIGHT-ITEMICON_EXTRASPACE*2;
-	static final float ITEMICON_WIDTH = ITEMICON_HEIGHT*3/4;//not really used; calculated from screen size to have square icons
-	static final float ITEMICON_OFFSETX = ITEMICON_EXTRASPACE;
-	static final float ITEMICON_OFFSETY = ITEMICON_EXTRASPACE;
-	static final float ITEMTITLE_OFFSETX = ITEMUNIT_OFFSETX+ITEMICON_OFFSETX*2+ITEMICON_WIDTH;
-	static final float ITEMTITLE_OFFSETY = ITEMUNIT_HEIGHT/2+.05f;
-	static final float ITEMBUTTON_WIDTH = ITEMUNIT_WIDTH/2.3f/1.2f;
-	static final float ITEMBUTTON_HEIGHT = ITEMUNIT_HEIGHT/2.5f/1.2f;
-	static final float ITEMBUTTON_OFFSETX = ITEMUNIT_OFFSETX+.2f;
-	static final float ITEMBUTTON_OFFSETY = 0;//ITEMUNIT_HEIGHT/20;
+	final float ITEMUNIT_OFFSETX = .5f;
+	final float ITEMUNIT_OFFSETMULTY = 1f/NUMITEMSPERPAGE;
+	final float ITEMUNIT_WIDTH = .45f;
+	final float ITEMUNIT_HEIGHT = ITEMUNIT_OFFSETMULTY-.02f;
+	final float ITEMUNIT_OFFSETMULTY_HEIGHT_DIFF = ITEMUNIT_OFFSETMULTY-ITEMUNIT_HEIGHT;
+	final float SELECTEDITEMUNITBACKGROUNDRATIO_X = 680f/634;
+	final float SELECTEDITEMUNITBACKGROUNDRATIO_Y = 255f/209;
+	final float ITEMICON_EXTRASPACE = .015f;
+	final float ITEMICON_HEIGHT = ITEMUNIT_HEIGHT-ITEMICON_EXTRASPACE*2;
+	final float ITEMICON_WIDTH = ITEMICON_HEIGHT*3/4;//not really used; calculated from screen size to have square icons
+	final float ITEMICON_OFFSETX = ITEMICON_EXTRASPACE;
+	final float ITEMICON_OFFSETY = ITEMICON_EXTRASPACE;
+	final float ITEMTITLE_OFFSETX = ITEMUNIT_OFFSETX+ITEMICON_OFFSETX*2+ITEMICON_WIDTH;
+	final float ITEMTITLE_OFFSETY = ITEMUNIT_HEIGHT/2+.05f;
+	final float ITEMBUTTON_WIDTH = ITEMUNIT_WIDTH/2.3f/1.2f;
+	final float ITEMBUTTON_HEIGHT = ITEMUNIT_HEIGHT/2.5f/1.2f;
+	final float ITEMBUTTON_OFFSETX = ITEMUNIT_OFFSETX+.2f;
+	final float ITEMBUTTON_OFFSETY = 0;//ITEMUNIT_HEIGHT/20;
+	final float ITEMDESC_OFFSETX = .01f;
+	final float ITEMDESC_OFFSETY = 0f;
+	final float ITEMDESC_WIDTH = .46f;
+	final float ITEMDESC_HEIGHT = .9f;
+	final float ITEMDESCBUTTON_WIDTH = ITEMDESC_WIDTH/2.5f;
+	final float ITEMDESCBUTTON_HEIGHT = ITEMDESC_HEIGHT/9;
+	final float ITEMDESCBUTTON_OFFSETX = ITEMDESC_OFFSETX+ITEMDESC_WIDTH/2;
+	final float ITEMDESCBUTTON_OFFSETY = ITEMDESC_OFFSETY+ITEMDESC_HEIGHT-ITEMDESC_HEIGHT/3;
 	
 	int numExperience = 1337;//temporary
 	Sprite spr_background,spr_backbutton,spr_itemselectback,spr_experience;
 	Sprite spr_arrow_up,spr_arrow_down;
+	Sprite spr_desc_background,spr_desc_icon;
+	Sprite[] spr_desc_bigbuttons;
+	Sprite spr_desc_bigbutton_current;
 	ShopItem[] items;
 
 	float itemscrollvelocity,itemscroll;//the velocity it will scroll at (ITEMUNIT_OFFSETMULTY/second) if the mouse is not held down and how far it's scrolled down (ITEMUNIT_OFFSETMULTY) 
@@ -60,7 +71,15 @@ public class ShopScreen extends BaseState {
 		spr_arrow_up = getspr("uparrow");
 		spr_arrow_down = getspr("uparrow");
 		
-		items = new ShopItem[6];//temporary
+		spr_desc_background = getspr("itemdescbackground");
+		
+		spr_desc_bigbuttons = new Sprite[3];
+		spr_desc_bigbuttons[0] = getspr("itembutton_buy_big");
+		spr_desc_bigbuttons[1] = getspr("itembutton_equip_big");
+		spr_desc_bigbuttons[2] = getspr("itembutton_unequip_big");
+		
+		//temporary items
+		items = new ShopItem[6];
 		items[0] = new ShopItem("Mine","item0");
 		items[0].setState(ShopItemState.EQUIPPED);
 		items[1] = new ShopItem("Poison","item1");
@@ -68,6 +87,9 @@ public class ShopScreen extends BaseState {
 		items[3] = new ShopItem("Healing Bot","item3");
 		items[4] = new ShopItem("Insta-cactus","item4");
 		items[5] = new ShopItem("Smoke Bomb","item5");
+		for(ShopItem item : items){
+			item.initializeForShop();
+		}
 	}
 	
 	public void create(){}
@@ -109,12 +131,8 @@ public class ShopScreen extends BaseState {
 			Graphics.draw(Graphics.TYPES.EXTRAS,items[i].button,ITEMBUTTON_OFFSETX,posy+ITEMBUTTON_OFFSETY,ITEMBUTTON_WIDTH,ITEMBUTTON_HEIGHT);
 			Graphics.write(items[i].name,ITEMTITLE_OFFSETX,posy+ITEMTITLE_OFFSETY);
 		}
-
-		if(selectedItem != null){
-			Graphics.write(selectedItem.name, 0f, 0.5f);
-			Graphics.write(selectedItem.description, 0f, 0.4f);
-		}
 		
+		//animated arrows on the right
 		int anim_arrow = (animcycle)%14;
 		if(itemscroll > 0){
 			Graphics.draw(Graphics.TYPES.BUTTON,spr_arrow_up,.97f,.8f+.002f*anim_arrow,.02f,.15f);
@@ -122,6 +140,15 @@ public class ShopScreen extends BaseState {
 		anim_arrow = (animcycle+7)%14;
 		if(itemscroll < ITEMSCROLL_MAX){
 			Graphics.draw(Graphics.TYPES.BUTTON,spr_arrow_down,.97f,.2f-.002f*anim_arrow,.02f,-.15f);
+		}
+		
+		//item description
+		if(selectedItem != null){
+			Graphics.draw(Graphics.TYPES.UI,spr_desc_background,ITEMDESC_OFFSETX,ITEMDESC_OFFSETY,ITEMDESC_WIDTH,ITEMDESC_HEIGHT);
+			Graphics.write(selectedItem.name, .1f, 0.85f);
+			Graphics.write(selectedItem.description, 0f, 0.4f);
+			spr_desc_bigbutton_current = spr_desc_bigbuttons[selectedItem.getState().ordinal()-1];
+			Graphics.draw(Graphics.TYPES.BUTTON,spr_desc_bigbutton_current,ITEMDESCBUTTON_OFFSETX,ITEMDESCBUTTON_OFFSETY,ITEMDESCBUTTON_WIDTH,ITEMDESCBUTTON_HEIGHT);
 		}
 	}
 	
@@ -155,8 +182,8 @@ public class ShopScreen extends BaseState {
 				itemscrollvelocity = 0;
 				float lerp = (float)Math.pow(ITEMSCROLL_BOUNCINESSONMAX,dt);
 				itemscroll = itemscroll*(lerp)+(itemscroll < 0 ? 0 : ITEMSCROLL_MAX)*(1-lerp);
-			}//else
-				itemscrollvelocity *= Math.pow(ITEMSCROLL_SLIPPERINESS,dt);
+			}
+			itemscrollvelocity *= Math.pow(ITEMSCROLL_SLIPPERINESS,dt);
 			
 			if(mousehelddownfor >= 0 && mousehelddownfor < .5f){
 				for(int i = 0; i < items.length; i++){

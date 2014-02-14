@@ -44,7 +44,7 @@ public class MainMenuScreen extends BaseState {
 		Graphics.draw(Graphics.TYPES.BUTTON, help, 0.79f, 0.06f, 0.15f, 0.25f);
 		Graphics.draw(Graphics.TYPES.EXTRAS, post, 0.1f, 0.1f, 0.1f, 0.1f);
 		Graphics.draw(Graphics.TYPES.BUTTON, shop, .23f, .67f, .1f, .135f);
-		Graphics.write("Shop is open!", .1f, .9f);
+		Graphics.write("Placeholder Shop Button", .1f, .9f);
 		
 		if(blah.exists())
 			Graphics.write("Yes", 0.3f, 0.3f);
