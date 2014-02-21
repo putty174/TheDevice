@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.pressx.managers.Graphics;
 import com.pressx.managers.Textures;
+import com.pressx.objects.AnimatedObject;
 import com.pressx.screens.game.Room;
 import com.pressx.thedevice.GameStats;
 
@@ -32,6 +33,9 @@ public abstract class Item extends ShopItem{
 	public abstract String getButtonSpriteName();//should return the button texture name
 	public abstract String getCountSpriteName();//should return the count texture name
 	public abstract int getMaxAmmo();
+	public abstract int getMinLevelForDrop();
+	public abstract float getDropChance();
+	public abstract AnimatedObject dropAmmo(float posx,float posy);
 	
 	/////Ammo, UI updating, and interface for UI class or whatever
 	public void updateButton(){
@@ -57,6 +61,10 @@ public abstract class Item extends ShopItem{
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean checkShouldDropItem(){
+		return GameStats.getLevel() > getMinLevelForDrop() && Math.random() < getDropChance();
 	}
 	
 	//activate/deactivate

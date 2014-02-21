@@ -13,6 +13,9 @@ import com.pressx.editors.shared.Vector2;
 import com.pressx.editors.shared._G;
 
 public class SpawnList extends GuiObject{
+	public static final Vector2 COUNTTEXTPOS = new Vector2(500,40);
+	public static final Vector2 DIFFTEXTPOS = new Vector2(500,80);
+	
     public static final Vector2 OFFSET = new Vector2(600,139);
     public static final Vector2 SIZE = new Vector2(120,400);
     public static final Vector2 BARSIZE = new Vector2(120,20);//size of a single bar thing
@@ -306,26 +309,32 @@ public class SpawnList extends GuiObject{
     }
     
     public void draw(){
-	if(SpawnMap.currentMap == null || SpawnMap.currentMap.spawns == null)
-	    return;
-	GraphicsDraw.setColor(new Color(.7f,.7f,.7f));
-	GraphicsDraw.fillRectangle(getCenter(),SIZE);
-	GraphicsDraw.defaultFont();
-	for(int i = barPosition; i < barPosition+MAXBARS && i < SpawnMap.currentMap.spawns.size(); i++){
-	    drawSingleUnit(i,i-barPosition,SpawnMap.currentMap.spawns.get(i));
-	}
-	
-	//draw border
-	GraphicsDraw.setColor(Color.BLACK);
-	GraphicsDraw.rectangle(getCenter(),SIZE);
-	//draw title
-	GraphicsDraw.boldFont();
-	GraphicsDraw.centerText("LIST",new Vector2(OFFSET.x+SIZE.x/2,OFFSET.y-10));
-	//draw number of selected locations
-	if(!selectedSpawns.isEmpty()){
-	    int num = selectedSpawns.size();
-	    GraphicsDraw.text((num != 1 && num == SpawnMap.currentMap.spawns.size() ? "All " : "")+num+" location"+(num == 1 ? "" : "s")+" selected.",new Vector2(OFFSET.x+5,OFFSET.y+SIZE.y+20));
-	}
+		if(SpawnMap.currentMap == null || SpawnMap.currentMap.spawns == null)
+		    return;
+		GraphicsDraw.setColor(new Color(.7f,.7f,.7f));
+		GraphicsDraw.fillRectangle(getCenter(),SIZE);
+		GraphicsDraw.defaultFont();
+		for(int i = barPosition; i < barPosition+MAXBARS && i < SpawnMap.currentMap.spawns.size(); i++){
+		    drawSingleUnit(i,i-barPosition,SpawnMap.currentMap.spawns.get(i));
+		}
+		
+		//draw border
+		GraphicsDraw.setColor(Color.BLACK);
+		GraphicsDraw.rectangle(getCenter(),SIZE);
+		//draw title
+		GraphicsDraw.boldFont();
+		GraphicsDraw.centerText("LIST",new Vector2(OFFSET.x+SIZE.x/2,OFFSET.y-10));
+		//draw number of selected locations
+		if(!selectedSpawns.isEmpty()){
+		    int num = selectedSpawns.size();
+		    GraphicsDraw.text((num != 1 && num == SpawnMap.currentMap.spawns.size() ? "All " : "")+num+" location"+(num == 1 ? "" : "s")+" selected.",new Vector2(OFFSET.x+5,OFFSET.y+SIZE.y+20));
+		}
+		GraphicsDraw.biggishFont();
+		GraphicsDraw.text("Total Enemies: "+SpawnMap.currentMap.spawns.size(),COUNTTEXTPOS);
+		int diff = 0;
+		for(EventLocation location : SpawnMap.currentMap.spawns)
+			diff += SpawnTypes.getApproximateDifficulty(location.type);
+		GraphicsDraw.text("Approx. Difficulty: "+diff,DIFFTEXTPOS);
     }
 }
 

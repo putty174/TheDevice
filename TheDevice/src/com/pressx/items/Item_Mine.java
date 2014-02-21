@@ -2,17 +2,17 @@ package com.pressx.items;
 
 import com.badlogic.gdx.Gdx;
 import com.pressx.objects.AnimatedObject;
-import com.pressx.objects.items.Vortex;
-import com.pressx.objects.items.VortexDrop;
+import com.pressx.objects.items.Mine;
+import com.pressx.objects.items.MineDrop;
 
-public class Item_Vortex extends Item{
-	public Item_Vortex(){
-		super("Vortex","ui_vortex");
+public class Item_Mine extends Item{
+	public Item_Mine(){
+		super("Mine","ui_mine");
 	}
 
 	@Override
 	public String getButtonSpriteName(){
-		return "ui_vortex";
+		return "ui_mine";
 	}
 	
 	@Override
@@ -33,24 +33,23 @@ public class Item_Vortex extends Item{
 	public int getMaxAmmo(){
 		return 3;
 	}
+	@Override
+	public int getMinLevelForDrop(){
+		return 2;
+	}
+	
+	@Override
+	public float getDropChance(){
+		return .3f;
+	}
+	
+	@Override
+	public AnimatedObject dropAmmo(float posx,float posy){
+		return new MineDrop(posx,posy);
+	}
 	
 	@Override
 	public void fieldPressed(float touchX,float touchY){
-		room.add_object(new Vortex((float)touchX / Gdx.graphics.getWidth() * 100, (float)touchY / Gdx.graphics.getHeight() * 66));	
-	}
-
-	@Override
-	public int getMinLevelForDrop(){
-		return 5;
-	}
-
-	@Override
-	public float getDropChance(){
-		return .2f;
-	}
-
-	@Override
-	public AnimatedObject dropAmmo(float posx, float posy) {
-		return new VortexDrop(posx,posy);
+		room.add_object(new Mine((float)touchX / Gdx.graphics.getWidth() * 100, (float)touchY / Gdx.graphics.getHeight() * 66));	
 	}
 }

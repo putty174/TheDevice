@@ -213,14 +213,10 @@ public class Room implements Controllable {
 				
 				if(obj.getID() == 3)
 				{
-					if(GameStats.getLevel() > 2 && Math.random() < mineChance)
-					{
-						drops.add(new MineDrop(obj.get_positionX(), obj.get_positionY()));
-					}
-					if(GameStats.getLevel() > 5 && Math.random() < vortexChance)
-					{
-						drops.add(new VortexDrop(obj.get_positionX(), obj.get_positionY()));
-					}
+					if(GameStats.item0.checkShouldDropItem())
+						drops.add(GameStats.item0.dropAmmo(obj.get_positionX(),obj.get_positionY()));
+					if(GameStats.item1.checkShouldDropItem())
+						drops.add(GameStats.item1.dropAmmo(obj.get_positionX(),obj.get_positionY()));
 					if(obj.getHp() == 0)
 					{
 						GameStats.addMonsterKill();

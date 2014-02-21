@@ -5,6 +5,7 @@ import java.util.Random;
 import com.pressx.editors.leveleditor.ImportedFormation;
 
 public class SingleFormation{
+
 	public static float spawnAngleToRadians_animation(byte spawnangle){
 		if(spawnangle == SPAWNANGLE_RANDOM)
 			return (float)_G.cycle/5;

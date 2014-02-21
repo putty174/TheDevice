@@ -2,7 +2,6 @@ package com.pressx.editors.leveleditor;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.pressx.editors.shared.EventLocation;
 import com.pressx.editors.shared.FormationLoader;
@@ -18,8 +17,12 @@ public class MiniSpawnmap{
 	static final Vector2 TEXTPOSITION = new Vector2(OFFSET.x,OFFSET.y-5);
 	
 	static ArrayList<EventLocation> locations;
+	static int difficulty;
 	public static void load(String name){
 		locations = FormationLoader.loadFormationFromFile(FileManager.FOLDER_FORMATION+name+'.'+FileManager.EXTENSION_FORMATION);
+		difficulty = 0;
+		for(EventLocation location : locations)
+			difficulty += SpawnTypes.getApproximateDifficulty(location.type);
 	}
 	
 	public static void draw(){
@@ -28,7 +31,7 @@ public class MiniSpawnmap{
 		GraphicsDraw.fillRectangle(center,SIZE);
 		GraphicsDraw.setColor(Color.BLACK);
 		GraphicsDraw.smallBoldFont();
-		GraphicsDraw.text("Enemies: "+locations.size(),TEXTPOSITION);
+		GraphicsDraw.text("Enemies: "+locations.size()+"      Approx. Difficulty: "+difficulty,TEXTPOSITION);
 		GraphicsDraw.fillCircle(center,SIZE.x/2);
 		GraphicsDraw.setColor(Color.GREEN);
 		for(int i = 0; i < 4; i++){

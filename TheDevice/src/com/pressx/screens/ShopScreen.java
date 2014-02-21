@@ -99,7 +99,7 @@ public class ShopScreen extends BaseState {
 		int screensizex = Gdx.graphics.getWidth();
 		int screensizey = Gdx.graphics.getHeight();
 		float screenytox = (float)screensizey/screensizex;
-		float screenxtoy = (float)screensizex/screensizey;
+		float screenxtoy = 1/screenytox;
 		animcycle++;
 		
 		//Draw background and "Back" button

@@ -51,6 +51,24 @@ public class SpawnTypes{
 		return "ERROR";
     }
     
+    public static int getApproximateDifficulty(SpawnType t){//right now, just based on the amount of health each one has
+    	switch(t){
+	    	case Fuzzie1:
+	    	case Plant1:
+	    	case Phoenix1:
+	    		return 1;
+	    	case Fuzzie2:
+	    	case Plant2:
+	    	case Phoenix2:
+	    		return 2;
+	    	case Fuzzie3:
+	    	case Plant3:
+	    	case Phoenix3:
+	    		return 6;
+    	}
+    	return 0;
+    }
+    
     static final int FUZZYGRAY = 174;
     public static Color getColor1(SpawnType t){
 	switch(t){
