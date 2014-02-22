@@ -3,6 +3,7 @@ package com.pressx.objects.items;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
@@ -12,9 +13,9 @@ public class Mine extends AnimatedObject {
 	private boolean isExploding = false;
 	private boolean isExploding2 = false;
 	
-	public Mine(float posX, float posY) {
-		super("activemine",97, posX, posY, 1, 90, 8, 8, 0, 0,
-				false, 5, true, 18, 18, Textures.getArtAsset("mine"),
+	public Mine(Draw d, Sounds s, Textures t, float posX, float posY) {
+		super(d,s,t, "activemine",97, posX, posY, 1, 90, 8, 8, 0, 0,
+				false, 5, true, 18, 18, t.getArtAsset("mine"),
 				200, 200);
 		
 		this.screenBound = true;
@@ -27,7 +28,7 @@ public class Mine extends AnimatedObject {
 	@Override
 	public void behavior_collision(GameObject obj){
 		if(obj.getID() == 3 && !this.isExploding){
-			Sounds.play("hero.mine");
+			sounds.play("hero.mine");
 			isExploding = true;
 			isExploding2 = true;
 			isTouchable = false;

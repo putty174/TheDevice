@@ -8,6 +8,9 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.math.Vector2;
 import com.pressx.editors.shared.LevelWave;
 import com.pressx.editors.shared.SingleFormation;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
+import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.enemy.Enemy;
 import com.pressx.objects.enemy.MonsterManager;
@@ -39,13 +42,13 @@ public class CustomSpawner {
 	private AssetManager levelManager = new AssetManager();
 	private ArrayList<LevelWave> waves;
 	
-	public CustomSpawner(String levelname,GameObject gameObject/*,GraphicsManager graphicsManager*/,Room room){
+	public CustomSpawner(Draw d, Sounds s, Textures t, String levelname,GameObject gameObject/*,GraphicsManager graphicsManager*/,Room room){
 		this.levelName = levelname;
 		this.gameObject = gameObject;
 		//this.graphicsManager = graphicsManager;
 		this.room = room;
 	
-		this.monsterManager = new MonsterManager(gameObject, /*graphicsManager,*/ room);
+		this.monsterManager = new MonsterManager(d,s,t,gameObject, /*graphicsManager,*/ room);
 		
 		rand = new Random();
 		vmath = new VectorMath();

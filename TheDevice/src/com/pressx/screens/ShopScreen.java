@@ -5,12 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.items.ShopItem;
 import com.pressx.items.ShopItem.ShopItemState;
-import com.pressx.managers.Graphics;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.TheDevice;
 
 
 public class ShopScreen extends BaseState {
+	private Draw draw;
+	private Sounds sounds;
+	private Textures textures;
 	static final int NUMITEMS = 6;
 	static final int NUMITEMSPERPAGE = 5;
 	static final int NUMITEMSPERPAGE_MAX = NUMITEMSPERPAGE+1;
@@ -47,11 +51,14 @@ public class ShopScreen extends BaseState {
 	int animcycle;//incremented by 1 every update (for animations)
 	
 	ShopItem selectedItem = null;
-	
-	public static Sprite getspr(String name){return new Sprite(Textures.getArtAsset(name));}//also used by ShopItem
 
-	public ShopScreen(){
-		super();
+	public ShopScreen(TheDevice g){
+		super(g);
+		draw = new Draw();
+		sounds = new Sounds();
+		textures = new Textures();
+		sounds.loadSoundAssets(Sounds.PACKS.SHOP);
+		textures.loadArtAssets("Shop");
 		spr_background = getspr("shop_background");
 		spr_backbutton = getspr("shop_backbutton");
 		spr_itemselectback = getspr("itembackground_selected");
@@ -61,14 +68,19 @@ public class ShopScreen extends BaseState {
 		spr_arrow_down = getspr("uparrow");
 		
 		items = new ShopItem[6];//temporary
-		items[0] = new ShopItem("Mine","item0");
+		items[0] = new ShopItem(textures,"Mine","item0");
 		items[0].setState(ShopItemState.EQUIPPED);
-		items[1] = new ShopItem("Poison","item1");
-		items[2] = new ShopItem("Thunderstrike","item2");
-		items[3] = new ShopItem("Healing Bot","item3");
-		items[4] = new ShopItem("Insta-cactus","item4");
-		items[5] = new ShopItem("Smoke Bomb","item5");
+		items[1] = new ShopItem(textures,"Poison","item1");
+		items[2] = new ShopItem(textures,"Thunderstrike","item2");
+		items[3] = new ShopItem(textures,"Healing Bot","item3");
+		items[4] = new ShopItem(textures,"Insta-cactus","item4");
+		items[5] = new ShopItem(textures,"Smoke Bomb","item5");
 	}
+	
+	public Sprite getspr(String name)
+	{
+		return new Sprite(textures.getArtAsset(name));
+	}//also used by ShopItem
 	
 	public void create(){}
 	public void dispose(){}
@@ -77,18 +89,19 @@ public class ShopScreen extends BaseState {
 		int screensizex = Gdx.graphics.getWidth();
 		int screensizey = Gdx.graphics.getHeight();
 		float screenytox = (float)screensizey/screensizex;
+		@SuppressWarnings("unused")
 		float screenxtoy = (float)screensizex/screensizey;
 		animcycle++;
 		
 		//Draw background and "Back" button
-		Graphics.draw(Graphics.TYPES.BACKGROUND,spr_background,0,0,1f,1f);
-		Graphics.draw(Graphics.TYPES.BUTTON,spr_backbutton,.05f,.9f,.15f,.075f);
+		draw.draw(Draw.TYPES.BACKGROUND,spr_background,0,0,1f,1f);
+		draw.draw(Draw.TYPES.BUTTON,spr_backbutton,.05f,.9f,.15f,.075f);
 		
 		//Draw experience count
 		int anim_exp = (animcycle/5)%4;
 		spr_experience.setRegion(30*(anim_exp == 0 ? 0 : anim_exp == 2 ? 2 : 1), 0, 30, 30);
-		Graphics.draw(Graphics.TYPES.BUTTON,spr_experience,.275f,.9f,1f/20,/*.075f*/1f/15f);
-		Graphics.write(""+numExperience,.33f,.975f);
+		draw.draw(Draw.TYPES.BUTTON,spr_experience,.275f,.9f,1f/20,/*.075f*/1f/15f);
+		draw.write(""+numExperience,.33f,.975f);
 		
 		//Draw items
 		for(int i = (int)itemscroll; i < (int)itemscroll+NUMITEMSPERPAGE_MAX; i++){
@@ -101,28 +114,30 @@ public class ShopScreen extends BaseState {
 				float sizey = ITEMUNIT_HEIGHT*SELECTEDITEMUNITBACKGROUNDRATIO_Y;
 				int anim_selection = (animcycle/5)%4;
 				spr_itemselectback.setRegion(0,255*anim_selection,680,255);
-				Graphics.draw(Graphics.TYPES.EXTRAS,spr_itemselectback,ITEMUNIT_OFFSETX+ITEMUNIT_WIDTH/2-sizex/2,posy+ITEMUNIT_HEIGHT/2-sizey/2,sizex,sizey);
+				draw.draw(Draw.TYPES.EXTRAS,spr_itemselectback,ITEMUNIT_OFFSETX+ITEMUNIT_WIDTH/2-sizex/2,posy+ITEMUNIT_HEIGHT/2-sizey/2,sizex,sizey);
 			}
 			
-			Graphics.draw(Graphics.TYPES.BUTTON,items[i].background,ITEMUNIT_OFFSETX,posy,ITEMUNIT_WIDTH,ITEMUNIT_HEIGHT);
-			Graphics.draw(Graphics.TYPES.EXTRAS,items[i].icon,ITEMUNIT_OFFSETX+ITEMICON_OFFSETX,posy+ITEMICON_OFFSETY,ITEMICON_HEIGHT*screenytox,ITEMICON_HEIGHT);
-			Graphics.draw(Graphics.TYPES.EXTRAS,items[i].button,ITEMBUTTON_OFFSETX,posy+ITEMBUTTON_OFFSETY,ITEMBUTTON_WIDTH,ITEMBUTTON_HEIGHT);
-			Graphics.write(items[i].name,ITEMTITLE_OFFSETX,posy+ITEMTITLE_OFFSETY);
+			draw.draw(Draw.TYPES.BUTTON,items[i].background,ITEMUNIT_OFFSETX,posy,ITEMUNIT_WIDTH,ITEMUNIT_HEIGHT);
+			draw.draw(Draw.TYPES.EXTRAS,items[i].icon,ITEMUNIT_OFFSETX+ITEMICON_OFFSETX,posy+ITEMICON_OFFSETY,ITEMICON_HEIGHT*screenytox,ITEMICON_HEIGHT);
+			draw.draw(Draw.TYPES.EXTRAS,items[i].button,ITEMBUTTON_OFFSETX,posy+ITEMBUTTON_OFFSETY,ITEMBUTTON_WIDTH,ITEMBUTTON_HEIGHT);
+			draw.write(items[i].name,ITEMTITLE_OFFSETX,posy+ITEMTITLE_OFFSETY);
 		}
 
 		if(selectedItem != null){
-			Graphics.write(selectedItem.name, 0f, 0.5f);
-			Graphics.write(selectedItem.description, 0f, 0.4f);
+			draw.write(selectedItem.name, 0f, 0.5f);
+			draw.write(selectedItem.description, 0f, 0.4f);
 		}
 		
 		int anim_arrow = (animcycle)%14;
 		if(itemscroll > 0){
-			Graphics.draw(Graphics.TYPES.BUTTON,spr_arrow_up,.97f,.8f+.002f*anim_arrow,.02f,.15f);
+			draw.draw(Draw.TYPES.BUTTON,spr_arrow_up,.97f,.8f+.002f*anim_arrow,.02f,.15f);
 		}
 		anim_arrow = (animcycle+7)%14;
 		if(itemscroll < ITEMSCROLL_MAX){
-			Graphics.draw(Graphics.TYPES.BUTTON,spr_arrow_down,.97f,.2f-.002f*anim_arrow,.02f,-.15f);
+			draw.draw(Draw.TYPES.BUTTON,spr_arrow_down,.97f,.2f-.002f*anim_arrow,.02f,-.15f);
 		}
+		
+		draw.draw(batch);
 	}
 	
 	float mousehelddownfor = -1;
@@ -166,7 +181,7 @@ public class ShopScreen extends BaseState {
 					}
 				}
 				if(spr_backbutton.getBoundingRectangle().contains(x,y)){
-					TheDevice.moveToMain();
+					game.moveToMain();
 				}
 			}
 			mousehelddownfor = -1;

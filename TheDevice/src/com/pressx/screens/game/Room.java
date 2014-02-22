@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controllable;
 import com.pressx.draw.Animator;
-import com.pressx.managers.Graphics;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -23,6 +23,11 @@ import com.pressx.particles.GraphicIndicators;
 import com.pressx.thedevice.GameStats;
 
 public class Room implements Controllable {
+	private Textures textures;
+	private Draw draw;
+	private Sounds sounds;
+	private GameStats stats;
+	
 	/* Background */
 	private Sprite background;
 	
@@ -41,12 +46,12 @@ public class Room implements Controllable {
 	private float vortexChance = 0.2f;
 	
 	/* Health */
-	private Sprite HPBar = new Sprite(Textures.getArtAsset("hp_bar"));
-	private Sprite HPFill = new Sprite(Textures.getArtAsset("hp_fill"));
+	private Sprite HPBar;
+	private Sprite HPFill;
 	
 	/* Level Up */
-	private Sprite plevel = new Sprite(Textures.getArtAsset("plevel"));
-	private Sprite mlevel = new Sprite(Textures.getArtAsset("mlevel"));
+	private Sprite plevel;
+	private Sprite mlevel;
 	
 	/* Indicators */
 	private GraphicIndicators indicators;
@@ -66,18 +71,27 @@ public class Room implements Controllable {
 	private boolean canSpawn = true;
 	
 	/* Constructor */
-	public Room(Player player)
+	public Room(Textures textures, Draw draw, Sounds sounds, GameStats stats, Player player)
 	{
-		this.background = new Sprite(Textures.getArtAsset("game_bg"));
+		this.textures = textures;
+		this.draw = draw;
+		this.stats = stats;
+		this.sounds = sounds;
+		this.background = new Sprite(textures.getArtAsset("game_bg"));
 		this.background.setOrigin(0, 0);
 		this.background.setBounds(0, 0, 1280, 800);
-		Graphics.draw(Graphics.TYPES.BACKGROUND, background,0,0,1,1);
 		
-		this.deathRing = new Sprite(Textures.getArtAsset("deathRing"));
+		HPBar = new Sprite(textures.getArtAsset("hp_bar"));
+		HPFill = new Sprite(textures.getArtAsset("hp_fill"));
+		
+		plevel = new Sprite(textures.getArtAsset("plevel"));
+		mlevel = new Sprite(textures.getArtAsset("mlevel"));
+		
+		this.deathRing = new Sprite(textures.getArtAsset("deathRing"));
 		this.player = player;
-		this.indicators = new GraphicIndicators(player);
+		this.indicators = new GraphicIndicators(textures, player);
 		
-		warningS = new Sprite(Textures.getArtAsset("ui_warn"));
+		warningS = new Sprite(textures.getArtAsset("ui_warn"));
 		warning = new Animator("warning",warningS,62,62);
 		warning.add_animation("warning", 0, 0, 4, 5, true);
 		warning.set_animation("warning", true);
@@ -184,7 +198,7 @@ public class Room implements Controllable {
 			if(obj.getID() == 2)
 			{
 				gameIsLost = false;
-				GameStats.setBoxHP(obj.getHp());
+				stats.setBoxHP(obj.getHp());
 			}//fi
 			
 			this.objects.add(obj);
@@ -207,23 +221,23 @@ public class Room implements Controllable {
 			{
 				if(obj.getID() == 2 || obj.getID() == 3)
 				{
-					GameStats.addScore(obj.worth);
-					GameStats.addXP(obj.worth);
+					stats.addScore(obj.worth);
+					stats.addXP(obj.worth);
 				}
 				
 				if(obj.getID() == 3)
 				{
-					if(GameStats.getLevel() > 2 && Math.random() < mineChance)
+					if(stats.getLevel() > 2 && Math.random() < mineChance)
 					{
-						drops.add(new MineDrop(obj.get_positionX(), obj.get_positionY()));
+						drops.add(new MineDrop(draw, sounds, textures, stats, obj.get_positionX(), obj.get_positionY()));
 					}
-					if(GameStats.getLevel() > 5 && Math.random() < vortexChance)
+					if(stats.getLevel() > 5 && Math.random() < vortexChance)
 					{
-						drops.add(new VortexDrop(obj.get_positionX(), obj.get_positionY()));
+						drops.add(new VortexDrop(draw, sounds, textures, stats, obj.get_positionX(), obj.get_positionY()));
 					}
 					if(obj.getHp() == 0)
 					{
-						GameStats.addMonsterKill();
+						stats.addMonsterKill();
 					}
 				}
 				iter.remove();
@@ -262,6 +276,7 @@ public class Room implements Controllable {
 	/* Draw */
 	public void render(SpriteBatch spritebatch, float[] renderInfo)
 	{
+		draw.draw(Draw.TYPES.BACKGROUND, background,0,0,1,1);
 		//Graphics.draw(Graphics.TYPES.BACKGROUND, background, 0, 0, 1f, 1f);
 		float current;
 		float max;
@@ -291,13 +306,13 @@ public class Room implements Controllable {
 				float wy = obj.get_positionY();
 				if(wx < 0)
 					wx = 0;
-				else if (wx > Graphics.screenWidth)
-					wx = Graphics.screenWidth;
+				else if (wx > draw.screenWidth)
+					wx = draw.screenWidth;
 				if(wy < 0)
 					wy = 0;
-				else if (wy > Graphics.screenHeight)
-					wy = Graphics.screenHeight;
-				if (wx == 0 || wy == 0 || wx == Graphics.screenWidth || wy == Graphics.screenHeight)
+				else if (wy > draw.screenHeight)
+					wy = draw.screenHeight;
+				if (wx == 0 || wy == 0 || wx == draw.screenWidth || wy == draw.screenHeight)
 				{
 					float xPos = renderInfo[2] *x;
 					float yPos = renderInfo[2] *y;
@@ -307,7 +322,7 @@ public class Room implements Controllable {
 					warningS.setSize(width, height);
 					warningS.setPosition(xPos, yPos);
 					warningS.draw(spritebatch);
-					Graphics.draw(Graphics.TYPES.EXTRAS, warningS, 0, 0, 0.05f, 0.07f);
+					draw.draw(Draw.TYPES.EXTRAS, warningS, 0, 0, 0.05f, 0.07f);
 				}
 				if(obj.get_positionX() < 0)
 				{
@@ -316,7 +331,7 @@ public class Room implements Controllable {
 					warningS.setSize(renderInfo[2] *warningWidth, renderInfo[2] *warningHeight);
 					warningS.setPosition(renderInfo[2] *x, renderInfo[2] *y);
 					warningS.draw(spritebatch);
-					Graphics.draw(Graphics.TYPES.EXTRAS, warningS, 0, y * 66, 0.05f, 0.07f);
+					draw.draw(Draw.TYPES.EXTRAS, warningS, 0, y * 66, 0.05f, 0.07f);
 				}
 				if(obj.get_positionX() > renderInfo[0] * (1-0.2))
 				{
@@ -325,7 +340,7 @@ public class Room implements Controllable {
 					warningS.setSize(renderInfo[2] *warningWidth, renderInfo[2] *warningHeight);
 					warningS.setPosition(renderInfo[2] *x, renderInfo[2] *y);
 					warningS.draw(spritebatch);
-					Graphics.draw(Graphics.TYPES.EXTRAS, warningS, x * 100, y * 66, 0.05f, 0.07f);
+					draw.draw(Draw.TYPES.EXTRAS, warningS, x * 100, y * 66, 0.05f, 0.07f);
 				}
 				if(obj.get_positionY() < 0)
 				{
@@ -334,7 +349,7 @@ public class Room implements Controllable {
 					warningS.setSize(renderInfo[2] *warningWidth, renderInfo[2] *warningHeight);
 					warningS.setPosition(renderInfo[2] *x, renderInfo[2] *y);
 					warningS.draw(spritebatch);
-					Graphics.draw(Graphics.TYPES.EXTRAS, warningS, x * 100, 0, 0.05f, 0.07f);
+					draw.draw(Draw.TYPES.EXTRAS, warningS, x * 100, 0, 0.05f, 0.07f);
 				}
 				if(obj.get_positionY() > renderInfo[1])
 				{
@@ -343,7 +358,7 @@ public class Room implements Controllable {
 					warningS.setSize(renderInfo[2] *warningWidth, renderInfo[2] *warningHeight);
 					warningS.setPosition(renderInfo[2] *x, renderInfo[2] *y);
 					warningS.draw(spritebatch);
-					Graphics.draw(Graphics.TYPES.EXTRAS, warningS, x * 100, y * 66, 0.05f, 0.07f); 
+					draw.draw(Draw.TYPES.EXTRAS, warningS, x * 100, y * 66, 0.05f, 0.07f); 
 				}
 			}
 
@@ -359,10 +374,6 @@ public class Room implements Controllable {
 
 			if (current != max && current > 0)
 			{
-				float hfx = obj.get_positionX();
-				float hfy = obj.get_positionX();
-				float hbx = obj.get_positionX();
-				float hby = obj.get_positionX();
 				HPFill.setOrigin((current/max) * renderInfo[2] * (drawWidth/2),
 						renderInfo[2] * (drawHeight/2));
 				HPFill.setSize((current/max) * renderInfo[2] * (drawWidth),
@@ -378,8 +389,6 @@ public class Room implements Controllable {
 				HPBar.setPosition(renderInfo[2] * (obj.get_positionX() - drawWidth/2),
 						renderInfo[2] * (obj.get_positionY() - drawHeight/2  + obj.getSpriteHeight()));
 				HPBar.draw(spritebatch);
-				//Graphics.draw(Graphics.TYPES.EXTRAS, warningS, hfx * 100, hfy * 66, 0.05f, 0.07f); 
-				//Graphics.draw(Graphics.TYPES.EXTRAS, warningS, hbx * 100, hby * 66, 0.05f, 0.07f); 
 			}
 			//Draw Level Up animation
 			if (obj.levelUp > 0)
@@ -423,7 +432,7 @@ public class Room implements Controllable {
 		this.wipeFade = 0.5f;
 		this.isWiping = true;
 		((Device)(this.device)).inv();
-		Sounds.play("hero.nuke");
+		sounds.play("hero.nuke");
 	}//END wipe
 	
 	private void wipe_dmg()
@@ -443,11 +452,11 @@ public class Room implements Controllable {
 	}//END wipe
 	
 	public void addShock(GameObject obj){
-		this.spawn_object(new Shockwave(obj.get_positionX(), obj.get_positionY()));
+		this.spawn_object(new Shockwave(draw, sounds, textures, obj.get_positionX(), obj.get_positionY()));
 	}
 	
 	public void addGas(GameObject obj){
-		this.spawn_object(new GasCloud(obj.get_positionX(), obj.get_positionY()));
+		this.spawn_object(new GasCloud(draw, sounds, textures, obj.get_positionX(), obj.get_positionY()));
 	}
 	
 	public void toggleSpawn(){

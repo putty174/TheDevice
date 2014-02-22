@@ -1,12 +1,14 @@
 package com.pressx.objects.device;
 
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
 
 public class XP extends AnimatedObject {
-	public XP(float posX, float posY, float speed, float direction)
+	public XP(Draw d, Sounds s, Textures t, float posX, float posY, float speed, float direction)
 	{
-		super(
+		super(d,s,t,
 				"XP",
 				2, //ID
 				posX, posY, //Position
@@ -18,7 +20,7 @@ public class XP extends AnimatedObject {
 				0, //Touch Radius
 				true, //Touchable
 				3, 3, //Draw width and height
-				Textures.getArtAsset("exp"), //Spritesheet
+				t.getArtAsset("exp"), //Spritesheet
 				30, 30 //srcwidth and height
 				);
 		

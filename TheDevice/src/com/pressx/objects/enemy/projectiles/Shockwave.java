@@ -3,6 +3,8 @@ package com.pressx.objects.enemy.projectiles;
 import java.util.ArrayList;
 
 import com.pressx.control.GameTimer;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
@@ -11,9 +13,9 @@ public class Shockwave extends AnimatedObject {
 	GameTimer displayTime = new GameTimer(1);
 	float currentScale = 1;
 	
-	public Shockwave(float posX, float posY) {
-		super("shockwave", 18, posX, posY, 1, 1, 0, 0, 0, 0,
-				false, 0, false, 10, 10, Textures.getArtAsset("shock_wave"),
+	public Shockwave(Draw d, Sounds s, Textures t, float posX, float posY) {
+		super(d,s,t,"shockwave", 18, posX, posY, 1, 1, 0, 0, 0, 0,
+				false, 0, false, 10, 10, t.getArtAsset("shock_wave"),
 				512, 512);
 		
 		this.add_animation("shock", 0, 0, 3, 3, false);

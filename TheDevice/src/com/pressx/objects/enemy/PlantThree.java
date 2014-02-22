@@ -1,15 +1,16 @@
 package com.pressx.objects.enemy;
 
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
 import com.pressx.screens.game.Room;
 
 public class PlantThree extends Enemy {
-	public PlantThree(GameObject device, float posX, float posY, Room room) {
-		super("plant3",device, 3, posX, posY, 30, 50, 12, 12, 0,
+	public PlantThree(Draw d, Sounds s, Textures t, GameObject device, float posX, float posY, Room room) {
+		super(d,s,t,"plant3",device, 3, posX, posY, 30, 50, 12, 12, 0,
 				0, true, 15, true, 12, 12,
-				Textures.getArtAsset("plant3"), 128, 128, room);
+				t.getArtAsset("plant3"), 128, 128, room);
 		
 		this.device = device;
 		
@@ -35,15 +36,15 @@ public class PlantThree extends Enemy {
 	}
 	
 	public void playSound(){
-		Sounds.play("fuzzie3.attack");
+		sounds.play("fuzzie3.attack");
 	}
 	
 	public void playHit(){
-		Sounds.play("fuzzie3.damage");
+		sounds.play("fuzzie3.damage");
 	}
 	
 	@Override
 	public void playDeath() {
-		Sounds.play("plant3.death");
+		sounds.play("plant3.death");
 	}
 }

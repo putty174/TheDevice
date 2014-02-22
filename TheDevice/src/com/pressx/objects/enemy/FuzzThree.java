@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.pressx.actions.Goto;
 import com.pressx.control.GameTimer;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -13,10 +14,10 @@ import com.pressx.screens.game.Room;
 public class FuzzThree extends Enemy {
 	GameTimer hitTimer = new GameTimer(5);
 	
-	public FuzzThree(GameObject device, float posX, float posY, Room room) {
-		super("fuzz3",device, 3, posX, posY, 30, 50, 12, 12, 0,
+	public FuzzThree(Draw d, Sounds s, Textures t, GameObject device, float posX, float posY, Room room) {
+		super(d,s,t,"fuzz3",device, 3, posX, posY, 30, 50, 12, 12, 0,
 				0, true, 15, true, 12, 12,
-				Textures.getArtAsset("fuzz3"), 128, 128, room);
+				t.getArtAsset("fuzz3"), 128, 128, room);
 		
 		this.device = device;
 		
@@ -62,7 +63,7 @@ public class FuzzThree extends Enemy {
 			}
 		}
 		room.addShock(this);
-		Sounds.play("fuzzie3.roar");
+		sounds.play("fuzzie3.roar");
 		this.set_animation("walk", true);
 		this.isAttacking = false;
 		hitTimer.reset_timer();
@@ -112,15 +113,15 @@ public class FuzzThree extends Enemy {
 	}
 	
 	public void playSound(){
-		Sounds.play("fuzzie3.attack");
+		sounds.play("fuzzie3.attack");
 	}
 	
 	public void playHit(){
-		Sounds.play("fuzzie3.damage");
+		sounds.play("fuzzie3.damage");
 	}
 	
 	@Override
 	public void playDeath() {
-		Sounds.play("fuzzie3.death");
+		sounds.play("fuzzie3.death");
 	}
 }

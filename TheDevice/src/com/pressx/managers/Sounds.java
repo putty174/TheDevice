@@ -7,16 +7,16 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
-public final class Sounds {
-	public static AssetManager s_manager = new AssetManager();
-	private static HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
-	private static HashMap<String, String> currentPackage = new HashMap<String, String>();
-	public static Music music;
-	private static boolean playBGM;
-	public static Sound sound;
+public class Sounds {
+	public AssetManager s_manager = new AssetManager();
+	private HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
+	private HashMap<String, String> currentPackage = new HashMap<String, String>();
+	public Music music;
+	private boolean playBGM;
+	public Sound sound;
 	
 	
-	public static enum PACKS { MAIN, TUTORIAL, GAME, INTRO, OUTRO, END };
+	public enum PACKS { MAIN, TUTORIAL, SHOP, GAME, INTRO, OUTRO, END };
 	
 	public Sounds()
 	{
@@ -83,7 +83,7 @@ public final class Sounds {
 				"buttonh", "data/sounds/buttons/buttonh.mp3");
 	}
 	
-	public static void addPath(String packageName, String... args)
+	public void addPath(String packageName, String... args)
 	{
 		if(!entries.containsKey(packageName))
 			entries.put(packageName, new HashMap<String, String>());
@@ -91,7 +91,7 @@ public final class Sounds {
 			entries.get(packageName).put(args[i], args[++i]);
 	}
 	
-	public static void loadSoundAssets(PACKS packs)
+	public void loadSoundAssets(PACKS packs)
 	{
 		switch (packs)
 		{
@@ -113,6 +113,10 @@ public final class Sounds {
 			case END:
 				currentPackage = entries.get("End");
 				break;
+			case SHOP:
+				break;
+		default:
+			break;
 		}
 		if(currentPackage.containsKey("bgm"))
 			music = Gdx.audio.newMusic(Gdx.files.internal(currentPackage.get("bgm")));
@@ -121,7 +125,7 @@ public final class Sounds {
 		s_manager.finishLoading();
 	}
 	
-	public static boolean loadSoundAssets(String packageName)
+	public boolean loadSoundAssets(String packageName)
 	{
 		if(entries.containsKey(packageName))
 		{
@@ -136,7 +140,7 @@ public final class Sounds {
 		return false;
 	}
 	
-	public static boolean playBGM()
+	public boolean playBGM()
 	{
 		if(!playBGM)
 		{
@@ -147,7 +151,7 @@ public final class Sounds {
 		return playBGM;
 	}
 	
-	public static boolean stopBGM()
+	public boolean stopBGM()
 	{
 		if(playBGM)
 		{
@@ -157,14 +161,14 @@ public final class Sounds {
 		return playBGM;
 	}
 	
-	public static boolean stopSound()
+	public boolean stopSound()
 	{
 		if(sound != null)
 			sound.stop();
 		return true;
 	}
 	
-	public static boolean play(String file)
+	public boolean play(String file)
 	{
 		if(currentPackage.containsKey(file))
 		{
@@ -175,7 +179,7 @@ public final class Sounds {
 		return false;
 	}
 	
-	public static boolean unloadSoundAssets()
+	public boolean unloadSoundAssets()
 	{
 		if(music != null && !playBGM)
 			music.dispose();

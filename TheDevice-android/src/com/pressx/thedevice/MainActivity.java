@@ -16,7 +16,7 @@ public class MainActivity extends AndroidApplication implements Social{
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
         saved = savedInstanceState;
-        initialize(new TheDevice(this), cfg);
+        initialize(new TheDevice(), cfg);
     }
     
     public void switchActivity() {

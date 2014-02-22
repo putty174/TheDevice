@@ -3,21 +3,29 @@ package com.pressx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.pressx.managers.Graphics;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.TheDevice;
 
 public class CutsceneScreen extends BaseState {
+	Textures textures;
+	Draw draw;
 	int currentScene, maxScene;
 	Sprite scene;
 	String cinematicType;
 	
-	public CutsceneScreen(String cinematicType, int numScenes){
-		super();
+	public CutsceneScreen(TheDevice g, String cinematicType){
+		super(g);
+		textures = new Textures();
+		draw = new Draw();
+		textures.loadArtAssets(cinematicType);
 		this.currentScene = 0;
 		this.cinematicType = cinematicType;
-		maxScene=numScenes;
-		scene = new Sprite(Textures.getArtAsset("sc" + Integer.toString(currentScene)));
+		scene = new Sprite(textures.getArtAsset("sc" + Integer.toString(currentScene)));
+		if(cinematicType.equals("Intro"))
+			maxScene = 5;
+		else if (cinematicType.equals("Outro"))
+			maxScene = 3;
 	}
 	
 	public void update()
@@ -25,12 +33,12 @@ public class CutsceneScreen extends BaseState {
 		if(currentScene == maxScene)
 		{
 			if(cinematicType == "Intro")
-				TheDevice.moveToLoading();
+				game.moveToLoading();
 			else if(cinematicType == "Outro")
-				TheDevice.moveToMain();
+				game.moveToMain();
 		}
 		else
-			scene = new Sprite(Textures.getArtAsset("sc" + Integer.toString(currentScene)));
+			scene = new Sprite(textures.getArtAsset("sc" + Integer.toString(currentScene)));
 		
 		if(Gdx.input.justTouched())
 			currentScene ++;
@@ -38,7 +46,8 @@ public class CutsceneScreen extends BaseState {
 
 	public void render(SpriteBatch batch)
 	{
-		Graphics.draw(Graphics.TYPES.BACKGROUND, scene, 0, 0, 1f, 1f);
+		draw.draw(Draw.TYPES.BACKGROUND, scene, 0, 0, 1f, 1f);
+		draw.draw(batch);
 	}
 
 	public void create(){

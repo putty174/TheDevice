@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.pressx.draw.Animator;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
+import com.pressx.managers.Textures;
 
 public class AnimatedObject extends GameObject {
 	/* Animation */
@@ -36,9 +39,9 @@ public class AnimatedObject extends GameObject {
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
-	public AnimatedObject(String animatorName, int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	public AnimatedObject(Draw d, Sounds s, Textures t, String animatorName, int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	{
-		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+		super(d, s, t, objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
 		
 		this.animator = new Animator(animatorName, this.sprite, srcWidth, srcHeight);
 	}//END AnimatedObject

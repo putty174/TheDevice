@@ -5,10 +5,10 @@ import java.util.HashMap;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
-public final class Textures {
-	public static AssetManager a_manager = new AssetManager();
-	private static HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
-	private static HashMap<String, String> currentPackage = new HashMap<String, String>();
+public class Textures {
+	public AssetManager a_manager = new AssetManager();
+	private HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
+	private HashMap<String, String> currentPackage = new HashMap<String, String>();
 	
 	public Textures()
 	{
@@ -32,10 +32,10 @@ public final class Textures {
 				"exp", "data/art/game/objects/device/exp.png",
 				"hero", "data/art/game/objects/hero/hero.png",
 				"mine","data/art/game/objects/mine/mine.png",
-				"mine_drop","data/art/game/objects/mine/mineDrop.png",
-				"deathRing", "data/art/game/objects/nuke/DeathRing.png",
+				"mine_drop","data/art/game/objects/mine/minedrop.png",
+				"deathRing", "data/art/game/objects/nuke/deathring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
-				"vortex_drop","data/art/game/objects/vortex/vortIcon.png",
+				"vortex_drop","data/art/game/objects/vortex/vorticon.png",
 				"indicate", "data/art/game/ui/extra/indication_sheet.png",
 				"mlevel", "data/art/game/ui/extra/mLevel.png",
 				"plevel", "data/art/game/ui/extra/pLevel.png",
@@ -47,8 +47,8 @@ public final class Textures {
 				"ui_bombcount", "data/art/game/ui/uibase/buttons/nuke/nukecount.png",
 				"ui_vortex", "data/art/game/ui/uibase/buttons/vortex/vortex.png",
 				"ui_minecount", "data/art/game/ui/uibase/buttons/count.png",
-				"ui_pause", "data/art/game/ui/uibase/Pause.png",
-				"ui_base","data/art/game/ui/uibase/UIBase.png"
+				"ui_pause", "data/art/game/ui/uibase/pause.png",
+				"ui_base","data/art/game/ui/uibase/uibase.png"
 				);
 		
 		addPath(
@@ -61,7 +61,7 @@ public final class Textures {
 				);
 		
 		addPath(
-				"Tut",
+				"Tutorial",
 				"tut_pg1", "data/art/tutorial/screen/tut1.png",
 				"tut_pg2", "data/art/tutorial/screen/tut2.png",
 				"tut_nav_left", "data/art/tutorial/buttons/nav_left.png",
@@ -114,7 +114,7 @@ public final class Textures {
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.
-	public static void addPath(String packageName, String... args)
+	public void addPath(String packageName, String... args)
 	{
 		if(!entries.containsKey(packageName))
 			entries.put(packageName, new HashMap<String, String>());
@@ -122,15 +122,15 @@ public final class Textures {
 			entries.get(packageName).put(args[i], args[++i]);
 	}
 	
-	public static void loadArtAssets(String packName)
+	public void loadArtAssets(String packName)
 	{
 		currentPackage = entries.get(packName);
-		for(String str : entries.get(packName).values())		
+		for(String str : currentPackage.values())		
 			a_manager.load(str, Texture.class);
 		a_manager.finishLoading();
 	}
 	
-	public static Texture getArtAsset(String file)
+	public Texture getArtAsset(String file)
 	{
 		Texture tex = null;
 		if(currentPackage.containsKey(file))
@@ -138,7 +138,7 @@ public final class Textures {
 		return tex;
 	}
 	
-	public static void unloadArtAssets(){
+	public void unloadArtAssets(){
 		a_manager.clear();
 	}
 }

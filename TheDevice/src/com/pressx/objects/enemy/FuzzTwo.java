@@ -3,6 +3,7 @@ package com.pressx.objects.enemy;
 import java.util.ArrayList;
 
 import com.pressx.control.GameTimer;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -17,10 +18,10 @@ public class FuzzTwo extends Enemy {
 	float xRun, yRun;
 	boolean isPrepping, isRunning;
 	
-	public FuzzTwo(GameObject device, float posX, float posY, Room room) {
-		super("fuzz2",device, 3, posX, posY, 2, 5, 6, 6, 0,
+	public FuzzTwo(Draw d, Sounds s, Textures t, GameObject device, float posX, float posY, Room room) {
+		super(d,s,t,"fuzz2",device, 3, posX, posY, 2, 5, 6, 6, 0,
 				0, true, 10, true, 9, 9,
-				Textures.getArtAsset("fuzz2"), 128, 128, room);
+				t.getArtAsset("fuzz2"), 128, 128, room);
 		
 		this.device = device;
 		this.evolution = 2;
@@ -71,7 +72,7 @@ public class FuzzTwo extends Enemy {
 						}
 					}
 					isRunning = true;
-					Sounds.play("fuzzie2.charge");
+					sounds.play("fuzzie2.charge");
 					isPrepping = false;
 					prepTime.reset_timer();
 					this.animator.set_animation("attack", true);
@@ -105,7 +106,7 @@ public class FuzzTwo extends Enemy {
 		super.behavior_collision(obj);
 		if(obj.getID() == 0 && isRunning){
 			((Player) obj).stun(this);
-			Sounds.play("fuzzie2.collide");
+			sounds.play("fuzzie2.collide");
 			clearAction();
 		}
 	}
@@ -131,25 +132,25 @@ public class FuzzTwo extends Enemy {
 	}
 	
 	public void playSound(){
-		Sounds.play("fuzzie2.bite");
+		sounds.play("fuzzie2.bite");
 	}
 	
 	public void playHit(){
-		Sounds.play("fuzzie2.damage");
+		sounds.play("fuzzie2.damage");
 	}
 	
 	@Override
 	public void playDeath() {
-		Sounds.play("fuzzie2.death");
+		sounds.play("fuzzie2.death");
 	}
 	
 	@Override
 	protected void evolve(){
 		this.worth = 0;
 		this.terminate();
-		GameObject monster = new FuzzThree(device, this.get_positionX(), this.get_positionY(), room);
+		GameObject monster = new FuzzThree(draw, sounds, textures, device, this.get_positionX(), this.get_positionY(), room);
 		room.spawn_object(monster);
 		monster.levelUp = 3;
-		Sounds.play("monster.level");
+		sounds.play("monster.level");
 	}
 }

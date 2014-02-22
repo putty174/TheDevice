@@ -8,6 +8,7 @@ import com.pressx.actions.Attack;
 import com.pressx.actions.Goto;
 import com.pressx.actions.Push;
 import com.pressx.control.GameTimer;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
@@ -64,9 +65,9 @@ public class Player extends AnimatedObject{
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
-	public Player(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, int srcWidth, int srcHeight)
+	public Player(Draw d, Sounds s, Textures t, int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight,int srcWidth, int srcHeight)
 	{
-		super("player", objectID, posX, posY, mass, 300, hitWidth, hitHeight, hitX, hitY, isSolid, touchRadius, isTouchable, 20, 15, Textures.getArtAsset("hero"), 200, 150);
+		super(d, s, t, "player", objectID, posX, posY, mass, 300, hitWidth, hitHeight, hitX, hitY, isSolid, touchRadius, isTouchable, 20, 15, t.getArtAsset("hero"), 200, 150);
 		
 		this.screenBound = true;
 		
@@ -342,7 +343,7 @@ public class Player extends AnimatedObject{
 		{
 			this.directionBasedAnimation(ANIMATION_ATTACKING);
 			int play = (int)(Math.random() * 8);
-			Sounds.play("hero.smack" + play);
+			sounds.play("hero.smack" + play);
 		}//fi
 		
 		if(!this.attack.isAttacking)

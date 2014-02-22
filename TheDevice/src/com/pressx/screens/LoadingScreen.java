@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.pressx.control.Controller;
-import com.pressx.managers.Graphics;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -18,6 +18,10 @@ import com.pressx.thedevice.GameStats;
 import com.pressx.thedevice.TheDevice;
 
 public class LoadingScreen extends BaseState{
+	private Draw draw;
+	private Sounds sounds;
+	private Textures textures;
+	
 	private float complete;
 	private Sprite play;
 	private Sprite bg;
@@ -25,6 +29,7 @@ public class LoadingScreen extends BaseState{
 	
 	private UI gameUI;
 	private Player player;
+	private GameStats stats;
 	private GameObject box;
 	private CustomSpawner spawner;
 	public Room room;
@@ -32,15 +37,20 @@ public class LoadingScreen extends BaseState{
 	
 	private Controller controller;
 	
-	public LoadingScreen()	{
-		super();
-		bg = new Sprite(Textures.getArtAsset("bg"));
-		play = new Sprite(Textures.getArtAsset("play"));
+	public LoadingScreen(TheDevice g)	{
+		super(g);
+		draw = new Draw();
+		sounds = new Sounds();
+		textures = new Textures();
+		sounds.loadSoundAssets(Sounds.PACKS.GAME);
+		textures.loadArtAssets("Loading");
+		bg = new Sprite(textures.getArtAsset("bg"));
+		play = new Sprite(textures.getArtAsset("play"));
 	}
 	
 	public void create() {
 		levelName = "level1";
-		player = new Player(
+		player = new Player(draw, sounds, textures,
 				0, //ID
 				50, 30, //Position
 				1, //Mass
@@ -53,39 +63,41 @@ public class LoadingScreen extends BaseState{
 				8, (16 + 2/3) * 0.8f, //Draw width and height
 				150, 250
 				);
-		new GameStats(player);
+		stats = new GameStats(sounds, player);
 		
-		room = new Room(player);
-		box = new Device(25,25, room);
+		room = new Room(textures, draw, sounds, stats, player);
+		box = new Device(draw, sounds, textures, 25,25, room);
 		this.room.add_object(this.box);
 		this.room.add_object(player);
-		spawner = new CustomSpawner(levelName,box,room);//temporary path
+		spawner = new CustomSpawner(draw, sounds, textures, levelName,box,room);//temporary path
 		
-		gameUI = new UI(this.room);
-		this.controller = new Controller(TheDevice.renderInfo);
+		gameUI = new UI(draw, sounds, textures, stats, room);
+		this.controller = new Controller(stats, game.renderInfo);
 		this.controller.add_controllable(room);
 		Gdx.input.setInputProcessor(this.controller);
 	}
 	
 	public void update() {
-		if(Textures.a_manager.update() && Sounds.s_manager.update() && spawner.getUpdate())
+		if(textures.a_manager.update() && sounds.s_manager.update() && spawner.getUpdate())
 		{
 			done = true;
 			complete = 1;
 			if(Gdx.input.isTouched())
 				if(play.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
-					TheDevice.moveToGame(player, gameUI, box, spawner, room, controller);
+					game.moveToGame(player, stats, gameUI, box, spawner, room, controller);
 		}
 		else
-			complete = Interpolation.linear.apply(complete, (Textures.a_manager.getProgress()+Sounds.s_manager.getProgress()+spawner.getProgress())/4, 0.1f);
+			complete = Interpolation.linear.apply(complete, (textures.a_manager.getProgress()+sounds.s_manager.getProgress()+spawner.getProgress())/4, 0.1f);
 	}
 	
 	public void render(SpriteBatch batch) {
-		Graphics.draw(Graphics.TYPES.BACKGROUND, bg, 0, 0, 1, 1);
+		draw.draw(Draw.TYPES.BACKGROUND, bg, 0, 0, 1, 1);
 		String progress = Integer.toString(Math.round(complete * 100)) + "%";
-		Graphics.write(progress, ((Graphics.screenWidth - Graphics.font.getBounds(progress).width) / 2) / Graphics.screenWidth, 2/3f);
+		draw.write(progress, ((draw.screenWidth - draw.font.getBounds(progress).width) / 2) / draw.screenWidth, 2/3f);
 		if(done)
-			Graphics.draw(Graphics.TYPES.BUTTON, play, ((Graphics.screenWidth-play.getBoundingRectangle().width)/2f)/Graphics.screenWidth, ((Graphics.screenHeight-play.getBoundingRectangle().height)/3f)/Graphics.screenHeight, 0.15f, 0.25f);
+			draw.draw(Draw.TYPES.BUTTON, play, ((draw.screenWidth-play.getBoundingRectangle().width)/2f)/draw.screenWidth, ((draw.screenHeight-play.getBoundingRectangle().height)/3f)/draw.screenHeight, 0.15f, 0.25f);
+		
+		draw.draw(batch);
 	}
 	
 	public void dispose() {
