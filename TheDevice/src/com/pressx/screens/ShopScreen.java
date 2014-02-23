@@ -67,8 +67,8 @@ public class ShopScreen extends BaseState {
 	public ShopScreen(TheDevice g){
 		super(g);
 		draw = new Draw();
-		sounds = new Sounds();
-		textures = new Textures();
+		sounds = g.sounds;//new Sounds();
+		textures = g.textures;//new Textures();
 		sounds.loadSoundAssets(Sounds.PACKS.SHOP);
 		textures.loadArtAssets("Shop");
 		spr_background = getspr("shop_background");
@@ -85,6 +85,8 @@ public class ShopScreen extends BaseState {
 		spr_desc_bigbuttons[0] = getspr("itembutton_buy_big");
 		spr_desc_bigbuttons[1] = getspr("itembutton_equip_big");
 		spr_desc_bigbuttons[2] = getspr("itembutton_unequip_big");
+		
+		items = g.inventory.allItems;
 		
 		for(ShopItem item : items){
 			item.initializeForShop();
@@ -153,6 +155,8 @@ public class ShopScreen extends BaseState {
 			spr_desc_bigbutton_current = spr_desc_bigbuttons[selectedItem.getState().ordinal()-1];
 			draw.draw(Draw.TYPES.BUTTON,spr_desc_bigbutton_current,ITEMDESCBUTTON_OFFSETX,ITEMDESCBUTTON_OFFSETY,ITEMDESCBUTTON_WIDTH,ITEMDESCBUTTON_HEIGHT);
 		}
+		
+		draw.draw(batch);
 	}
 	
 	float mousehelddownfor = -1;

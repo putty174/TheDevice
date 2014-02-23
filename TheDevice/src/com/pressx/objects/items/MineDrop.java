@@ -19,6 +19,7 @@ public class MineDrop extends AnimatedObject {
 		super(d,s,t,"mine",99, posX, posY, 1, 90, 5, 5, 0, 0,
 				false, 5, false, 5, 5,
 				t.getArtAsset("mine_drop"), 200, 200);
+		this.stats = stats;
 		this.movement.speedcap = 100;
 		this.isActive = false;
 		this.add_animation("mine_item", 0, 0, 4, 8, true);

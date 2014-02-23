@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
-import com.pressx.managers.Draw;
+import com.pressx.items.PlayerInventory;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -26,11 +26,13 @@ import com.pressx.spawner.CustomSpawner;
 public class TheDevice implements ApplicationListener {
 	private int NUMSTATES = 9;
 	
-	private Sounds sounds;
-	private Textures textures;
+	public Sounds sounds;
+	public Textures textures;
 	
 	int currentState;
 	BaseState[] posStates;
+
+	public PlayerInventory inventory;
 	
 	
 	public float[] renderInfo = 
@@ -52,6 +54,7 @@ public class TheDevice implements ApplicationListener {
 		
 		sounds = new Sounds();
 		textures = new Textures();
+		inventory = new PlayerInventory(sounds,textures);
 		
 		float width = Gdx.graphics.getWidth();
 		renderInfo[1] = Gdx.graphics.getHeight() * 100 / Gdx.graphics.getWidth();
@@ -155,6 +158,8 @@ public class TheDevice implements ApplicationListener {
 	}
 	
 	public void moveToShop(){
+		textures.unloadArtAssets();
+		textures.loadArtAssets("Shop");
 		posStates[8] = new ShopScreen(this);
 		posStates[8].create();
 		currentState = 8;

@@ -69,7 +69,7 @@ public class LoadingScreen extends BaseState{
 		this.room.add_object(player);
 		spawner = new CustomSpawner(draw, sounds, textures, levelName,box,room);//temporary path
 		
-		gameUI = new UI(draw, sounds, textures, stats, room);
+		gameUI = new UI(draw, sounds, textures, stats, room, game.inventory);
 		this.controller = new Controller(stats, game.renderInfo);
 		this.controller.add_controllable(room);
 		Gdx.input.setInputProcessor(this.controller);

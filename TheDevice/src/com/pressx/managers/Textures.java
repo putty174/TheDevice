@@ -111,12 +111,20 @@ public class Textures {
 				"itembutton_unequip_big",path+"itembutton_unequip_big.png",
 				"exp", "data/art/game/objects/device/exp.png",
 				"uparrow",path+"uparrow.png",
-				"item0",path+"item0.png",
+				"ui_mine", "data/art/game/ui/uibase/buttons/mine/mine.png",
+				"ui_vortex", "data/art/game/ui/uibase/buttons/vortex/vortex.png",
+				"largeicon_mine",path+"mine_large.png",
+				"largeicon_vortex",path+"vortex_large.png",
+				"largeicon_control",path+"control_large.png",
+				"largeicon_gear",path+"gear_large.png",
+				"mine_drop","data/art/game/objects/mine/mineDrop.png",
+				"vortex_drop","data/art/game/objects/vortex/vortIcon.png"
+				/*"item0",path+"item0.png",
 				"item1",path+"item1.png",
 				"item2",path+"item2.png",
 				"item3",path+"item3.png",
 				"item4",path+"item4.png",
-				"item5",path+"item5.png");
+				"item5",path+"item5.png"*/);
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.
@@ -131,8 +139,10 @@ public class Textures {
 	public void loadArtAssets(String packName)
 	{
 		currentPackage = entries.get(packName);
-		for(String str : currentPackage.values())		
+		for(String str : currentPackage.values()){
+			System.out.println(str);
 			a_manager.load(str, Texture.class);
+		}
 		a_manager.finishLoading();
 	}
 	
