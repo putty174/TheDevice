@@ -14,11 +14,10 @@ public class CutsceneScreen extends BaseState {
 	Sprite scene;
 	String cinematicType;
 	
-	public CutsceneScreen(TheDevice g, String cinematicType){
+	public CutsceneScreen(TheDevice g, Textures t, String cinematicType){
 		super(g);
-		textures = new Textures();
+		textures = t;
 		draw = new Draw();
-		textures.loadArtAssets(cinematicType);
 		this.currentScene = 0;
 		this.cinematicType = cinematicType;
 		scene = new Sprite(textures.getArtAsset("sc" + Integer.toString(currentScene)));

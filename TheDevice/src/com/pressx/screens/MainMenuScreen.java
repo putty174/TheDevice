@@ -18,13 +18,11 @@ public class MainMenuScreen extends BaseState {
 	String key;
 	File blah;
 
-	public MainMenuScreen(TheDevice g){
+	public MainMenuScreen(TheDevice g, Sounds s, Textures t){
 		super(g);
 		draw = new Draw();
-		sounds = new Sounds();
-		textures = new Textures();
-		sounds.loadSoundAssets(Sounds.PACKS.MAIN);
-		textures.loadArtAssets("Main");
+		sounds = s;
+		textures = t;
 		play = new Sprite(textures.getArtAsset("main_play"));
 		bgArt = new Sprite(textures.getArtAsset("main_bg"));
 		help = new Sprite(textures.getArtAsset("main_help"));

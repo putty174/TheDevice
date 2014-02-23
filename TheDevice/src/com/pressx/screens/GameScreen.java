@@ -29,11 +29,11 @@ public class GameScreen extends BaseState {
 	
 	private Sprite background;
 	
-	public GameScreen(TheDevice g, Player player, GameStats stats, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller) {
+	public GameScreen(TheDevice g, Player player, Sounds s, Textures textures, GameStats stats, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller) {
 		super(g);
 		draw = new Draw();
-		sounds = new Sounds();
-		sounds.loadSoundAssets(Sounds.PACKS.GAME);
+		sounds = s;
+		this.textures = textures;
 		levelName = "Level1";
 		this.player = player;
 		this.stats = stats;
@@ -56,6 +56,7 @@ public class GameScreen extends BaseState {
 	@Override
 	public void create()
 	{
+		gameUI.setDraw(draw);
 		this.background = new Sprite(textures.getArtAsset("game_bg"));
 	}
 	
@@ -99,8 +100,6 @@ public class GameScreen extends BaseState {
 		draw.draw(batch);
 		
 		stats.updateTimeElapsed();
-		
-		draw.draw(batch);
 	}
 	
 	public void update() {

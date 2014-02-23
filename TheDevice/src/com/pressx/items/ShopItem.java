@@ -1,23 +1,39 @@
 package com.pressx.items;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
-import com.pressx.screens.ShopScreen;
+import com.pressx.thedevice.GameStats;
 
 public class ShopItem{
 	public enum ShopItemState{NULL,LOCKED,UNLOCKED,EQUIPPED}
-	
-	private Textures textures;
+	protected Draw draw;
+	protected GameStats stats;
+	protected Sounds sound;
+	protected Textures textures;
 	public String name,description;
 	public Sprite icon,background,button;
 	private ShopItemState state = ShopItemState.NULL;
+	String iconname;
 	
-	public ShopItem(Textures textures, String name,String icon/*,String description*/){
+	public ShopItem(Draw d, Textures textures, Sounds s, GameStats st, String name,String icon/*,String description*/){
+		this.draw = d;
+		this.sound = s;
+		this.stats = st;
 		this.textures = textures;
 		this.name = name;
-		this.icon = new Sprite(textures.getArtAsset(icon));
-		this.description = name.toUpperCase()+" DESCRIPTION HERE";//description;
-		background = new Sprite(textures.getArtAsset("itembackground"));
+		iconname = icon;
+	}
+	
+	public void setGameStats(GameStats s) {
+		this.stats = s;
+	}
+
+	public void initializeForShop(){
+		this.icon = getspr(iconname);
+		this.description = "DESCRIPTION HERE";//description;
+		background = getspr("itembackground");
 		setState(ShopItemState.LOCKED);
 	}
 	
@@ -42,4 +58,9 @@ public class ShopItem{
 	public ShopItemState getState(){
 		return state;
 	}
+	
+	public Sprite getspr(String name)
+	{
+		return new Sprite(textures.getArtAsset(name));
+	}//also used by ShopItem
 }

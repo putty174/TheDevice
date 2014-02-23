@@ -29,7 +29,7 @@ public class MineDrop extends AnimatedObject {
 	@Override
 	public void behavior_collision(GameObject obj){
 		if(obj.getID() == 0){
-			if(stats.addMine()){
+			if(stats.addAmmo("Mine")){
 				this.terminate();
 			}
 		}	

@@ -18,13 +18,11 @@ public class GameOverScreen extends BaseState {
 	
 	String score, monster, time;
 	
-	public GameOverScreen(TheDevice g, GameStats stats){
+	public GameOverScreen(TheDevice g, Sounds s, Textures t, GameStats stats){
 		super(g);
 		draw = new Draw();
-		sounds = new Sounds();
-		textures = new Textures();
-		sounds.loadSoundAssets(Sounds.PACKS.END);
-		textures.loadArtAssets("End");
+		sounds = s;
+		textures = t;
 		gameOverImage = new Sprite(textures.getArtAsset("end_bg"));
 		retry = new Sprite(textures.getArtAsset("end_retry"));
 		quit = new Sprite(textures.getArtAsset("end_quit"));

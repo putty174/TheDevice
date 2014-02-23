@@ -28,7 +28,6 @@ public class TheDevice implements ApplicationListener {
 	
 	private Sounds sounds;
 	private Textures textures;
-	private Draw draw;
 	
 	int currentState;
 	BaseState[] posStates;
@@ -50,6 +49,9 @@ public class TheDevice implements ApplicationListener {
 	public void create() {
 		Texture.setEnforcePotImages(false);
 		posStates = new BaseState[NUMSTATES];
+		
+		sounds = new Sounds();
+		textures = new Textures();
 		
 		float width = Gdx.graphics.getWidth();
 		renderInfo[1] = Gdx.graphics.getHeight() * 100 / Gdx.graphics.getWidth();
@@ -92,52 +94,62 @@ public class TheDevice implements ApplicationListener {
 	}
 	
 	public void moveToMain(){
-		posStates[0] = new MainMenuScreen(this);
+		sounds.unloadSoundAssets();
+		textures.unloadArtAssets();
+		sounds.loadSoundAssets(Sounds.PACKS.MAIN);
+		textures.loadArtAssets("Main");
+		sounds.playBGM();
+		posStates[0] = new MainMenuScreen(this, sounds, textures);
 		posStates[0].create();
 		currentState = 0;
 	}
 	
 	public void moveToTutorial(){
-		posStates[4] = new TutorialScreen(this, draw, textures, sounds);
+		textures.unloadArtAssets();
+		textures.loadArtAssets("Tutorial");
+		posStates[4] = new TutorialScreen(this, textures, sounds);
 		posStates[4].create();
 		currentState = 4;
 	}
 	
 	public void moveToLoading() {
-		posStates[7] = new LoadingScreen(this);
+		sounds.stopBGM();
+		sounds.unloadSoundAssets();
+		textures.unloadArtAssets();
+		sounds.loadSoundAssets(Sounds.PACKS.GAME);
+		textures.loadArtAssets("Loading");
+		posStates[7] = new LoadingScreen(this,sounds,textures);
 		posStates[7].create();
 		currentState = 7;
 	}
 
 	public void moveToSequence(String seq){
+		textures.unloadArtAssets();
+		textures.loadArtAssets(seq);
 		if(seq.equals("Intro")){
-			posStates[2]=new CutsceneScreen(this, "Intro");
+			posStates[2]=new CutsceneScreen(this, textures, "Intro");
 			currentState = 2;
 		}
 		else if(seq.equals("Outro")){
-			posStates[6]=new CutsceneScreen(this, "Outro");
+			posStates[6]=new CutsceneScreen(this, textures, "Outro");
 			currentState = 6;
 		}
 	}
 	
-	public void moveToGame(Player player, GameStats stats, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller){
-		sounds.stopBGM();
-		sounds.stopSound();
-		sounds.unloadSoundAssets();
-		sounds.loadSoundAssets(Sounds.PACKS.GAME);
+	public void moveToGame(Player player, Textures textures, GameStats stats, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller){
 		sounds.playBGM();
-		posStates[3] = new GameScreen(this, player, stats, gameUI, box, spawner, room, controller);
+		posStates[3] = new GameScreen(this, player, sounds, textures, stats, gameUI, box, spawner, room, controller);
 		posStates[3].create();
 		currentState = 3;
 	}
 	
 	public void moveToEnd(GameStats stats){
 		sounds.stopBGM();
-		sounds.stopSound();
 		sounds.unloadSoundAssets();
 		sounds.loadSoundAssets(Sounds.PACKS.END);
-		sounds.play("laugh");
-		posStates[5] = new GameOverScreen(this, stats);
+		textures.unloadArtAssets();
+		textures.loadArtAssets("End");
+		posStates[5] = new GameOverScreen(this, sounds, textures, stats);
 		posStates[5].create();
 		currentState = 5;
 	}

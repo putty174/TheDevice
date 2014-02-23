@@ -37,13 +37,11 @@ public class LoadingScreen extends BaseState{
 	
 	private Controller controller;
 	
-	public LoadingScreen(TheDevice g)	{
+	public LoadingScreen(TheDevice g, Sounds s, Textures t)	{
 		super(g);
 		draw = new Draw();
-		sounds = new Sounds();
-		textures = new Textures();
-		sounds.loadSoundAssets(Sounds.PACKS.GAME);
-		textures.loadArtAssets("Loading");
+		sounds = s;
+		textures = t;
 		bg = new Sprite(textures.getArtAsset("bg"));
 		play = new Sprite(textures.getArtAsset("play"));
 	}
@@ -63,7 +61,7 @@ public class LoadingScreen extends BaseState{
 				8, (16 + 2/3) * 0.8f, //Draw width and height
 				150, 250
 				);
-		stats = new GameStats(sounds, player);
+		stats = new GameStats(draw, textures, sounds, player);
 		
 		room = new Room(textures, draw, sounds, stats, player);
 		box = new Device(draw, sounds, textures, 25,25, room);
@@ -84,7 +82,7 @@ public class LoadingScreen extends BaseState{
 			complete = 1;
 			if(Gdx.input.isTouched())
 				if(play.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
-					game.moveToGame(player, stats, gameUI, box, spawner, room, controller);
+					game.moveToGame(player, textures, stats, gameUI, box, spawner, room, controller);
 		}
 		else
 			complete = Interpolation.linear.apply(complete, (textures.a_manager.getProgress()+sounds.s_manager.getProgress()+spawner.getProgress())/4, 0.1f);

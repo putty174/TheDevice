@@ -28,7 +28,7 @@ public class VortexDrop extends AnimatedObject {
 	@Override
 	public void behavior_collision(GameObject obj){
 		if(obj.getID() == 0){
-			if(stats.addVortex()){
+			if(stats.addAmmo("Vortex")){
 				{
 					this.terminate();
 				}

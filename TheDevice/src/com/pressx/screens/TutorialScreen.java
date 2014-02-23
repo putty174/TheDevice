@@ -16,14 +16,12 @@ public class TutorialScreen extends BaseState {
 	Sprite[] screen;
 	int currentScreen, screenMax;
 	
-	public TutorialScreen(TheDevice g, Draw d, Textures t, Sounds s){
+	public TutorialScreen(TheDevice g, Textures t, Sounds s){
 		super(g);
 		
 		draw = new Draw();
-		sounds = new Sounds();
-		textures = new Textures();
-		sounds.loadSoundAssets(Sounds.PACKS.TUTORIAL);
-		textures.loadArtAssets("Tutorial");
+		sounds = s;
+		textures = t;
 		
 		currentScreen = 0;
 		screenMax = 2 - 1;

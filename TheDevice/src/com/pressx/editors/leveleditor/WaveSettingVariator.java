@@ -175,7 +175,8 @@ class FormationAngleVariator extends GuiVariator{
 	public void update(){
 		super.update();
 	}
-
+	
+	boolean clicking;
 	public void draw(){
 		super.draw();
 		if(!checkActive()) return;
@@ -197,15 +198,18 @@ class FormationAngleVariator extends GuiVariator{
 		GraphicsDraw.circle(center,radius);//GraphicsDraw.circle(center,size.y/20);
 
 		Vector2 mousepos = Center.mousePosition();
-		if(Vector2.distanceLessThan(mousepos,center,radius)){
+		if(clicking || Vector2.distanceLessThan(mousepos,center,radius)){
 			Vector2 diff = center.sub(mousepos);
 			float mouseangle = Vector2.toAngle(new Vector2(-diff.x,diff.y));
 			GraphicsDraw.setColor(Color.BLACK);
 			GraphicsDraw.smallBoldFont();
 			GraphicsDraw.text(""+(15*(int)(mouseangle/3.14159265f*180/15)),mousepos);
 			if(Center.leftMouseDown()){
+				clicking = true;
 	    		setValue(2);
 	    		GuiList_Wave.instance.setFormationSpawnAngle(SingleFormation.radiansToSpawnAngle(mouseangle));
+			}else{
+				clicking = false;
 			}
 		}
 	}

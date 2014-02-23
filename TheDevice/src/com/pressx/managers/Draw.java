@@ -100,8 +100,11 @@ public class Draw {
 		for(Sprite sprite : extras)
 			sprite.draw(s);
 		if(!text.isEmpty())
-		for(Entry<Point, String> entry : text.entrySet())
+		for(Entry<Point, String> entry : text.entrySet()) {
+			System.out.println(entry.getValue());
 			font.draw(s, entry.getValue(), entry.getKey().x, entry.getKey().y);
+		}
+		text.clear();
 	}
 	
 	public void draw()

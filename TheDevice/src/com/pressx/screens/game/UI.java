@@ -3,10 +3,9 @@ package com.pressx.screens.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.pressx.managers.Draw;
+import com.pressx.items.*;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
-import com.pressx.objects.items.Mine;
-import com.pressx.objects.items.Vortex;
 import com.pressx.thedevice.GameStats;
 
 public class UI {
@@ -18,12 +17,6 @@ public class UI {
 	private Sprite UIBase;
 	
 	private Sprite pause;
-	
-	private Sprite mine;
-	private Sprite mineCount;
-	
-	private Sprite vortex;
-	private Sprite vortexCount;
 	
 	private Sprite nukeCount1;
 	private Sprite nukeCount2;
@@ -47,10 +40,9 @@ public class UI {
 		nukeCount1 = new Sprite(textures.getArtAsset("ui_bombcount"));
 		nukeCount2 = new Sprite(textures.getArtAsset("ui_bombcount"));
 		nukeCount3 = new Sprite(textures.getArtAsset("ui_bombcount"));
-		mine = new Sprite(textures.getArtAsset("ui_mine"));
-		mineCount = new Sprite(textures.getArtAsset("ui_minecount"));
-		vortex = new Sprite(textures.getArtAsset("ui_vortex"));
-		vortexCount = new Sprite(textures.getArtAsset("ui_minecount"));
+		
+		stats.item0.setRoom(room);		
+		stats.item1.setRoom(room);
 	}
 	
 	public void create()
@@ -76,7 +68,7 @@ public class UI {
 	}
 	
 	private void updateButtons()
-	{
+	{	
 		//Update Nuke Button
 		if(stats.nukeReady())
 			nuke.setRegion(0,0,134,105);
@@ -102,20 +94,6 @@ public class UI {
 			pause.setRegion(0,0,57,57);
 		else
 			pause.setRegion(58,0,57,57);
-		
-		//Update Mine
-		if(stats.mineReady())
-			mine.setRegion(0,0,124,95);
-		else
-			mine.setRegion(124,0,124,95);
-		mineCount.setRegion(39*(3-stats.getMineCount()),0,39,38);
-		
-		//Update Vortex
-		if(stats.vortexReady())
-			vortex.setRegion(0,0,124,95);
-		else
-			vortex.setRegion(124,0,124,95);
-		vortexCount.setRegion(39*(3-stats.getVortCount()),0,39,38);
 	}
 	
 	private void checkInput()
@@ -128,29 +106,11 @@ public class UI {
 				stats.pauseToggle();
 			if(!stats.pauseState())
 			{
-				if(stats.placeItem() == 0)
-				{
-					if(mine.getBoundingRectangle().contains(touchX, touchY)&& stats.mineReady())
-						stats.useMine();
-					else if(vortex.getBoundingRectangle().contains(touchX, touchY) && stats.vortexReady())
-						stats.useVort();
-				}
-				else
-				{
-					if(touchX < Gdx.graphics.getWidth() * 0.8f)
-					{
-						if(stats.placeItem() == 1)
-						{
-							stats.placeMine();
-							room.add_object(new Mine(draw, sound, textures, touchX / Gdx.graphics.getWidth() * 100, touchY / Gdx.graphics.getHeight() * 66));
-						}
-						else if(stats.placeItem() == 2)
-						{
-							stats.placeVort();
-							room.add_object(new Vortex(draw, sound, textures, touchX / Gdx.graphics.getWidth() * 100, touchY / Gdx.graphics.getHeight() * 66));
-						}
-					}
-				}
+				
+				//update the two items
+				stats.item0.update();
+				stats.item1.update();
+
 				if(nuke.getBoundingRectangle().contains(touchX, touchY) && stats.nukeReady())
 					stats.useNuke();
 			}
@@ -165,11 +125,9 @@ public class UI {
 		//Draw Pause
 		draw.draw(Draw.TYPES.BUTTON, pause, 0.90f, 0.90f, 0.05f, 0.09f);
 		
-		//Draw Mine
-		draw.draw(Draw.TYPES.BUTTON, mine, 0.83f, 0.57f, 0.17f, 0.165f);
-		
-		//Draw Vortex
-		draw.draw(Draw.TYPES.BUTTON, vortex, 0.83f, 0.35f, 0.17f, 0.165f);
+		//Draw Items
+		stats.item0.drawButton(0);
+		stats.item1.drawButton(1);
 		
 		//Draw Nuke
 		draw.draw(Draw.TYPES.BUTTON, nuke, 0.84f, 0.06f,0.15f,0.18f);
@@ -184,17 +142,9 @@ public class UI {
 		
 		//Draw Score
 		draw.write(score, ((draw.screenWidth * 0.99f) - draw.font.getBounds(score).width) / draw.screenWidth, 0.825f);
-		
-		//Draw Mine Button with Count
-		if(stats.mineReady())
-			draw.draw(Draw.TYPES.EXTRAS, mineCount, 0.935f, 0.62f, 0.04f, 0.06f);
-		else
-			draw.draw(Draw.TYPES.EXTRAS, mineCount, 0.935f, 0.60f, 0.04f, 0.06f);
-		
-		//Draw Vortex Button with Count
-		if(stats.vortexReady())
-			draw.draw(Draw.TYPES.EXTRAS, vortexCount, 0.935f, 0.40f, 0.04f, 0.06f);
-		else
-			draw.draw(Draw.TYPES.EXTRAS, vortexCount, 0.935f, 0.38f, 0.04f, 0.06f);
+	}
+	
+	public void setDraw(Draw d) {
+		this.draw = d;
 	}
 }
