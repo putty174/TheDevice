@@ -44,13 +44,10 @@ public class GameStats {
 		pause = false;
 		placeItem = 0;
 		nukeState = false;
-<<<<<<< HEAD
 		boxMaxHP = 10;
 		
-		item0 = new Item_Vortex(d, s, t, this);
-		item1 = new Item_Mine(d, s, t, this);
-=======
->>>>>>> 02077626200f4f2df0436e421a906b11bd06d443
+		item0 = new Item_Vortex(s, t);
+		item1 = new Item_Mine(s, t);
 	}
 	
 	public boolean addAmmo(String itemname){//adds ammo for the specified item; the itemname is the "name" parameter for Item's constructor
