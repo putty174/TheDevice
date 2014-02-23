@@ -132,13 +132,8 @@ public class UI {
 		draw.draw(Draw.TYPES.BUTTON, pause, 0.90f, 0.90f, 0.05f, 0.09f);
 		
 		//Draw Items
-<<<<<<< HEAD
 		stats.item0.drawButton(draw,0);
 		stats.item1.drawButton(draw,1);
-=======
-		stats.item0.drawButton(draw, 0);
-		stats.item1.drawButton(draw, 1);
->>>>>>> 619ef0f56ca11613393556499301f564a86045df
 		
 		//Draw Nuke
 		draw.draw(Draw.TYPES.BUTTON, nuke, 0.84f, 0.06f,0.15f,0.18f);

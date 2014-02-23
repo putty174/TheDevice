@@ -113,7 +113,6 @@ public abstract class Item extends ShopItem{
 	}
 	
 	/////draw
-<<<<<<< HEAD
 	public void drawButton(Draw draw,int index){//0 for the first item, 1 for the second item (can be changed if we want more carryable items)
 		if(spr_button == null){
 			spr_button = getspr(getButtonSpriteName());
@@ -122,10 +121,5 @@ public abstract class Item extends ShopItem{
 		}
 		draw.draw(Draw.TYPES.BUTTON,spr_button,.83f,.35f+.22f*index,.17f,.165f);
 		draw.draw(Draw.TYPES.EXTRAS,spr_count,.935f,(buttonup ? .40f : .38f)+.22f*index,.04f,.06f);
-=======
-	public void drawButton(Draw d, int index){//0 for the first item, 1 for the second item (can be changed if we want more carryable items)
-		d.draw(Draw.TYPES.BUTTON,spr_button,.83f,.35f+.22f*index,.17f,.165f);
-		d.draw(Draw.TYPES.EXTRAS,spr_count,.935f,(buttonup ? .40f : .38f)+.22f*index,.04f,.06f);
->>>>>>> 619ef0f56ca11613393556499301f564a86045df
 	}
 }
