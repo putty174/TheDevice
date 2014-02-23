@@ -37,6 +37,7 @@ public class Textures {
 				"vortex","data/art/game/objects/vortex/vortex.png",
 				"vortex_drop","data/art/game/objects/vortex/vorticon.png",
 				"gear", "data/art/game/objects/gear/gear.png",
+				"wrench", "data/art/game/objects/wrench/wrench.png",
 				"indicate", "data/art/game/ui/extra/indication_sheet.png",
 				"mlevel", "data/art/game/ui/extra/mLevel.png",
 				"plevel", "data/art/game/ui/extra/pLevel.png",

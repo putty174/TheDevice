@@ -236,7 +236,7 @@ public class GameObject implements Comparable<GameObject>{
 	
 	private boolean offscreenX(Vector2 nextPos)
 	{
-		if(this.screenBound && (nextPos.x < srcWidth * .02 || nextPos.x > 100*(1-0.15) - (srcWidth * .02)))
+		if(this.screenBound && (nextPos.x < srcWidth * .02 || nextPos.x > 100*(0.8f) - (srcWidth * .02)))
 		{
 			this.velocity.x = -this.velocity.x;
 			return true;
@@ -246,7 +246,7 @@ public class GameObject implements Comparable<GameObject>{
 	
 	private boolean offscreenY(Vector2 nextPos)
 	{
-		if(this.screenBound && (nextPos.y < srcHeight * .02 || nextPos.y > (330 * 100 / 557) - (srcHeight * .042)))
+		if(this.screenBound && (nextPos.y < srcHeight * .02 || nextPos.y > 100*(0.7f) - (srcHeight * .042)))
 		{
 			this.velocity.y = -this.velocity.y;
 			return true;

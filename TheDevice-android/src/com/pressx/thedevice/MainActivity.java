@@ -1,12 +1,10 @@
 package com.pressx.thedevice;
 
-import android.content.Intent;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.pressx.social.Social;
 
-public class MainActivity extends AndroidApplication implements Social{
+public class MainActivity extends AndroidApplication{
 	Bundle saved;
 	
     @Override
@@ -17,10 +15,5 @@ public class MainActivity extends AndroidApplication implements Social{
         cfg.useGL20 = false;
         saved = savedInstanceState;
         initialize(new TheDevice(), cfg);
-    }
-    
-    public void switchActivity() {
-    	Intent soc = new Intent(getApplicationContext(), SocialActivity.class);
-    	startActivity(soc);
     }
 }

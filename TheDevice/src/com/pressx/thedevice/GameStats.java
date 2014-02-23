@@ -18,6 +18,7 @@ public class GameStats {
 	private float nukeCD = 0;
 	private int maxItemCount;
 	private float boxHP;
+	private float boxMaxHP;
 	private float totalTimeElapsed;
 	private Player player;
 	private boolean pause = false;
@@ -43,6 +44,7 @@ public class GameStats {
 		pause = false;
 		placeItem = 0;
 		nukeState = false;
+		boxMaxHP = 10;
 		
 		item0 = new Item_Vortex(d, s, t, this);
 		item1 = new Item_Mine(d, s, t, this);
@@ -116,6 +118,14 @@ public class GameStats {
 	
 	public void setBoxHP(float f){
 		boxHP = f;
+	}
+	
+	public float getBoxMaxHP() {
+		return boxMaxHP;
+	}
+	
+	public void setBoxMaxHP(float f) {
+		boxMaxHP = f;
 	}
 	
 	public int minutesElapsed(){

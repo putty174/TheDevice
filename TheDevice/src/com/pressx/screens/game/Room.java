@@ -18,6 +18,7 @@ import com.pressx.objects.enemy.projectiles.GasCloud;
 import com.pressx.objects.enemy.projectiles.Shockwave;
 import com.pressx.objects.items.MineDrop;
 import com.pressx.objects.items.VortexDrop;
+import com.pressx.objects.items.WrenchDrop;
 import com.pressx.objects.player.Player;
 import com.pressx.particles.GraphicIndicators;
 import com.pressx.thedevice.GameStats;
@@ -231,6 +232,8 @@ public class Room implements Controllable {
 						drops.add(stats.item0.dropAmmo(obj.get_positionX(),obj.get_positionY()));
 					if(stats.item1.checkShouldDropItem())
 						drops.add(stats.item1.dropAmmo(obj.get_positionX(),obj.get_positionY()));
+					if(Math.random() < 0.9)
+						drops.add(new WrenchDrop(draw,sounds,textures,stats,obj.get_positionX(),obj.get_positionY()));
 					if(obj.getHp() == 0)
 					{
 						stats.addMonsterKill();

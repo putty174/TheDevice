@@ -23,7 +23,7 @@ public class MineDrop extends AnimatedObject {
 		this.isActive = false;
 		this.add_animation("mine_item", 0, 0, 4, 8, true);
 		this.set_animation("mine_item", true);
-
+		this.stats = stats;
 	}
 	
 	@Override
