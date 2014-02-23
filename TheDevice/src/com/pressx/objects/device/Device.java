@@ -156,7 +156,7 @@ public class Device extends AnimatedObject {
 		this.drawOffsetY = 1 + this.bob;
 		
 		//Check if hit
-		if (this.health.current != this.hpMemory)
+		if (this.health.current < this.hpMemory)
 		{
 			this.hpMemory = this.health.current;
 			this.hitLength = 20;

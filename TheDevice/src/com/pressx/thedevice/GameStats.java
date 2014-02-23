@@ -4,6 +4,7 @@ import com.pressx.items.*;
 import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
+import com.pressx.objects.GameObject;
 import com.pressx.objects.player.Player;
 
 public class GameStats {
@@ -17,13 +18,13 @@ public class GameStats {
 	private int nukeCount = 3;
 	private float nukeCD = 0;
 	private int maxItemCount;
-	private float boxHP;
-	private float boxMaxHP;
 	private float totalTimeElapsed;
 	private Player player;
+	private GameObject box;
 	private boolean pause = false;
 	private int placeItem = 0;
 	private boolean nukeState = false;
+	private float maxHP;
 	
 	public Item item0;
 	public Item item1;
@@ -44,7 +45,8 @@ public class GameStats {
 		pause = false;
 		placeItem = 0;
 		nukeState = false;
-		boxMaxHP = 10;
+		
+		maxHP = 10;
 		
 		item0 = new Item_Vortex(s, t);
 		item1 = new Item_Mine(s, t);
@@ -57,6 +59,10 @@ public class GameStats {
 		if(item1.name.equals(itemname))
 			return item1.changeAmmo(1);
 		return false;
+	}
+	
+	public void setBox(GameObject b) {
+		box = b;
 	}
 	
 	public void addMonsterKill()
@@ -113,19 +119,19 @@ public class GameStats {
 	}
 	
 	public float getboxHP(){
-		return boxHP;
+		return box.getHp();
 	}
 	
 	public void setBoxHP(float f){
-		boxHP = f;
+		box.setHp(f);
 	}
 	
 	public float getBoxMaxHP() {
-		return boxMaxHP;
+		return maxHP;
 	}
 	
 	public void setBoxMaxHP(float f) {
-		boxMaxHP = f;
+		maxHP = f;
 	}
 	
 	public int minutesElapsed(){

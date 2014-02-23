@@ -17,7 +17,7 @@ public class WrenchDrop extends AnimatedObject{
 	
 	public WrenchDrop(Draw d, Sounds s, Textures t, GameStats st, float posX, float posY) {
 		super(d,s,t,"wrench",1005, posX, posY, 0, 0, 5, 5, 0, 0,
-				false, 5, false, 15, 15,
+				false, 5, false, 13, 13,
 				t.getArtAsset("wrench"), 200, 200);
 		
 		this.stats = st;
@@ -30,17 +30,15 @@ public class WrenchDrop extends AnimatedObject{
 	@Override
 	public void behavior_collision(GameObject obj){
 		if(obj.getID() == 0){
-			System.out.println("Old Current HP: " + stats.getboxHP());
-			System.out.println("Old Max HP    : " + stats.getBoxMaxHP());
-			System.out.println(stats.getboxHP() < stats.getBoxMaxHP());
 			if(stats.getboxHP() < stats.getBoxMaxHP()){
-				stats.setBoxHP(stats.getboxHP() + (stats.getBoxMaxHP() * (0.2f + (0.15f * (lvl - 1)))));
+				float newHealth = stats.getboxHP() + (stats.getBoxMaxHP() * (0.2f + (0.15f * (lvl - 1))));
+				System.out.println("Old Health: " + stats.getboxHP());
+				System.out.println("New Health: " + newHealth);
+				stats.setBoxHP(newHealth);
 				if(stats.getboxHP() > stats.getBoxMaxHP())
 					stats.setBoxHP(stats.getBoxMaxHP());
 				this.terminate();
 			}
-			System.out.println("New Current HP: " + stats.getboxHP());
-			System.out.println("New HP    : " + stats.getBoxMaxHP());
 		}
 	}
 	
