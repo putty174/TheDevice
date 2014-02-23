@@ -36,6 +36,7 @@ public class Textures {
 				"deathRing", "data/art/game/objects/nuke/deathring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
 				"vortex_drop","data/art/game/objects/vortex/vorticon.png",
+				"gear", "data/art/game/objects/gear/gear.png",
 				"indicate", "data/art/game/ui/extra/indication_sheet.png",
 				"mlevel", "data/art/game/ui/extra/mLevel.png",
 				"plevel", "data/art/game/ui/extra/pLevel.png",
