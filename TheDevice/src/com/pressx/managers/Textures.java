@@ -32,10 +32,10 @@ public class Textures {
 				"exp", "data/art/game/objects/device/exp.png",
 				"hero", "data/art/game/objects/hero/hero.png",
 				"mine","data/art/game/objects/mine/mine.png",
-				"mine_drop","data/art/game/objects/mine/minedrop.png",
+				"mine_drop","data/art/game/objects/mine/mine_drop.png",
 				"deathRing", "data/art/game/objects/nuke/deathring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
-				"vortex_drop","data/art/game/objects/vortex/vorticon.png",
+				"vortex_drop","data/art/game/objects/vortex/vort_icon.png",
 				"gear", "data/art/game/objects/gear/gear.png",
 				"wrench", "data/art/game/objects/wrench/wrench.png",
 				"indicate", "data/art/game/ui/extra/indication_sheet.png",
@@ -117,8 +117,8 @@ public class Textures {
 				"largeicon_vortex",path+"vortex_large.png",
 				"largeicon_control",path+"control_large.png",
 				"largeicon_gear",path+"gear_large.png",
-				"mine_drop","data/art/game/objects/mine/mineDrop.png",
-				"vortex_drop","data/art/game/objects/vortex/vortIcon.png"
+				"mine_drop","data/art/game/objects/mine/mine_drop.png",
+				"vortex_drop","data/art/game/objects/vortex/vort_icon.png"
 				/*"item0",path+"item0.png",
 				"item1",path+"item1.png",
 				"item2",path+"item2.png",
