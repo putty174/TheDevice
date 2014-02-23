@@ -15,16 +15,19 @@ public abstract class Item extends ShopItem{
 	protected Sprite spr_button,spr_count;
 	protected int ammo;
 	protected Room room;
+	protected Draw draw;
 	protected boolean buttonup;
 	
-	public Item(Draw draw,Textures texture,Sounds sounds, GameStats stats,String name,String icon){
-		super(draw,texture,sounds,stats,name,icon);
-		
-		spr_button = getspr(getButtonSpriteName());
-		spr_count = getspr(getCountSpriteName());
-		updateButton();
+	public Item(Textures texture,Sounds sounds,String name,String icon,String largeicon){
+		super(texture,sounds,name,icon,largeicon);
 	}
 	
+	public void setGameStats(GameStats stats){
+		this.stats = stats;
+	}
+	public void setDraw(Draw draw){
+		this.draw = draw;
+	}
 	public void setRoom(Room room){
 		this.room = room;
 	}
@@ -92,6 +95,7 @@ public abstract class Item extends ShopItem{
 	
 	/////update
 	public void update(){
+		if(spr_button == null) return;
 		int x = Gdx.input.getX();
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 		if(!stats.pauseState() && Gdx.input.justTouched()){
@@ -109,8 +113,19 @@ public abstract class Item extends ShopItem{
 	}
 	
 	/////draw
+<<<<<<< HEAD
+	public void drawButton(Draw draw,int index){//0 for the first item, 1 for the second item (can be changed if we want more carryable items)
+		if(spr_button == null){
+			spr_button = getspr(getButtonSpriteName());
+			spr_count = getspr(getCountSpriteName());
+			updateButton();
+		}
+		draw.draw(Draw.TYPES.BUTTON,spr_button,.83f,.35f+.22f*index,.17f,.165f);
+		draw.draw(Draw.TYPES.EXTRAS,spr_count,.935f,(buttonup ? .40f : .38f)+.22f*index,.04f,.06f);
+=======
 	public void drawButton(Draw d, int index){//0 for the first item, 1 for the second item (can be changed if we want more carryable items)
 		d.draw(Draw.TYPES.BUTTON,spr_button,.83f,.35f+.22f*index,.17f,.165f);
 		d.draw(Draw.TYPES.EXTRAS,spr_count,.935f,(buttonup ? .40f : .38f)+.22f*index,.04f,.06f);
+>>>>>>> 619ef0f56ca11613393556499301f564a86045df
 	}
 }

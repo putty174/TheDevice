@@ -2,8 +2,8 @@ package com.pressx.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.pressx.items.PlayerInventory;
 import com.pressx.managers.Draw;
-import com.pressx.items.*;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.GameStats;
@@ -28,7 +28,7 @@ public class UI {
 	private String time;
 	private String score;
 	
-	public UI(Draw draw, Sounds sounds, Textures textures, GameStats stats, Room room){
+	public UI(Draw draw, Sounds sounds, Textures textures, GameStats stats, Room room,PlayerInventory inventory){
 		this.draw = draw;
 		this.sound = sounds;
 		this.textures = textures;
@@ -41,7 +41,13 @@ public class UI {
 		nukeCount2 = new Sprite(textures.getArtAsset("ui_bombcount"));
 		nukeCount3 = new Sprite(textures.getArtAsset("ui_bombcount"));
 		
-		stats.item0.setRoom(room);		
+		stats.item0 = inventory.item0;		
+		stats.item1 = inventory.item1;
+		stats.item0.setGameStats(stats);
+		stats.item1.setGameStats(stats);
+		stats.item0.setDraw(draw);
+		stats.item1.setDraw(draw);
+		stats.item0.setRoom(room);
 		stats.item1.setRoom(room);
 	}
 	
@@ -126,8 +132,13 @@ public class UI {
 		draw.draw(Draw.TYPES.BUTTON, pause, 0.90f, 0.90f, 0.05f, 0.09f);
 		
 		//Draw Items
+<<<<<<< HEAD
+		stats.item0.drawButton(draw,0);
+		stats.item1.drawButton(draw,1);
+=======
 		stats.item0.drawButton(draw, 0);
 		stats.item1.drawButton(draw, 1);
+>>>>>>> 619ef0f56ca11613393556499301f564a86045df
 		
 		//Draw Nuke
 		draw.draw(Draw.TYPES.BUTTON, nuke, 0.84f, 0.06f,0.15f,0.18f);

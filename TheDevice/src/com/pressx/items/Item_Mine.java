@@ -10,8 +10,8 @@ import com.pressx.objects.items.MineDrop;
 import com.pressx.thedevice.GameStats;
 
 public class Item_Mine extends Item{
-	public Item_Mine(Draw draw, Sounds sounds, Textures textures, GameStats stats){
-		super(draw, textures, sounds, stats, "Mine","ui_mine");
+	public Item_Mine(Sounds sounds, Textures textures){
+		super(textures, sounds, "Mine","ui_mine","largeicon_mine");
 	}
 
 	@Override

@@ -8,21 +8,20 @@ import com.pressx.thedevice.GameStats;
 
 public class ShopItem{
 	public enum ShopItemState{NULL,LOCKED,UNLOCKED,EQUIPPED}
-	protected Draw draw;
 	protected GameStats stats;
 	protected Sounds sound;
 	protected Textures textures;
 	public String name,description;
-	public Sprite icon,background,button;
+	public Sprite icon,largeicon,background,button;
 	private ShopItemState state = ShopItemState.NULL;
-	String iconname;
 	
-	public ShopItem(Draw d, Textures textures, Sounds s, GameStats st, String name,String icon/*,String description*/){
-		this.draw = d;
+	String iconname,largeiconname;
+	
+	public ShopItem(Textures textures, Sounds s, String name,String icon,String largeicon/*,String description*/){
 		this.sound = s;
-		this.stats = st;
 		this.textures = textures;
 		this.name = name;
+		largeiconname = largeicon;
 		iconname = icon;
 	}
 	
@@ -32,6 +31,7 @@ public class ShopItem{
 
 	public void initializeForShop(){
 		this.icon = getspr(iconname);
+		this.largeicon = getspr(largeiconname);
 		this.description = "DESCRIPTION HERE";//description;
 		background = getspr("itembackground");
 		setState(ShopItemState.LOCKED);
@@ -61,6 +61,7 @@ public class ShopItem{
 	
 	public Sprite getspr(String name)
 	{
+		System.out.println(name);
 		return new Sprite(textures.getArtAsset(name));
 	}//also used by ShopItem
 }
