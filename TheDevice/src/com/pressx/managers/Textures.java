@@ -140,7 +140,6 @@ public class Textures {
 	{
 		currentPackage = entries.get(packName);
 		for(String str : currentPackage.values()){
-			System.out.println(str);
 			a_manager.load(str, Texture.class);
 		}
 		a_manager.finishLoading();

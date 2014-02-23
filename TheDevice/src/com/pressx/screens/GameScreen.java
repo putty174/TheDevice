@@ -42,6 +42,7 @@ public class GameScreen extends BaseState {
 		this.spawner = spawner;
 		this.gameUI = gameUI;
 		this.controller = controller;
+		stats.setBox(box);
 	}
 	
 	/* Game */
