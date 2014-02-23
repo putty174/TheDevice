@@ -50,7 +50,7 @@ public class Textures {
 				"ui_vortex", "data/art/game/ui/uibase/buttons/vortex/vortex.png",
 				"ui_minecount", "data/art/game/ui/uibase/buttons/count.png",
 				"ui_pause", "data/art/game/ui/uibase/pause.png",
-				"ui_base","data/art/game/ui/uibase/uibase.png"
+				"ui_base","data/art/game/ui/uibase/ui_base.png"
 				);
 		
 		addPath(
