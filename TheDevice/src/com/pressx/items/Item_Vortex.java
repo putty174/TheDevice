@@ -11,7 +11,7 @@ import com.pressx.thedevice.GameStats;
 
 public class Item_Vortex extends Item{
 	public Item_Vortex(Sounds sounds, Textures textures){
-		super(textures, sounds, "Vortex","ui_vortex","largeicon_vortex");
+		super(textures, sounds, "Vortex","vortex_drop","largeicon_vortex");
 	}
 
 	@Override
@@ -57,4 +57,7 @@ public class Item_Vortex extends Item{
 	public AnimatedObject dropAmmo(float posx, float posy) {
 		return new VortexDrop(draw, sound, textures, stats, posx,posy);
 	}
+	
+	@Override
+	public int getCost(){return 0;}
 }

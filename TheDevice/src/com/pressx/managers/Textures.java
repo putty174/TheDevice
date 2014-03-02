@@ -32,10 +32,10 @@ public class Textures {
 				"exp", "data/art/game/objects/device/exp.png",
 				"hero", "data/art/game/objects/hero/hero.png",
 				"mine","data/art/game/objects/mine/mine.png",
-				"mine_drop","data/art/game/objects/mine/mine_drop.png",
+				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
 				"deathRing", "data/art/game/objects/nuke/death_ring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
-				"vortex_drop","data/art/game/objects/vortex/vortex_icon.png",
+				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
 				"gear", "data/art/game/objects/gear/gear.png",
 				"wrench", "data/art/game/objects/wrench/wrench.png",
 				"indicate", "data/art/game/ui/extra/indication_sheet.png",
@@ -106,9 +106,11 @@ public class Textures {
 				"itembutton_buy",path+"itembutton_buy.png",
 				"itembutton_equip",path+"itembutton_equip.png",
 				"itembutton_unequip",path+"itembutton_unequip.png",
+				"itembutton_loadoutfull_big",path+"itembutton_equip_gray_big.png",
 				"itembutton_buy_big",path+"itembutton_buy_big.png",
 				"itembutton_equip_big",path+"itembutton_equip_big.png",
 				"itembutton_unequip_big",path+"itembutton_unequip_big.png",
+				"itembutton_upgrade_big",path+"itembutton_upgrade_big.png",
 				"exp", "data/art/game/objects/device/exp.png",
 				"uparrow",path+"uparrow.png",
 				"ui_mine", "data/art/game/ui/uibase/buttons/mine/mine.png",
@@ -117,8 +119,9 @@ public class Textures {
 				"largeicon_vortex",path+"vortex_large.png",
 				"largeicon_control",path+"control_large.png",
 				"largeicon_gear",path+"gear_large.png",
-				"mine_drop","data/art/game/objects/mine/mine_drop.png",
-				"vortex_drop","data/art/game/objects/vortex/vortex_icon.png"
+				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
+				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
+				"gear_drop","data/art/game/objects/gear/gear_pickup.png"
 				/*"item0",path+"item0.png",
 				"item1",path+"item1.png",
 				"item2",path+"item2.png",
@@ -140,6 +143,7 @@ public class Textures {
 	{
 		currentPackage = entries.get(packName);
 		for(String str : currentPackage.values()){
+			System.out.println(str);
 			a_manager.load(str, Texture.class);
 		}
 		a_manager.finishLoading();

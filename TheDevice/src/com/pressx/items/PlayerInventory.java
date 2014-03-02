@@ -4,8 +4,8 @@ import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.GameStats;
 
-public class PlayerInventory{	
-	final int TOTALITEMS = 100;	
+public class PlayerInventory{
+	final int TOTALITEMS = 5;
 	
 	public int numExperience = 1337;//temporary
 	
@@ -18,9 +18,7 @@ public class PlayerInventory{
 		allItems[1] = new Item_Mine(s,t);
 		allItems[2] = new Item_Gear(s,t);
 		allItems[3] = new Item_Control(s,t);
-		for(int i = 4; i < TOTALITEMS; i++){
-			allItems[i] = new Item_Vortex(s,t);
-		}
+		allItems[4] = new Item_Mine(s,t);
 		//for now
 		itemOwned[0] = true;
 		itemOwned[1] = true;
@@ -36,6 +34,10 @@ public class PlayerInventory{
 			updateItemShopButtons(item);
 	}
 
+	/////Get Info
+	public boolean checkLoadoutFull(){
+		return item0 != null && item1 != null;
+	}
 	int getIndexOfItem(ShopItem item){
 		for(int i = 0; i < TOTALITEMS; i++)
 			if(allItems[i] == item) return i;
@@ -49,10 +51,35 @@ public class PlayerInventory{
 		return itemOwned[getIndexOfItem(item)];
 	}
 	
+	/////Equip/Unequip
+	public void equipItem(Item item){
+		System.out.println("YAY");
+		if(item0 == null)
+			item0 = item;
+		else if(item1 == null)
+			item1 = item;
+	}
 	public void equipItem(int index,Item item){
 		if(index == 0)
 			item0 = item;
 		else
 			item1 = item;
+	}
+	public void unequipItem(ShopItem item){
+		if(item1 == item)
+			item1 = null;
+		else if(item0 == item)
+			item0 = null;
+	}
+	
+	/////Unlock
+	public void unlockItem(ShopItem item){
+		itemOwned[getIndexOfItem(item)] = true;
+	}
+	public boolean tryPurchaseItem(ShopItem item){
+		if(numExperience < item.getCost()) return false;
+		numExperience -= item.getCost();
+		unlockItem(item);
+		return true;
 	}
 }

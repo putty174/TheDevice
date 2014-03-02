@@ -11,7 +11,7 @@ import com.pressx.thedevice.GameStats;
 
 public class Item_Mine extends Item{
 	public Item_Mine(Sounds sounds, Textures textures){
-		super(textures, sounds, "Mine","ui_mine","largeicon_mine");
+		super(textures, sounds, "Mine","mine_drop","largeicon_mine");
 	}
 
 	@Override
@@ -56,4 +56,7 @@ public class Item_Mine extends Item{
 	public void fieldPressed(float touchX,float touchY){
 		room.add_object(new Mine(draw, sound, textures, (float)touchX / Gdx.graphics.getWidth() * 100, (float)touchY / Gdx.graphics.getHeight() * 66));	
 	}
+	
+	@Override
+	public int getCost(){return 0;}
 }
