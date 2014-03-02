@@ -6,8 +6,8 @@ import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.GameStats;
 
-public class ShopItem{
-	public enum ShopItemState{NULL,LOCKED,UNLOCKED,EQUIPPED}
+public abstract class ShopItem{
+	public enum ShopItemState{NULL,LOCKED,UNLOCKED,EQUIPPED}//UNLOCKEDBUTUNEQUIPPABLE is only used by ShopScreen
 	protected GameStats stats;
 	protected Sounds sound;
 	protected Textures textures;
@@ -28,6 +28,8 @@ public class ShopItem{
 	public void setGameStats(GameStats s) {
 		this.stats = s;
 	}
+	
+	public abstract int getCost();
 
 	public void initializeForShop(){
 		this.icon = getspr(iconname);

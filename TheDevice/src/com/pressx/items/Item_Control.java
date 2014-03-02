@@ -56,4 +56,7 @@ public class Item_Control extends Item{
 	public AnimatedObject dropAmmo(float posx, float posy) {
 		return new VortexDrop(draw, sound, textures, stats, posx, posy);
 	}
+	
+	@Override
+	public int getCost(){return 200;}
 }

@@ -10,7 +10,7 @@ import com.pressx.thedevice.GameStats;
 
 public class Item_Gear extends Item{
 	public Item_Gear(Sounds sounds, Textures textures){
-		super(textures, sounds, "Gear","ui_vortex","largeicon_gear");
+		super(textures, sounds, "Gear","gear_drop","largeicon_gear");
 	}
 
 	@Override
@@ -56,4 +56,7 @@ public class Item_Gear extends Item{
 	public AnimatedObject dropAmmo(float posx, float posy) {
 		return new VortexDrop(draw, sound, textures, stats, posx, posy);
 	}
+	
+	@Override
+	public int getCost(){return 100;}
 }
