@@ -25,15 +25,6 @@ public class Item_Vortex extends Item{
 	}
 
 	@Override
-	protected void onActivated(){
-		spr_button.setRegion(124,0,124,95);
-	}
-	@Override
-	protected void onDeactivated(){
-		spr_button.setRegion(0,0,124,95);
-	}
-
-	@Override
 	public int getMaxAmmo(){
 		return 3;
 	}

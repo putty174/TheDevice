@@ -18,10 +18,12 @@ public class Draw {
 	private TreeMap<Float, Sprite> hpbars = new TreeMap<Float, Sprite>();
 	private Sprite ui = null;
 	private HashSet<Sprite> buttons = new HashSet<Sprite>();
-	private HashSet<Sprite> extras = new HashSet<Sprite>();
+	private HashSet<Sprite> extras0 = new HashSet<Sprite>();
+	private HashSet<Sprite> extras1 = new HashSet<Sprite>();
+	private HashSet<Sprite> extras2 = new HashSet<Sprite>();
 	private TreeMap<Point, String> text = new TreeMap<Point, String>();
 	
-	public enum TYPES {BACKGROUND, ACTOR, HPBAR, UI, BUTTON, EXTRAS};
+	public enum TYPES {BACKGROUND, ACTOR, HPBAR, UI, BUTTON, EXTRAS, SUPEREXTRAS, MEGAEXTRAS};
 	
 	public final BitmapFont font = new BitmapFont(Gdx.files.internal("data/fonts/bearz/bearz.fnt"),Gdx.files.internal("data/fonts/bearz/bearz.png"), false);
 	
@@ -30,6 +32,12 @@ public class Draw {
 		font.setScale((float)screenHeight / 500, (float)screenHeight / 500);
 	}
 	
+	void addextra(HashSet<Sprite> extras, Sprite sprite, float xPos, float yPos, float width, float height){
+		extras.remove(sprite);
+		sprite.setOrigin(0, 0);
+		sprite.setBounds(xPos*screenWidth, yPos*screenHeight, width*screenWidth, height*screenHeight);
+		extras.add(sprite);
+	}
 	/** Draws sprites to screen. Sprite draw order is automatically done correctly. Valid TYPES are: { BACKGROUND, ACTOR, HPBAR, UI, BUTTON, EXTRAS }
 	 * @param TYPE the Type of the asset, background, actor, hpbar, ui, button, extras
 	 * @param sprite the sprite to be drawn
@@ -69,11 +77,15 @@ public class Draw {
 				break;
 				
 			case EXTRAS:
-				extras.remove(sprite);
-				sprite.setOrigin(0, 0);
-				sprite.setBounds(xPos*screenWidth, yPos*screenHeight, width*screenWidth, height*screenHeight);
-				extras.add(sprite);
+				addextra(extras0,sprite,xPos,yPos,width,height);
+				break;				
+			case SUPEREXTRAS:
+				addextra(extras1,sprite,xPos,yPos,width,height);
+				break;				
+			case MEGAEXTRAS:
+				addextra(extras2,sprite,xPos,yPos,width,height);
 				break;
+				
 			default:
 				break;
 		}
@@ -97,7 +109,11 @@ public class Draw {
 			ui.draw(s);
 		for(Sprite sprite : buttons)
 			sprite.draw(s);
-		for(Sprite sprite : extras)
+		for(Sprite sprite : extras0)
+			sprite.draw(s);
+		for(Sprite sprite : extras1)
+			sprite.draw(s);
+		for(Sprite sprite : extras2)
 			sprite.draw(s);
 		if(!text.isEmpty())
 		for(Entry<Point, String> entry : text.entrySet())
@@ -119,7 +135,11 @@ public class Draw {
 			ui.draw(s);
 		for(Sprite sprite : buttons)
 			sprite.draw(s);
-		for(Sprite sprite : extras)
+		for(Sprite sprite : extras0)
+			sprite.draw(s);
+		for(Sprite sprite : extras1)
+			sprite.draw(s);
+		for(Sprite sprite : extras2)
 			sprite.draw(s);
 		for(Entry<Point, String> entry : text.entrySet())
 			font.draw(s, entry.getValue(), entry.getKey().x, entry.getKey().y);
@@ -133,7 +153,9 @@ public class Draw {
 		hpbars.clear();
 		ui = null;
 		buttons.clear();
-		extras.clear();
+		extras0.clear();
+		extras1.clear();
+		extras2.clear();
 		text.clear();
 	}
 
@@ -143,7 +165,9 @@ public class Draw {
 		hpbars.clear();
 		ui = null;
 		buttons.clear();
-		extras.clear();
+		extras0.clear();
+		extras1.clear();
+		extras2.clear();
 		text.clear();
 	}
 }

@@ -1,6 +1,7 @@
 package com.pressx.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.items.Item;
@@ -16,58 +17,69 @@ public class ShopScreen extends BaseState {
 	private Sounds sounds;
 	private Textures textures;
 	
-	final float NUMITEMSPERPAGE = 4.4f;//an exact looks confusing
+	final float NUMITEMSPERPAGE = 4.4f;//an exact value can look confusing
 	final float NUMITEMSPERPAGE_MAX = NUMITEMSPERPAGE+1;
 
-	final float ITEMSCROLL_SLIPPERINESS = .1f;//velocity multiplier per second
+	final float ITEMSCROLL_SLIPPERINESS = .1f;//multiplied to velocity per second
 	final float ITEMSCROLL_BOUNCINESSONMAX = .002f;//how much it "stretches" when hitting the top or bottom
 	
-	final float ITEMUNIT_OFFSETX = .5f;
+	final float ITEMUNIT_OFFSETX = .5f;//ITEMUNIT: The list of items
 	final float ITEMUNIT_OFFSETMULTY = 1f/NUMITEMSPERPAGE;
 	final float ITEMUNIT_WIDTH = .45f;
 	final float ITEMUNIT_HEIGHT = ITEMUNIT_OFFSETMULTY-.02f;
 	final float ITEMUNIT_OFFSETMULTY_HEIGHT_DIFF = ITEMUNIT_OFFSETMULTY-ITEMUNIT_HEIGHT;
-	final float SELECTEDITEMUNITBACKGROUNDRATIO_X = 680f/634;
+	final float SELECTEDITEMUNITBACKGROUNDRATIO_X = 680f/634;//SELECTEDITEMUNITBACKGROUNDRATIO: The animated flashing effect for the currently-selected item
 	final float SELECTEDITEMUNITBACKGROUNDRATIO_Y = 255f/209;
-	final float ITEMICON_EXTRASPACE = .015f;
+	final float ITEMICON_EXTRASPACE = .015f;//Space between the top side of the itemunit and the top of the item icon 
 	final float ITEMICON_HEIGHT = ITEMUNIT_HEIGHT-ITEMICON_EXTRASPACE*2;
-	final float ITEMICON_WIDTH = ITEMICON_HEIGHT*3/4;//not really used; calculated from screen size to have square icons
+	//final float ITEMICON_WIDTH = ITEMICON_HEIGHT*3/4;//not used; instead calculated from screen size to make square icons
 	final float ITEMICON_OFFSETX = ITEMICON_EXTRASPACE;
 	final float ITEMICON_OFFSETY = ITEMICON_EXTRASPACE;
-	final float ITEMTITLE_OFFSETX = ITEMUNIT_OFFSETX+ITEMICON_OFFSETX*2+ITEMICON_WIDTH;
+	final float ITEMTITLE_OFFSETX = ITEMUNIT_OFFSETX+ITEMICON_OFFSETX*2+ITEMICON_HEIGHT*3/4;//ITEMTITLE: Name of item on the itemunits
 	final float ITEMTITLE_OFFSETY = ITEMUNIT_HEIGHT/2+.05f;
-	final float ITEMBUTTON_WIDTH = ITEMUNIT_WIDTH/2.1f/1.2f;
+	final float ITEMBUTTON_WIDTH = ITEMUNIT_WIDTH/2.1f/1.2f;//ITEMBUTTON: Small nonfunctional "button" on every itemunit
 	final float ITEMBUTTON_HEIGHT = ITEMUNIT_HEIGHT/2.5f/1.2f;
 	final float ITEMBUTTON_OFFSETX = ITEMUNIT_OFFSETX+.2f;
-	final float ITEMBUTTON_OFFSETY = 0;//ITEMUNIT_HEIGHT/20;
-	final float ITEMDESC_OFFSETX = .01f;
+	final float ITEMBUTTON_OFFSETY = 0;
+	final float ITEMDESC_OFFSETX = .01f;//ITEMDESC: Selected item's description box
 	final float ITEMDESC_OFFSETY = 0f;
 	final float ITEMDESC_WIDTH = .46f;
 	final float ITEMDESC_HEIGHT = .9f;
-	final float ITEMDESCBUTTON_WIDTH = ITEMDESC_WIDTH/2.5f;
+	final float ITEMDESCBUTTON_WIDTH = ITEMDESC_WIDTH/2.5f;//ITEMDESCBUTTON: The "Build", "Equip", "Unequip", or "Loadout Full" button above the description of the selected item
 	final float ITEMDESCBUTTON_HEIGHT = ITEMDESC_HEIGHT/9;
 	final float ITEMDESCBUTTON_OFFSETX = ITEMDESC_OFFSETX+ITEMDESC_WIDTH/2;
 	final float ITEMDESCBUTTON_OFFSETY = ITEMDESC_OFFSETY+ITEMDESC_HEIGHT-ITEMDESC_HEIGHT/3;
-	final float ITEMLARGEICON_OFFSETX = ITEMDESC_OFFSETX+.06f;
+	final float ITEMLARGEICON_OFFSETX = ITEMDESC_OFFSETX+.06f;//ITEMLARGEICON: The icon above the description of the selected item
 	final float ITEMLARGEICON_OFFSETY = ITEMDESC_OFFSETY+.628f;
 	final float ITEMLARGEICON_WIDTH = 2f/20;
 	final float ITEMLARGEICON_HEIGHT = 2f/15;
-	final float ITEMLARGEUPGRADE_OFFSETX = ITEMDESCBUTTON_OFFSETX;
+	final float ITEMLARGEUPGRADE_OFFSETX = ITEMDESCBUTTON_OFFSETX;//ITEMLARGEUPGRADE: The "Upgrade" button below the description
 	final float ITEMLARGEUPGRADE_OFFSETY = ITEMDESC_OFFSETY+.05f;
 	final float ITEMLARGEUPGRADE_WIDTH = ITEMDESCBUTTON_WIDTH;
 	final float ITEMLARGEUPGRADE_HEIGHT = ITEMDESCBUTTON_HEIGHT;
+	final float LOADOUT_WIDTH = .55f;//LOADOUT: The bar at the bottom with the two currently-equipped items
+	final float LOADOUT_HEIGHT = ITEMICON_HEIGHT+.05f;
+	final float LOADOUT_OFFSETX = 1-LOADOUT_WIDTH;
+	final float LOADOUT_OFFSETY = 0;
+	final float LOADOUTICON0_OFFSETX_CENTER = LOADOUT_OFFSETX+LOADOUT_WIDTH/4+.025f;
+	final float LOADOUTICON1_OFFSETX_CENTER = LOADOUT_OFFSETX+LOADOUT_WIDTH*3/4+.025f;
+	final float LOADOUTICON_OFFSETY = LOADOUT_HEIGHT-ITEMICON_HEIGHT-.025f;
 	
 	float ITEMSCROLL_MAX;
+	
 	Sprite spr_background,spr_backbutton,spr_itemselectback,spr_experience;
 	Sprite spr_arrow_up,spr_arrow_down;
 	Sprite spr_desc_background,spr_desc_icon;
 	Sprite[] spr_desc_bigbuttons;
 	Sprite spr_desc_bigbutton_current;
 	Sprite spr_bigbutton_upgrade;
+	Sprite spr_loadoutbar;
+	Sprite spr_loadouticon0,spr_loadouticon1;
 	ShopItem[] items;
 
 	float itemscrollvelocity,itemscroll;//the velocity it will scroll at (ITEMUNIT_OFFSETMULTY/second) if the mouse is not held down and how far it's scrolled down (ITEMUNIT_OFFSETMULTY) 
 	int animcycle;//incremented by 1 every update (for animations)
+	boolean draggingitemlist;
 	
 	ShopItem selectedItem = null;
 	
@@ -75,7 +87,7 @@ public class ShopScreen extends BaseState {
 
 	public ShopScreen(TheDevice g){
 		super(g);
-		ITEMSCROLL_MAX = g.inventory.allItems.length-NUMITEMSPERPAGE;
+		ITEMSCROLL_MAX = g.inventory.allItems.length-NUMITEMSPERPAGE+LOADOUT_HEIGHT/ITEMUNIT_HEIGHT;
 		
 		draw = new Draw();
 		sounds = g.sounds;//new Sounds();
@@ -92,6 +104,8 @@ public class ShopScreen extends BaseState {
 		
 		spr_desc_background = getspr("itemdescbackground");
 		
+		spr_loadoutbar = getspr("loadoutbar");
+		
 		spr_desc_bigbuttons = new Sprite[4];
 		spr_desc_bigbuttons[0] = getspr("itembutton_loadoutfull_big");
 		spr_desc_bigbuttons[1] = getspr("itembutton_buy_big");
@@ -104,6 +118,14 @@ public class ShopScreen extends BaseState {
 		for(ShopItem item : items)
 			item.initializeForShop();
 		game.inventory.updateAllItemShopButtons();
+		updateLoadoutSprites();
+	}
+	
+	void updateLoadoutSprites(){
+		if(game.inventory.item0 != null)
+			spr_loadouticon0 = new Sprite(game.inventory.item0.icon);
+		if(game.inventory.item1 != null)
+			spr_loadouticon1 = new Sprite(game.inventory.item1.icon); 
 	}
 	
 	public Sprite getspr(String name)
@@ -121,6 +143,7 @@ public class ShopScreen extends BaseState {
 		int screensizey = Gdx.graphics.getHeight();
 		float screenytox = (float)screensizey/screensizex;
 		float screenxtoy = 1/screenytox;
+		float itemiconwidth = ITEMICON_HEIGHT*screenytox;
 		animcycle++;
 		
 		//Draw background and "Back" button
@@ -151,23 +174,23 @@ public class ShopScreen extends BaseState {
 			}else{
 				items[i].icon.setRegion(0,0,200,200);
 			}
-			draw.draw(Draw.TYPES.EXTRAS,items[i].icon,ITEMUNIT_OFFSETX+ITEMICON_OFFSETX,posy+ITEMICON_OFFSETY,ITEMICON_HEIGHT*screenytox,ITEMICON_HEIGHT);
-			
+			draw.draw(Draw.TYPES.EXTRAS,items[i].icon,ITEMUNIT_OFFSETX+ITEMICON_OFFSETX,posy+ITEMICON_OFFSETY,itemiconwidth,ITEMICON_HEIGHT);
 			draw.draw(Draw.TYPES.BUTTON,items[i].background,ITEMUNIT_OFFSETX,posy,ITEMUNIT_WIDTH,ITEMUNIT_HEIGHT);
 			draw.draw(Draw.TYPES.EXTRAS,items[i].button,ITEMBUTTON_OFFSETX,posy+ITEMBUTTON_OFFSETY,ITEMBUTTON_WIDTH,ITEMBUTTON_HEIGHT);
 			draw.write(items[i].name,ITEMTITLE_OFFSETX,posy+ITEMTITLE_OFFSETY);
 		}
 		
-		//animated arrows on the right
+		//Draw animated arrows on the right
 		int anim_arrow = (animcycle)%14;
 		if(itemscroll > 0){
 			draw.draw(Draw.TYPES.BUTTON,spr_arrow_up,.97f,.8f+.002f*anim_arrow,.02f,.15f);
 		}
 		anim_arrow = (animcycle+7)%14;
 		if(itemscroll < ITEMSCROLL_MAX){
-			draw.draw(Draw.TYPES.BUTTON,spr_arrow_down,.97f,.2f-.002f*anim_arrow,.02f,-.15f);
+			draw.draw(Draw.TYPES.BUTTON,spr_arrow_down,.97f,.2f-.002f*anim_arrow+LOADOUT_HEIGHT+LOADOUT_OFFSETY,.02f,-.15f);
 		}
 		
+		//Draw description
 		if(selectedItem != null){
 			draw.draw(Draw.TYPES.UI,spr_desc_background,ITEMDESC_OFFSETX,ITEMDESC_OFFSETY,ITEMDESC_WIDTH,ITEMDESC_HEIGHT);
 			draw.write(selectedItem.name, .1f, 0.85f);
@@ -176,9 +199,26 @@ public class ShopScreen extends BaseState {
 			if(blah == ShopItem.ShopItemState.UNLOCKED && game.inventory.checkLoadoutFull())
 				blah = ShopItem.ShopItemState.NULL;
 			spr_desc_bigbutton_current = spr_desc_bigbuttons[blah.ordinal()];
+			if(blah == ShopItem.ShopItemState.LOCKED && game.inventory.numExperience < selectedItem.getCost())
+				spr_desc_bigbutton_current.setColor(new Color(.5f,.5f,1,1));
+			else
+				spr_desc_bigbutton_current.setColor(new Color(1,1,1,1));
 			draw.draw(Draw.TYPES.BUTTON,spr_desc_bigbutton_current,ITEMDESCBUTTON_OFFSETX,ITEMDESCBUTTON_OFFSETY,ITEMDESCBUTTON_WIDTH,ITEMDESCBUTTON_HEIGHT);
 			draw.draw(Draw.TYPES.BUTTON,selectedItem.largeicon,ITEMLARGEICON_OFFSETX,ITEMLARGEICON_OFFSETY,ITEMLARGEICON_WIDTH,ITEMLARGEICON_HEIGHT);
 			draw.draw(Draw.TYPES.BUTTON,spr_bigbutton_upgrade,ITEMLARGEUPGRADE_OFFSETX,ITEMLARGEUPGRADE_OFFSETY,ITEMLARGEUPGRADE_WIDTH,ITEMLARGEUPGRADE_HEIGHT);
+		}
+
+		//Draw loadout bar and two equipped items
+		draw.draw(Draw.TYPES.SUPEREXTRAS,spr_loadoutbar,LOADOUT_OFFSETX,LOADOUT_OFFSETY,LOADOUT_WIDTH,LOADOUT_HEIGHT);
+		draw.write("1",LOADOUTICON0_OFFSETX_CENTER-.1f,LOADOUTICON_OFFSETY+ITEMICON_HEIGHT/2);
+		if(game.inventory.item0 != null){
+			spr_loadouticon0.setRegion(0,0,200,200);
+			draw.draw(Draw.TYPES.MEGAEXTRAS,spr_loadouticon0,LOADOUTICON0_OFFSETX_CENTER-itemiconwidth/2,LOADOUTICON_OFFSETY,itemiconwidth,ITEMICON_HEIGHT);
+		}
+		draw.write("2",LOADOUTICON1_OFFSETX_CENTER-.1f,LOADOUTICON_OFFSETY+ITEMICON_HEIGHT/2);
+		if(game.inventory.item1 != null){
+			spr_loadouticon1.setRegion(0,0,200,200);
+			draw.draw(Draw.TYPES.MEGAEXTRAS,spr_loadouticon1,LOADOUTICON1_OFFSETX_CENTER-itemiconwidth/2,LOADOUTICON_OFFSETY,itemiconwidth,ITEMICON_HEIGHT);
 		}
 		
 		draw.draw(batch);
@@ -199,22 +239,23 @@ public class ShopScreen extends BaseState {
 		float relativemousey = (float)y/Gdx.graphics.getHeight();
 		
 		if(Gdx.input.isTouched()){
-			if(mousehelddownfor < 0)
+			if(mousehelddownfor < 0){
 				mousehelddownfor = 0;
-			else{
-				if(!upgradeScreenOpen){
-					mousehelddownfor += dt;
-					if(relativemousex > ITEMUNIT_OFFSETX && relativemousex < ITEMUNIT_OFFSETX+ITEMUNIT_WIDTH){
-						float b = itemscroll < 0 ? -itemscroll+1 : itemscroll > ITEMSCROLL_MAX ? itemscroll-ITEMSCROLL_MAX+1 : 1;
-						float a = (relativemousey-lastmouseposy)*NUMITEMSPERPAGE/b;
-						itemscrollvelocity = a/dt;
-						itemscroll += a;
-					}
+				if(relativemousex > ITEMUNIT_OFFSETX && relativemousex < ITEMUNIT_OFFSETX+ITEMUNIT_WIDTH && relativemousey > LOADOUT_OFFSETY+LOADOUT_HEIGHT){
+					draggingitemlist = true;					
 				}
+			}else if(draggingitemlist){
+				//if(!upgradeScreenOpen){
+				mousehelddownfor += dt;
+				float b = itemscroll < 0 ? -itemscroll+1 : itemscroll > ITEMSCROLL_MAX ? itemscroll-ITEMSCROLL_MAX+1 : 1;
+				float a = (relativemousey-lastmouseposy)*NUMITEMSPERPAGE/b;
+				itemscrollvelocity = a/dt;
+				itemscroll += a;
 			}
 			lastmouseposx = relativemousex;
 			lastmouseposy = relativemousey;
 		}else{
+			draggingitemlist = false;
 			itemscroll += itemscrollvelocity*dt;
 			if(itemscroll < 0 || itemscroll > ITEMSCROLL_MAX){
 				itemscrollvelocity = 0;
@@ -223,28 +264,38 @@ public class ShopScreen extends BaseState {
 			}
 			itemscrollvelocity *= Math.pow(ITEMSCROLL_SLIPPERINESS,dt);
 			
-			if(mousehelddownfor >= 0 && mousehelddownfor < .5f){//for button presses
-				for(int i = 0; i < items.length; i++){
-					if(items[i].background.getBoundingRectangle().contains(x,y)){
-						selectedItem = items[i];
-						break;
+			if(mousehelddownfor >= 0 && mousehelddownfor < .5f){//if the mouse has clicked quickly instead of being held down (for button presses)
+				if(relativemousey > LOADOUT_OFFSETY+LOADOUT_HEIGHT){//if the mouse isn't on the loadout bar
+					for(int i = 0; i < items.length; i++){
+						if(items[i].background.getBoundingRectangle().contains(x,y)){
+							selectedItem = items[i];
+							break;
+						}
 					}
 				}
+				//if the mouse is on the loadout bar
+				else if(game.inventory.item0 != null && spr_loadouticon0.getBoundingRectangle().contains(x,y))
+					selectedItem = game.inventory.item0;
+				else if(game.inventory.item1 != null && spr_loadouticon1.getBoundingRectangle().contains(x,y))
+					selectedItem = game.inventory.item1;
+
 				if(spr_backbutton.getBoundingRectangle().contains(x,y)){
 					game.moveToMain();
 				}
 				if(spr_desc_bigbutton_current != null && spr_desc_bigbutton_current.getBoundingRectangle().contains(x,y)){
 					switch(getCurrentState()){
-					case LOCKED://purchase the item
+					case LOCKED://purchase a locked item (if possible)
 						game.inventory.tryPurchaseItem(selectedItem);
 						break;
-					case UNLOCKED://equip the item
+					case UNLOCKED://equip an unlocked item
 						game.inventory.equipItem((Item)selectedItem);
+						updateLoadoutSprites();
 						break;
-					case EQUIPPED:
+					case EQUIPPED://unequip an equipped item
 						game.inventory.unequipItem(selectedItem);
+						updateLoadoutSprites();
 						break;
-					default:
+					default://do nothing if the loadout is full
 						break;
 					}
 					game.inventory.updateAllItemShopButtons();

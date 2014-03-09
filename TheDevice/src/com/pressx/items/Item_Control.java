@@ -1,16 +1,17 @@
 package com.pressx.items;
 
+import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.items.Vortex;
 import com.pressx.objects.items.VortexDrop;
-import com.pressx.thedevice.GameStats;
 
 public class Item_Control extends Item{
+	static String generate_name(){return new String[]{"Mind","Mine","Mime","Lime","Slime","Time","Grime","Dime","Dine","Line","Pine","Sine","Vine","Name Too Long Anyway So You Probably Won't See This"}[new Random().nextInt(14)];}
 	public Item_Control(Sounds sounds, Textures textures){
-		super(textures, sounds, "Lime Control","vortex_drop","largeicon_control");
+		super(textures, sounds, generate_name()+" Control","vortex_drop","largeicon_control");
 	}
 
 	@Override
@@ -21,15 +22,6 @@ public class Item_Control extends Item{
 	@Override
 	public String getCountSpriteName(){
 		return "ui_minecount";
-	}
-
-	@Override
-	protected void onActivated(){
-		spr_button.setRegion(124,0,124,95);
-	}
-	@Override
-	protected void onDeactivated(){
-		spr_button.setRegion(0,0,124,95);
 	}
 
 	@Override

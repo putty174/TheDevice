@@ -7,7 +7,7 @@ import com.pressx.thedevice.GameStats;
 public class PlayerInventory{
 	final int TOTALITEMS = 5;
 	
-	public int numExperience = 1337;//temporary
+	public int numExperience = 132;//temporary
 	
 	public Item[] allItems = new Item[TOTALITEMS];
 	private boolean[] itemOwned = new boolean[TOTALITEMS];

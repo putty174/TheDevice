@@ -12,11 +12,11 @@ import com.pressx.thedevice.GameStats;
 public abstract class Item extends ShopItem{
 	protected boolean activated;//if the button has been pressed
 	
-	protected Sprite spr_button,spr_count;
-	protected int ammo;
-	protected Room room;
-	protected Draw draw;
-	protected boolean buttonup;
+	protected Sprite spr_button,spr_count;//button sprite and number sprite
+	protected int ammo;//ammo currently available (maximum ammo found using getMaxAmmo())
+	protected Room room;//set with setRoom()
+	protected Draw draw;//set with setDraw()
+	protected boolean buttonup;//if the button should be drawn as up or pressed
 	
 	public Item(Textures texture,Sounds sounds,String name,String icon,String largeicon){
 		super(texture,sounds,name,icon,largeicon);
@@ -32,13 +32,14 @@ public abstract class Item extends ShopItem{
 		this.room = room;
 	}
 	
-	/////Overridables
+	/////Implement these
 	public abstract String getButtonSpriteName();//should return the button texture name
 	public abstract String getCountSpriteName();//should return the count texture name
-	public abstract int getMaxAmmo();
-	public abstract int getMinLevelForDrop();
-	public abstract float getDropChance();
-	public abstract AnimatedObject dropAmmo(float posx,float posy);
+	public abstract int getMaxAmmo();//should return the maximum charges the item should hold (seems to always be 3)
+	public abstract int getMinLevelForDrop();//remove this? This tells the game what "level" the player should be before ammo for this item drops. This was used by the old system, not sure if it has been changed yet. 
+	public abstract float getDropChance();//returns the chance (0f to 1f) that the item will be dropped by an enemy on death
+	public abstract AnimatedObject dropAmmo(float posx,float posy);//should return the ammo pickup object
+	public abstract void fieldPressed(float mouseX,float mouseY);//called when the player presses on the map while this item is active (the button is down)
 	
 	/////Ammo, UI updating, and interface for UI class or whatever
 	public void updateButton(){
@@ -78,11 +79,7 @@ public abstract class Item extends ShopItem{
 		activated = false;
 	}
 	
-	protected abstract void onActivated();
-	protected abstract void onDeactivated();
-	public abstract void fieldPressed(float mouseX,float mouseY);
-	
-	/////"events"
+	/////
 	public void itemButtonPressed(){
 		if(activated) deactivate();
 		else activate();
@@ -99,12 +96,12 @@ public abstract class Item extends ShopItem{
 		int x = Gdx.input.getX();
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 		if(!stats.pauseState() && Gdx.input.justTouched()){
-			if(ammo != 0 && activated &&  x < Gdx.graphics.getWidth()*.8f){//not in the UI space (right 20% of the screen)
+			if(ammo != 0 && activated &&  x < Gdx.graphics.getWidth()*.8f){//check if it's not int he UI space not in the UI space (right 20% of the screen)
 				fieldPressed(x,y);
 				stats.pausePlayerTouchToMove();
 				deactivate();
 				changeAmmo(-1);
-			}else if(spr_button.getBoundingRectangle().contains(x,y)){
+			}else if(spr_button.getBoundingRectangle().contains(x,y)){//check if it's on the button
 				itemButtonPressed();
 			}else{
 				activated = false;
