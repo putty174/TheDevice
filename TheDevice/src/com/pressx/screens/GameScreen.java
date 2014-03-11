@@ -1,11 +1,11 @@
 package com.pressx.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
-import com.pressx.managers.Graphics;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.player.Player;
@@ -16,23 +16,33 @@ import com.pressx.thedevice.GameStats;
 import com.pressx.thedevice.TheDevice;
 
 public class GameScreen extends BaseState {
-	String levelName;//Temporary until we make a way for the game to choose the map to use
+	private Draw draw;
+	private Textures textures;
+	private Sounds sounds;
 	
+	String levelName;//Temporary until we make a way for the game to choose the map to use
 	
 	UI gameUI;
 	Player player;
+	GameStats stats;
 	//DesignHelper helper;
 	
 	private Sprite background;
 	
-	public GameScreen(Player player, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller) {
+	public GameScreen(TheDevice g, Player player, Sounds s, Textures textures, GameStats stats, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller) {
+		super(g);
+		draw = new Draw();
+		sounds = s;
+		this.textures = textures;
 		levelName = "Level1";
 		this.player = player;
+		this.stats = stats;
 		this.room = room;
 		this.box = box;
 		this.spawner = spawner;
 		this.gameUI = gameUI;
 		this.controller = controller;
+		stats.setBox(box);
 	}
 	
 	/* Game */
@@ -47,7 +57,8 @@ public class GameScreen extends BaseState {
 	@Override
 	public void create()
 	{
-		this.background = new Sprite(Textures.getArtAsset("game_bg"));
+		gameUI.setDraw(draw);
+		this.background = new Sprite(textures.getArtAsset("game_bg"));
 	}
 	
 	public void dispose() {
@@ -56,48 +67,40 @@ public class GameScreen extends BaseState {
 	public void render(SpriteBatch batch) {
 		this.background.draw(batch);
 		
-		if(GameStats.placeItem() != 0)
-		{
+		if(stats.placeItem() != 0)
 			this.player.pause_touch();
-		}//fi
 		
 		float dt = Gdx.graphics.getDeltaTime();
 		
 		if (!gameUI.update())
 		{
-			
 			if(box.getHp() <= 0){
 				//helper.dispose();
-				TheDevice.moveToEnd();
+				game.moveToEnd(stats);
 				return;
 			}
 			
 			//boolean gameIsOver = this.room.update(dt);
-			GameStats.updateTimeElapsed();
+			stats.updateTimeElapsed();
 			
 			spawner.update(dt);
-			if(GameStats.nukeState())
+			if(stats.nukeState())
 			{
 				this.room.wipe();
-				GameStats.nukeStateOff();
+				stats.nukeStateOff();
 			}
 			this.room.update(dt);
 		}
 		else
-		{
 			dt = 0;
-			
-		}
 		
 		//Draw
 		gameUI.render();
-		this.room.render(batch, TheDevice.renderInfo);
+		this.room.render(batch, game.renderInfo);
 		
-		Graphics.draw(batch);
+		draw.draw(batch);
 		
-		GameStats.updateTimeElapsed();
-		BitmapFont test = new BitmapFont();
-		test.draw(batch, "HA", 0.1f, 0.1f);
+		stats.updateTimeElapsed();
 	}
 	
 	public void update() {

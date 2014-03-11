@@ -9,7 +9,7 @@ import com.pressx.editors.shared.Vector2;
 
 public class OpenInFormationEditorButton extends GuiButton{
 	static final Vector2 SIZE = new Vector2(GuiList.SIZE.x,30);
-	static final Vector2 OFFSET = new Vector2(GuiList_Wave.GUILIST_WAVE_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+90);
+	static final Vector2 OFFSET = new Vector2(GuiList_Wave.GUILIST_WAVE_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+170);
 	
 	CenteredText centeredText;
 	public OpenInFormationEditorButton(){
@@ -45,5 +45,8 @@ public class OpenInFormationEditorButton extends GuiButton{
 		GraphicsDraw.setColor(Color.BLACK);
 		GraphicsDraw.boldFont();
 		GraphicsDraw.centerText(centeredText);
+
+		GraphicsDraw.smallBoldFont();
+    	GraphicsDraw.text("(for viewing only; input bugs out)",new Vector2(position.x+5,position.y+size.y+12));
 	}
 }

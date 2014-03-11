@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.GameTimer;
 import com.pressx.draw.Animator;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
@@ -35,10 +36,10 @@ public class Device extends AnimatedObject {
 	//Handy Dandy tool variables
 	private boolean canSpawnXP = true;
 	
-	public Device(float posX, float posY, Room room)
+	public Device(Draw d, Sounds s, Textures t, float posX, float posY, Room room)
 	 {
 		super(
-				"device", //animator name
+				d, s, t, "device", //animator name
 				1, //ID
 				posX, posY, //Position
 				1, //Mass
@@ -49,7 +50,7 @@ public class Device extends AnimatedObject {
 				10, //Touch Radius
 				true, //Touchable
 				12, 12, //Draw width and height
-				Textures.getArtAsset("device"), //Spritesheet
+				t.getArtAsset("device"), //Spritesheet
 				200, 200 //srcwidth and height
 				);
 		
@@ -65,13 +66,13 @@ public class Device extends AnimatedObject {
 		this.animator.set_animation("device_float", true);
 		
 		/* Spawn */
-		this.spawn = new Sprite(Textures.getArtAsset("device_spawn"));
+		this.spawn = new Sprite(t.getArtAsset("device_spawn"));
 		this.spawn_animator = new Animator("device", this.spawn, 200, 200);
 		this.spawn_animator.add_animation("device_spawn", 0, 0, 3, 8, false);
 		this.spawn_animator.set_animation("device_spawn", true);
 		
 		/* Hit */
-		this.hit = new Sprite(Textures.getArtAsset("device_hit"));
+		this.hit = new Sprite(t.getArtAsset("device_hit"));
 		this.hitLength = 0;
 		this.hpMemory = this.health.current;
 	}//END Device
@@ -119,12 +120,12 @@ public class Device extends AnimatedObject {
 			float dir = (float)(360 * Math.random());
 			float dst = 40 + (float)(30 * Math.random());
 			
-			XP exp1 = new XP(this.get_positionX(), this.get_positionY(), dst, dir);
+			XP exp1 = new XP(draw, sounds, textures, this.get_positionX(), this.get_positionY(), dst, dir);
 			
 			this.timer.update_timer(dt);
 			if(this.timer.isDone())
 			{
-				Sounds.play("device.spawn");
+				sounds.play("device.spawn");
 				this.timer_count = this.timer_count - 1;
 				this.room.spawn_object(exp1);
 				this.timer.reset_timer();
@@ -155,7 +156,7 @@ public class Device extends AnimatedObject {
 		this.drawOffsetY = 1 + this.bob;
 		
 		//Check if hit
-		if (this.health.current != this.hpMemory)
+		if (this.health.current < this.hpMemory)
 		{
 			this.hpMemory = this.health.current;
 			this.hitLength = 20;
@@ -181,7 +182,7 @@ public class Device extends AnimatedObject {
 		}//fi
 		if(this.hitLength > 0)
 		{
-			Sounds.play("device.hit");
+			sounds.play("device.hit");
 			this.hit.setOrigin(renderInfo[2] * (this.drawWidth/2),
 					renderInfo[2] * (this.drawHeight/2));
 			this.hit.setSize(renderInfo[2] * (this.drawWidth),

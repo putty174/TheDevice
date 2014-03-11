@@ -17,10 +17,10 @@ import com.pressx.editors.shared.LevelWave;
 import com.pressx.editors.shared._G;
 
 public class FileManager{
-	static final byte FILEVERSION = 0;
+	static final byte FILEVERSION = 1;
 	static final String FOLDER_LEVEL = _G.DATAFOLDER+"levels/";
     static final String EXTENSION_LEVEL = "devicelevel";
-    static final String EXTENSION_LEVEL_WITHDOT = ".devicelevel";
+    static final String EXTENSION_LEVEL_WITHDOT = "."+EXTENSION_LEVEL;
 	static final String FOLDER_FORMATION = _G.DATAFOLDER+"formations/";
     static final String EXTENSION_FORMATION = "spawnformation";
     static boolean saving;
@@ -142,22 +142,23 @@ public class FileManager{
 		    for(String name : formationnames)
 	    		stream.writeUTF(name);
 
-		    System.out.println(5);
 		    ArrayList<LevelWave> waves = GuiList_Level.instance.getValues();
-		    stream.write((int)waves.size());
+		    stream.writeByte((byte)waves.size());
 		    for(int i = 0; i < waves.size(); i++){
 		    	LevelWave wave = waves.get(i);
+		    	System.out.println(wave.name);
 		    	stream.writeByte((byte)wave.formations.size());
 		    	for(int j = 0; j < wave.formations.size(); j++){
 		    		SingleFormation formation = wave.formations.get(j);
 		    		stream.writeByte((byte)formationnames.indexOf(formation.name));
 		    		stream.writeByte((byte)formation.spawnAngle);
 		    	}
-		    	stream.writeByte((byte)wave.numFormationsUsed);
+		    	stream.writeUTF(wave.name);//added in version 1
+		    	stream.writeBoolean(wave.isRandomized);//added in version 1
+		    	if(wave.isRandomized)
+		    		stream.writeByte((byte)wave.numFormationsUsed);
 		    	stream.writeFloat((float)wave.delayBetweenFormations);
 		    }
-		    
-		    System.out.println(filename);
 		    
 		    stream.flush();
 		    fileName = filename;
@@ -168,7 +169,7 @@ public class FileManager{
 		    try{
 		    	stream.close();
 		    }catch(Exception _){
-		    	System.out.println("This doesn't even make sense.");
+		    	System.out.println("Wut.");
 		    }
 		}
     }
@@ -180,7 +181,8 @@ public class FileManager{
 		    loadLevelFromFile(s);
 		loading = false;
     }
-    
+	
+	static int convbyte(byte b){return b & 0xff;}
     static void loadLevelFromFile(String filename){
 		newLevel();
 		DataInputStream stream = null;
@@ -191,24 +193,33 @@ public class FileManager{
 		    
 		    ArrayList<String> formationnames = new ArrayList<String>();
 		    
-		    byte num = stream.readByte();//number of formation types
+		    int num = convbyte(stream.readByte());//number of formation types
 		    for(int i = 0; i < num; i++)
 		    	formationnames.add(stream.readUTF());
 		    
-		    num = stream.readByte();//number of waves
-		    for(byte i = 0; i < num; i++){
-		    	byte numformations = stream.readByte();//number of formations in the current wave
+		    num = convbyte(stream.readByte());//number of waves
+		    for(int i = 0; i < num; i++){
+		    	int numformations = convbyte(stream.readByte());//number of formations in the current wave
 		    	ArrayList<SingleFormation> formations = new ArrayList<SingleFormation>();
-		    	for(byte j = 0; j < numformations; j++){
+		    	for(int j = 0; j < numformations; j++){
 		    		SingleFormation s = new SingleFormation();
-		    		s.name = formationnames.get(stream.readByte());
+		    		s.name = formationnames.get(convbyte(stream.readByte()));
 		    		s.spawnAngle = stream.readByte();
 		    		formations.add(s);
 		    	}
 		    	LevelWave wave = new LevelWave(formations);
-		    	wave.numFormationsUsed = stream.readByte();
+		    	if(version == 1){//version 1
+		    		wave.name = stream.readUTF();
+		    		System.out.println(wave.name);
+		    		wave.isRandomized = stream.readBoolean();
+		    	}else{
+		    		wave.name = "Wave "+(i+1);
+		    		wave.isRandomized = true;
+		    	}
+	    		if(wave.isRandomized)
+			    	wave.numFormationsUsed = convbyte(stream.readByte());
 		    	wave.delayBetweenFormations = stream.readFloat();
-		    	GuiList_Level.addWave(wave);
+		    	GuiList_Level.addWave_fromloading(wave);
 		    }
 		}catch(java.io.EOFException _){
 		    //Completed sucessfully

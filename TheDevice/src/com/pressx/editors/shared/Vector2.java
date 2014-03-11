@@ -42,8 +42,15 @@ public class Vector2 {
     
     //Use radians
     public static float toAngle(Vector2 v){
-    	float r = (float)Math.atan(v.y/v.x);
-    	return v.x < 0 ? pi+r : r;
+        if(v.x == 0)
+        	return v.y >= 0 ? pi/2 : pi*3/2;
+	
+	        if(v.y == 0)
+	            return v.x < 0 ? pi : 0;
+	
+	        float r = (float)Math.atan(v.y/v.x)+(v.x < 0 ? pi : 0);
+	        return r < 0 ? r+pi*2 : r;
+
     }
     public static float toAngle(Vector2 v1,Vector2 v2){
     	return toAngle(sub(v2,v1));

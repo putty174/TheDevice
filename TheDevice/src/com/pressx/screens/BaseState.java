@@ -2,11 +2,14 @@ package com.pressx.screens;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
+import com.pressx.thedevice.TheDevice;
 
 public abstract class BaseState {
 	Controller controller;
+	TheDevice game;
 	
-	public BaseState(){
+	public BaseState(TheDevice g){
+		this.game = g;
 	}
 	public abstract void create();
 	public abstract void update();

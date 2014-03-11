@@ -1,8 +1,12 @@
 package com.pressx.objects.enemy;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
 import com.pressx.control.GameTimer;
+=======
+import com.pressx.managers.Draw;
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -14,10 +18,10 @@ public class PlantOne extends Enemy {
 	private GameTimer activityTimer;
 	private boolean usingAction = false;
 	
-	public PlantOne(GameObject device, float posX, float posY, Room room) {
-		super("plant1", device, 3, posX, posY, 12, 12, 6, 6, 0,
+	public PlantOne(Draw d, Sounds s, Textures t, GameObject device, float posX, float posY, Room room) {
+		super(d,s,t,"plant1", device, 3, posX, posY, 12, 12, 6, 6, 0,
 				0, true, 10, true, 12, 12,
-				Textures.getArtAsset("plant1"), 256, 256, room);
+				t.getArtAsset("plant1"), 256, 256, room);
 		
 		this.evolution = 1;
 		this.attack.damage = 1;
@@ -49,14 +53,14 @@ public class PlantOne extends Enemy {
 	
 	@Override
 	public void playDeath() {
-		Sounds.play("plant1.death");
+		sounds.play("plant1.death");
 	}
 	public void playHit() {
-		Sounds.play("fuzzie2.damage");
+		sounds.play("fuzzie2.damage");
 	}
 	@Override
 	public void playAttack(){
-		Sounds.play("fuzzie1.bite");
+		sounds.play("fuzzie1.bite");
 	}
 	
 	@Override
@@ -98,9 +102,9 @@ public class PlantOne extends Enemy {
 	protected void evolve(){
 		this.worth = 0;
 		this.terminate();
-		GameObject monster = new PlantTwo(device, this.get_positionX(), this.get_positionY(), room);
+		GameObject monster = new PlantTwo(draw, sounds, textures, device, this.get_positionX(), this.get_positionY(), room);
 		monster.levelUp = 3;
 		room.spawn_object(monster);
-		Sounds.play("monster.level");
+		sounds.play("monster.level");
 	}
 }

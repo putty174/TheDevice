@@ -1,17 +1,21 @@
 package com.pressx.objects.enemy;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
+=======
+import com.pressx.managers.Draw;
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
 import com.pressx.screens.game.Room;
 
 public class FuzzOne extends Enemy {
-	public FuzzOne(GameObject device, float posX, float posY, Room room) {
-		super("fuzz1", device, 3, posX, posY, 12, 12, 6, 6, 0,
+	public FuzzOne(Draw d, Sounds s, Textures t, GameObject device, float posX, float posY, Room room) {
+		super(d,s,t,"fuzz1", device, 3, posX, posY, 12, 12, 6, 6, 0,
 				0, true, 10, true, 12, 12,
-				Textures.getArtAsset("fuzz1"), 128, 128, room);
+				t.getArtAsset("fuzz1"), 128, 128, room);
 		// TODO Auto-generated constructor stub
 		
 		this.evolution = 1;
@@ -53,7 +57,7 @@ public class FuzzOne extends Enemy {
 	
 	@Override
 	public void playDeath() {
-		Sounds.play("fuzzie1.death");
+		sounds.play("fuzzie1.death");
 	}
 	public void playHit()
 	{
@@ -62,16 +66,16 @@ public class FuzzOne extends Enemy {
 	}
 	@Override
 	public void playAttack(){
-		Sounds.play("fuzzie1.bite");
+		sounds.play("fuzzie1.bite");
 	}
 	
 	@Override
 	protected void evolve(){
 		this.worth = 0;
 		this.terminate();
-		GameObject monster = new FuzzTwo(device, this.get_positionX(), this.get_positionY(), room);
+		GameObject monster = new FuzzTwo(draw, sounds, textures, device, this.get_positionX(), this.get_positionY(), room);
 		monster.levelUp = 3;
 		room.spawn_object(monster);
-		Sounds.play("monster.level");
+		sounds.play("monster.level");
 	}
 }

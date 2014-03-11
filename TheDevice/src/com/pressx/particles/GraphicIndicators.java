@@ -29,14 +29,14 @@ public class GraphicIndicators {
 	private GameObject device;
 	
 	/* Constructor */
-	public GraphicIndicators(Player player)
+	public GraphicIndicators(Textures t,Player player)
 	{
 		this.player = player;
 		
 		/* Sprites */
-		this.sprite_1 = new Sprite(Textures.getArtAsset("indicate")); 
+		this.sprite_1 = new Sprite(t.getArtAsset("indicate")); 
 		this.animation_1 = new Animator("indicator",this.sprite_1, 50, 50);
-		this.sprite_2 = new Sprite(Textures.getArtAsset("indicate"));
+		this.sprite_2 = new Sprite(t.getArtAsset("indicate"));
 		this.animation_2 = new Animator("indicator2",this.sprite_2, 50, 50);
 		
 		/* Add Animations */

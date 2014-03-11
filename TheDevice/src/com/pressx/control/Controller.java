@@ -8,10 +8,12 @@ import com.badlogic.gdx.InputProcessor;
 import com.pressx.thedevice.GameStats;
 
 public class Controller implements InputProcessor{
+	private GameStats stats;
 	private HashSet<Controllable> controllables = new HashSet<Controllable>(); //The things to be controlled by input.
 	private float[] renderInfo;
 	/* Constructor */
-	public Controller(float[] renderInfo) {
+	public Controller(GameStats stats, float[] renderInfo) {
+		this.stats = stats;
 		this.renderInfo = renderInfo;
 	}//END Controller
 	
@@ -54,7 +56,7 @@ public class Controller implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
-		if(!GameStats.pauseState())
+		if(!stats.pauseState())
 			{
 			float touchX = x / this.renderInfo[2];
 			float touchY = this.renderInfo[1] - (y / this.renderInfo[2]);
@@ -72,7 +74,7 @@ public class Controller implements InputProcessor{
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		if(!GameStats.pauseState())
+		if(!stats.pauseState())
 		{
 			float touchX = x / this.renderInfo[2];
 			float touchY = this.renderInfo[1] - (y / this.renderInfo[2]);
@@ -90,7 +92,7 @@ public class Controller implements InputProcessor{
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		if(!GameStats.pauseState())
+		if(!stats.pauseState())
 		{
 			float touchX = x / this.renderInfo[2];
 			float touchY = this.renderInfo[1] - (y / this.renderInfo[2]);

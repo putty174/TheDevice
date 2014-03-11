@@ -6,11 +6,18 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+<<<<<<< HEAD
 public final class Textures {
 	public static AssetManager a_manager = new AssetManager();
 	private static HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
 	private static HashMap<String, String> currentPackage = new HashMap<String, String>();
 	private static HashMap<String, HashMap<String, AnimationManager>> animManagers = new HashMap<String, HashMap<String, AnimationManager>>();
+=======
+public class Textures {
+	public AssetManager a_manager = new AssetManager();
+	private HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
+	private HashMap<String, String> currentPackage = new HashMap<String, String>();
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 	
 	public Textures()
 	{
@@ -20,6 +27,7 @@ public final class Textures {
 				"exp", "data/art/game/objects/device/exp.png",
 				"play", "data/art/main/buttons/play.png",
 				"game_bg","data/art/game/grass.png",
+<<<<<<< HEAD
 				"fuzz1", "data/art/game/monsters/Fuzzies/1/Fuzzies1.png",
 				"fuzz2", "data/art/game/monsters/Fuzzies/2/Fuzzies2.png",
 				"dust","data/art/game/monsters/Fuzzies/2/dust.png",
@@ -29,41 +37,54 @@ public final class Textures {
 				"plant2", "data/art/game/monsters/Plants/2/plant_two.png",
 				"plant3", "data/art/game/monsters/Plants/3/plant_three.png",
 				"gas_cloud", "data/art/game/monsters/Plants/2/gas_cloud.png",
+=======
+				"fuzz1", "data/art/game/monsters/fuzzies/1/fuzzies1.png",
+				"fuzz2", "data/art/game/monsters/fuzzies/2/fuzzies2.png",
+				"dust","data/art/game/monsters/fuzzies/2/dust.png",
+				"fuzz3", "data/art/game/monsters/fuzzies/3/fuzzies3.png",
+				"shock_wave","data/art/game/monsters/fuzzies/3/shock_wave.png",
+				"plant1", "data/art/game/monsters/plants/1/plant_one.png",
+				"plant2", "data/art/game/monsters/plants/2/plant_two.png",
+				"gas_cloud", "data/art/game/monsters/plants/2/gas_cloud.png",
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 				"device", "data/art/game/objects/device/device.png",
 				"device_hit", "data/art/game/objects/device/device_hit.png",
 				"device_spawn", "data/art/game/objects/device/device_spawn.png",
 				"exp", "data/art/game/objects/device/exp.png",
 				"hero", "data/art/game/objects/hero/hero.png",
 				"mine","data/art/game/objects/mine/mine.png",
-				"mine_drop","data/art/game/objects/mine/mineDrop.png",
-				"deathRing", "data/art/game/objects/nuke/DeathRing.png",
+				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
+				"deathRing", "data/art/game/objects/nuke/death_ring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
-				"vortex_drop","data/art/game/objects/vortex/vortIcon.png",
-				"indicate", "data/art/game/UI/extra/indication_sheet.png",
-				"mlevel", "data/art/game/UI/extra/mLevel.png",
-				"plevel", "data/art/game/UI/extra/pLevel.png",
-				"ui_warn", "data/art/game/UI/extra/warn.png",
-				"hp_bar", "data/art/game/UI/HP/HPBar.png",
-				"hp_fill", "data/art/game/UI/HP/HPFill.png",
-				"ui_mine", "data/art/game/UI/uibase/buttons/mine/mine.png",
-				"ui_bomb", "data/art/game/UI/uibase/buttons/nuke/nuke.png",
-				"ui_bombcount", "data/art/game/UI/uibase/buttons/nuke/nukecount.png",
-				"ui_vortex", "data/art/game/UI/uibase/buttons/vortex/vortex.png",
-				"ui_minecount", "data/art/game/UI/uibase/buttons/count.png",
-				"ui_pause", "data/art/game/UI/uibase/Pause.png",
-				"ui_base","data/art/game/UI/uibase/UIBase.png"
+				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
+				"gear", "data/art/game/objects/gear/gear.png",
+				"wrench", "data/art/game/objects/wrench/wrench.png",
+				"indicate", "data/art/game/ui/extra/indication_sheet.png",
+				"mlevel", "data/art/game/ui/extra/mLevel.png",
+				"plevel", "data/art/game/ui/extra/pLevel.png",
+				"ui_warn", "data/art/game/ui/extra/warn.png",
+				"hp_bar", "data/art/game/ui/hp/hpbar.png",
+				"hp_fill", "data/art/game/ui/hp/hpfill.png",
+				"ui_mine", "data/art/game/ui/uibase/buttons/mine/mine.png",
+				"ui_bomb", "data/art/game/ui/uibase/buttons/nuke/nuke.png",
+				"ui_bombcount", "data/art/game/ui/uibase/buttons/nuke/nukecount.png",
+				"ui_vortex", "data/art/game/ui/uibase/buttons/vortex/vortex.png",
+				"ui_minecount", "data/art/game/ui/uibase/buttons/count.png",
+				"ui_pause", "data/art/game/ui/uibase/pause.png",
+				"ui_base","data/art/game/ui/uibase/ui_base.png"
 				);
 		
 		addPath(
 				"Main",
 				"main_play","data/art/main/buttons/play.png",
-				"main_bg","data/art/main/screen/TitleScreen.png",
+				"main_bg","data/art/main/screen/titlescreen.png",
 				"main_help","data/art/main/buttons/help.png",
-				"exp", "data/art/game/objects/device/exp.png"
+				"exp", "data/art/game/objects/device/exp.png",
+				"shopbutton", "data/art/shop/shop_button.png"
 				);
 		
 		addPath(
-				"Tut",
+				"Tutorial",
 				"tut_pg1", "data/art/tutorial/screen/tut1.png",
 				"tut_pg2", "data/art/tutorial/screen/tut2.png",
 				"tut_nav_left", "data/art/tutorial/buttons/nav_left.png",
@@ -95,12 +116,43 @@ public final class Textures {
 				"end_retry", "data/art/end/buttons/retry.png",
 				"end_quit", "data/art/end/buttons/quitter.png");
 		
+<<<<<<< HEAD
 		animManagers = AnimationManagerLoader.placeHolderShit();
 		
+=======
+		final String path = "data/art/shop/";
+		addPath(
+				"Shop",
+				"shop_background",path+"shop_background.png",
+				"shop_backbutton",path+"backbutton.png",
+				"itembackground",path+"item_background.png",
+				"itembackground_selected",path+"item_background_selected.png",
+				"itemdescbackground",path+"itemdescbackground.png",
+				"itembutton_buy",path+"itembutton_buy.png",
+				"itembutton_equip",path+"itembutton_equip.png",
+				"itembutton_unequip",path+"itembutton_unequip.png",
+				"itembutton_loadoutfull_big",path+"itembutton_equip_gray_big.png",
+				"itembutton_buy_big",path+"itembutton_buy_big.png",
+				"itembutton_equip_big",path+"itembutton_equip_big.png",
+				"itembutton_unequip_big",path+"itembutton_unequip_big.png",
+				"itembutton_upgrade_big",path+"itembutton_upgrade_big.png",
+				"exp", "data/art/game/objects/device/exp.png",
+				"uparrow",path+"uparrow.png",
+				"ui_mine", "data/art/game/ui/uibase/buttons/mine/mine.png",
+				"ui_vortex", "data/art/game/ui/uibase/buttons/vortex/vortex.png",
+				"largeicon_mine",path+"mine_large.png",
+				"largeicon_vortex",path+"vortex_large.png",
+				"largeicon_control",path+"control_large.png",
+				"largeicon_gear",path+"gear_large.png",
+				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
+				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
+				"gear_drop","data/art/game/objects/gear/gear_pickup.png",
+				"loadoutbar",path+"loadoutbar.png");
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.
-	public static void addPath(String packageName, String... args)
+	public void addPath(String packageName, String... args)
 	{
 		if(!entries.containsKey(packageName))
 			entries.put(packageName, new HashMap<String, String>());
@@ -108,11 +160,13 @@ public final class Textures {
 			entries.get(packageName).put(args[i], args[++i]);
 	}
 	
-	public static void loadArtAssets(String packName)
+	public void loadArtAssets(String packName)
 	{
 		currentPackage = entries.get(packName);
-		for(String str : entries.get(packName).values())		
+		for(String str : currentPackage.values()){
+			System.out.println(str);
 			a_manager.load(str, Texture.class);
+		}
 		a_manager.finishLoading();
 		if(packName.equals("Loading")){
 			
@@ -130,7 +184,7 @@ public final class Textures {
 		return null;
 	}
 	
-	public static Texture getArtAsset(String file)
+	public Texture getArtAsset(String file)
 	{
 		Texture tex = null;
 		if(currentPackage.containsKey(file))
@@ -138,7 +192,7 @@ public final class Textures {
 		return tex;
 	}
 	
-	public static void unloadArtAssets(){
+	public void unloadArtAssets(){
 		a_manager.clear();
 		for(HashMap<String, AnimationManager> m : animManagers.values()){
 			for(AnimationManager em : m.values()){

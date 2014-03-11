@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
-import com.pressx.managers.Graphics;
+import com.pressx.items.PlayerInventory;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -17,20 +17,25 @@ import com.pressx.screens.GameOverScreen;
 import com.pressx.screens.GameScreen;
 import com.pressx.screens.LoadingScreen;
 import com.pressx.screens.MainMenuScreen;
+import com.pressx.screens.ShopScreen;
 import com.pressx.screens.TutorialScreen;
 import com.pressx.screens.game.Room;
 import com.pressx.screens.game.UI;
-import com.pressx.social.Social;
 import com.pressx.spawner.CustomSpawner;
 
-public final class TheDevice implements ApplicationListener {
-	static int currentState;
-	static BaseState[] posStates;
-	GameStats stats;
-	Textures manager;
-	static Social fb;
+public class TheDevice implements ApplicationListener {
+	private int NUMSTATES = 9;
 	
-	public static float[] renderInfo = 
+	public Sounds sounds;
+	public Textures textures;
+	
+	int currentState;
+	BaseState[] posStates;
+
+	public PlayerInventory inventory;
+	
+	
+	public float[] renderInfo = 
 		{
 		100,				//Game Width
 		100, 	//Game Height
@@ -41,23 +46,18 @@ public final class TheDevice implements ApplicationListener {
 	
 	public TheDevice() {
 	}
-	
-	public TheDevice(Social facebook) {
-		fb = facebook;
-	}
 
 	@Override
 	public void create() {
 		Texture.setEnforcePotImages(false);
-		//These MUST be called, even if you do nothing with it;
-		new Sounds();
-		new Textures();
-		new Graphics();
+		posStates = new BaseState[NUMSTATES];
 		
-		posStates = new BaseState[8];
+		sounds = new Sounds();
+		textures = new Textures();
+		inventory = new PlayerInventory(sounds,textures);
 		
 		float width = Gdx.graphics.getWidth();
-		renderInfo[1] = Graphics.screenHeight * 100 / Graphics.screenWidth;
+		renderInfo[1] = Gdx.graphics.getHeight() * 100 / Gdx.graphics.getWidth();
 		renderInfo[2] = width/renderInfo[0];
 		
 		moveToMain();
@@ -79,14 +79,11 @@ public final class TheDevice implements ApplicationListener {
 
 	@Override
 	public void render() {
-		Graphics.clearAll();
-		
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		SpriteBatch batch = new SpriteBatch();
 		batch.begin();
 		posStates[currentState].update();
 		posStates[currentState].render(batch);
-		Graphics.draw();
 		batch.end();
 		batch.dispose();
 	}
@@ -99,70 +96,72 @@ public final class TheDevice implements ApplicationListener {
 	public void resume() {
 	}
 	
-	public static void moveToLoading() {
-		Textures.unloadArtAssets();
-		Textures.loadArtAssets("Loading");
-		posStates[7] = new LoadingScreen();
-		posStates[7].create();
-		currentState = 7;
-	}
-	
-	public static void moveToMain(){
-		Sounds.stopBGM();
-		Sounds.stopSound();
-		Sounds.unloadSoundAssets();
-		Sounds.loadSoundAssets(Sounds.PACKS.MAIN);
-		Sounds.playBGM();
-		Textures.unloadArtAssets();
-		Textures.loadArtAssets("Main");
-		posStates[0] = new MainMenuScreen(fb);
+	public void moveToMain(){
+		sounds.unloadSoundAssets();
+		textures.unloadArtAssets();
+		sounds.loadSoundAssets(Sounds.PACKS.MAIN);
+		textures.loadArtAssets("Main");
+		sounds.playBGM();
+		posStates[0] = new MainMenuScreen(this, sounds, textures);
 		posStates[0].create();
 		currentState = 0;
 	}
-
-	public static void moveToSequence(String seq){
-		Textures.unloadArtAssets();
-		if(seq.equals("Intro")){
-			Textures.loadArtAssets("Intro");
-			posStates[2]=new CutsceneScreen("Intro", 5);
-			currentState = 2;
-		}
-		else if(seq.equals("Outro")){
-			Textures.loadArtAssets("Outro");
-			posStates[6]=new CutsceneScreen("Outro", 3);
-			currentState = 6;
-		}
-	}
 	
-	public static void moveToGame(Player player, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller){
-		Sounds.stopBGM();
-		Sounds.stopSound();
-		Sounds.unloadSoundAssets();
-		Sounds.loadSoundAssets(Sounds.PACKS.GAME);
-		Sounds.playBGM();
-		posStates[3] = new GameScreen(player, gameUI, box, spawner, room, controller);
-		posStates[3].create();
-		currentState = 3;
-	}
-	
-	public static void moveToTutorial(){
-		Textures.unloadArtAssets();
-		Textures.loadArtAssets("Tut");
-		posStates[4] = new TutorialScreen();
+	public void moveToTutorial(){
+		textures.unloadArtAssets();
+		textures.loadArtAssets("Tutorial");
+		posStates[4] = new TutorialScreen(this, textures, sounds);
 		posStates[4].create();
 		currentState = 4;
 	}
 	
-	public static void moveToEnd(){
-		Sounds.stopBGM();
-		Sounds.stopSound();
-		Sounds.unloadSoundAssets();
-		Sounds.loadSoundAssets(Sounds.PACKS.END);
-		Sounds.play("laugh");
-		Textures.unloadArtAssets();
-		Textures.loadArtAssets("End");
-		posStates[5] = new GameOverScreen();
+	public void moveToLoading() {
+		sounds.stopBGM();
+		sounds.unloadSoundAssets();
+		textures.unloadArtAssets();
+		sounds.loadSoundAssets(Sounds.PACKS.GAME);
+		textures.loadArtAssets("Loading");
+		posStates[7] = new LoadingScreen(this,sounds,textures);
+		posStates[7].create();
+		currentState = 7;
+	}
+
+	public void moveToSequence(String seq){
+		textures.unloadArtAssets();
+		textures.loadArtAssets(seq);
+		if(seq.equals("Intro")){
+			posStates[2]=new CutsceneScreen(this, textures, "Intro");
+			currentState = 2;
+		}
+		else if(seq.equals("Outro")){
+			posStates[6]=new CutsceneScreen(this, textures, "Outro");
+			currentState = 6;
+		}
+	}
+	
+	public void moveToGame(Player player, Textures textures, GameStats stats, UI gameUI, GameObject box, CustomSpawner spawner, Room room, Controller controller){
+		sounds.playBGM();
+		posStates[3] = new GameScreen(this, player, sounds, textures, stats, gameUI, box, spawner, room, controller);
+		posStates[3].create();
+		currentState = 3;
+	}
+	
+	public void moveToEnd(GameStats stats){
+		sounds.stopBGM();
+		sounds.unloadSoundAssets();
+		sounds.loadSoundAssets(Sounds.PACKS.END);
+		textures.unloadArtAssets();
+		textures.loadArtAssets("End");
+		posStates[5] = new GameOverScreen(this, sounds, textures, stats);
 		posStates[5].create();
 		currentState = 5;
+	}
+	
+	public void moveToShop(){
+		textures.unloadArtAssets();
+		textures.loadArtAssets("Shop");
+		posStates[8] = new ShopScreen(this);
+		posStates[8].create();
+		currentState = 8;
 	}
 }

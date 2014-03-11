@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 public class LevelWave{
 	public ArrayList<SingleFormation> formations;
-	public byte numFormationsUsed = 5;
+	public int numFormationsUsed = 5;
 	public float delayBetweenFormations = 15;
+	public String name;
+	public boolean isRandomized = true;
 	
 	public LevelWave(){
 		formations = new ArrayList<SingleFormation>();
@@ -23,5 +25,7 @@ public class LevelWave{
 		}
 		numFormationsUsed = copyfrom.numFormationsUsed;
 		delayBetweenFormations = copyfrom.delayBetweenFormations;
+		name = copyfrom.name;
+		isRandomized = copyfrom.isRandomized;
 	}
 }

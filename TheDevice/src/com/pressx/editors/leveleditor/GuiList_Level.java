@@ -11,8 +11,10 @@ import com.pressx.editors.shared._G;
 
 public class GuiList_Level extends GuiList<LevelWave>{
 	public static final Vector2 GUILIST_LEVEL_OFFSET = BASEOFFSET;
+	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_X = BASEOFFSET.x;
+	public static final float GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y = EXTRABUTTONOFFSETY;
 
-	public static GuiList_Level instance;	
+	public static GuiList_Level instance;
 	static ArrayList<LevelWave> values = new ArrayList<LevelWave>();
 	
 	public static void newLevel(){
@@ -21,14 +23,56 @@ public class GuiList_Level extends GuiList<LevelWave>{
 	}
 	
 	public static void addWave(LevelWave wave){
+		values.add(instance.selectedIndex+1,wave);
+		if(values.size() == 1)
+			GuiList_ImportedFormations.instance.selectFirstOpenIndexFrom(0);
+	}	
+	public static void addWave_fromloading(LevelWave wave){
 		values.add(wave);
 		if(values.size() == 1)
 			GuiList_ImportedFormations.instance.selectFirstOpenIndexFrom(0);
 	}
 	
+	String getWaveNameFromBase(String base){
+		int wantednameindex = 1;
+		if(base.charAt(base.length()-1) == ')'){
+			for(int i = base.length()-2; i > 0; i--){
+				if(base.charAt(i) == '(' && base.charAt(i-1) == ' '){
+					try{
+						int maybenum = Integer.parseInt(base.substring(i+1,base.length()-1));
+						wantednameindex = maybenum;
+					}catch(NumberFormatException _){
+						break;
+					}
+					base = base.substring(0,i-1);
+					break;
+				}
+			}
+		}
+		String wantedname = base+" (1)";
+		if(!values.isEmpty()){
+			boolean bad = true;
+			while(bad){
+				bad = false;
+				for(LevelWave otherwave : values){
+					if(otherwave.name.equals(wantedname)){
+						wantedname = base+" ("+(++wantednameindex)+')';
+						bad = true;
+					}
+				}
+			}
+		}
+		return wantedname;
+	}
+	
 	public void newWave(){
-		values.add(new LevelWave());
-		selectIndex(values.size()-1);
+		LevelWave wave = new LevelWave();
+		//find default name
+		wave.name = getWaveNameFromBase("New Wave");
+		
+		addWave(wave);
+		
+		selectIndex(selectedIndex+1);
 		if(values.size() == 1)
 			GuiList_ImportedFormations.instance.selectFirstOpenIndexFrom(0);
 	}
@@ -46,7 +90,9 @@ public class GuiList_Level extends GuiList<LevelWave>{
 	
 	public void copySelectedWave(){
 		if(selectedIndex == -1) return;
-		values.add(selectedIndex+1,new LevelWave(values.get(selectedIndex)));
+		LevelWave newwave = new LevelWave(values.get(selectedIndex));
+		newwave.name = getWaveNameFromBase(newwave.name);
+		values.add(selectedIndex+1,newwave);
 		selectIndex(selectedIndex+1);
 	}
 	
@@ -70,12 +116,13 @@ public class GuiList_Level extends GuiList<LevelWave>{
 		new CopyWaveButton(this).register();
 		new MoveWaveButton(this,true).register();
 		new MoveWaveButton(this,false).register();
+		new RenameWaveButton(this).register();
 	}
 	
 	public void selectIndex(int index){
 		super.selectIndex(index);
 		if(index != -1 && index < values.size())
-			GuiList_Wave.useWave("Wave "+(index+1)+"'s possible formations",values.get(index));
+			GuiList_Wave.useWave(getValueAtIndex(index).name+"'s possible formations",values.get(index));
 	}
 	
 	public void deselect(){
@@ -88,7 +135,7 @@ public class GuiList_Level extends GuiList<LevelWave>{
 	}
 	
 	public String getTextFromValue(LevelWave value){
-		return "Wave "+(values.indexOf(value)+1)+"    ("+(value.formations.isEmpty() ? "empty" : value.formations.size())+')';
+		return value.name+"    ["+(value.formations.isEmpty() ? "empty" : value.formations.size())+']';
 	}
 	
 	public String getTitle(){
@@ -117,7 +164,7 @@ public class GuiList_Level extends GuiList<LevelWave>{
 
 class NewWaveButton extends GuiButton{
 	static final Vector2 SIZE = new Vector2(GuiList.SIZE.x,25);
-	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY);
+	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y);
 	static final String TEXT = "New Wave [N]";
 	CenteredText text;
 	GuiList_Level parent;
@@ -150,7 +197,7 @@ class NewWaveButton extends GuiButton{
 
 class RemoveWaveButton extends GuiButton{
 	static final Vector2 SIZE = NewWaveButton.SIZE;
-	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y);
+	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y);
 	static final String TEXT = "Delete Wave [CTRL+DEL]";
 	CenteredText text;
 	GuiList_Level parent;
@@ -191,7 +238,7 @@ class RemoveWaveButton extends GuiButton{
 }
 class CopyWaveButton extends GuiButton{
 	static final Vector2 SIZE = NewWaveButton.SIZE;
-	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y*2);
+	static final Vector2 OFFSET = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y*2);
 	static final String TEXT = "Duplicate Wave [CTRL+D]";
 	CenteredText text;
 	GuiList_Level parent;
@@ -233,8 +280,8 @@ class CopyWaveButton extends GuiButton{
 
 class MoveWaveButton extends GuiButton{
 	static final Vector2 SIZE = NewWaveButton.SIZE;
-	static final Vector2 OFFSET_UP = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y*3);
-	static final Vector2 OFFSET_DOWN = new Vector2(GuiList_Level.GUILIST_LEVEL_OFFSET.x,GuiList.EXTRABUTTONOFFSETY+SIZE.y*4);
+	static final Vector2 OFFSET_UP = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y*3);
+	static final Vector2 OFFSET_DOWN = new Vector2(GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_X,GuiList_Level.GUILIST_LEVEL_EXTRABUTTON_OFFSET_Y+SIZE.y*4);
 	static final String TEXT_UP = "Raise Wave [CTRL+UP]";
 	static final String TEXT_DOWN = "Lower Wave [CTRL+DOWN]";
 	CenteredText text;

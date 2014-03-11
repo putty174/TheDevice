@@ -1,27 +1,38 @@
 package com.pressx.screens;
 
+import java.io.File;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.pressx.managers.Graphics;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
-import com.pressx.social.Social;
 import com.pressx.thedevice.TheDevice;
 
 public class MainMenuScreen extends BaseState {
-	Sprite bgArt, play, help, post;
-	Social fb;
+	Draw draw;
+	Sounds sounds;
+	Textures textures;
+	Sprite bgArt, play, help, post, shop;
 	String key;
+	File blah;
 
-	public MainMenuScreen(Social facebook){
-		super();
-		play = new Sprite(Textures.getArtAsset("main_play"));
-		bgArt = new Sprite(Textures.getArtAsset("main_bg"));
-		help = new Sprite(Textures.getArtAsset("main_help"));
-		post = new Sprite(Textures.getArtAsset("exp"));
+	public MainMenuScreen(TheDevice g, Sounds s, Textures t){
+		super(g);
+		draw = new Draw();
+		sounds = s;
+		textures = t;
+		play = new Sprite(textures.getArtAsset("main_play"));
+		bgArt = new Sprite(textures.getArtAsset("main_bg"));
+		help = new Sprite(textures.getArtAsset("main_help"));
+		post = new Sprite(textures.getArtAsset("exp"));
 		post.setRegion(0, 0, 30, 30);
-		fb = facebook;
+		shop = new Sprite(textures.getArtAsset("shopbutton"));
+		
+		String filename = "../TheDevice-android/assets/data/leveldata/formations/FuzzieArmy.spawnformation";
+		
+		blah = new File(filename);
 	}
 	
 	public void create() {
@@ -31,10 +42,18 @@ public class MainMenuScreen extends BaseState {
 	}
 
 	public void render(SpriteBatch batch) {
-		Graphics.draw(Graphics.TYPES.BACKGROUND, bgArt, 0, 0, 1f, 1f);
-		Graphics.draw(Graphics.TYPES.BUTTON, play, 0.61f, 0.06f, 0.15f, 0.25f);
-		Graphics.draw(Graphics.TYPES.BUTTON, help, 0.79f, 0.06f, 0.15f, 0.25f);
-		Graphics.draw(Graphics.TYPES.EXTRAS, post, 0.1f, 0.1f, 0.1f, 0.1f);
+		draw.draw(Draw.TYPES.BACKGROUND, bgArt, 0, 0, 1f, 1f);
+		draw.draw(Draw.TYPES.BUTTON, play, 0.61f, 0.06f, 0.15f, 0.25f);
+		draw.draw(Draw.TYPES.BUTTON, help, 0.79f, 0.06f, 0.15f, 0.25f);
+		draw.draw(Draw.TYPES.EXTRAS, post, 0.1f, 0.1f, 0.1f, 0.1f);
+		draw.draw(Draw.TYPES.BUTTON, shop, .23f, .67f, .1f, .135f);
+		draw.write("Shop is open!", .1f, .9f);
+		
+		if(blah.exists())
+			draw.write("Yes", 0.3f, 0.3f);
+		else
+			draw.write("No", 0.3f, 0.3f);
+		draw.draw(batch);
 	}
 	
 	public void update()
@@ -45,17 +64,16 @@ public class MainMenuScreen extends BaseState {
 			int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 			if(play.getBoundingRectangle().contains(x, y))
 			{
-				Sounds.play("buttonl");
-				TheDevice.moveToSequence("Intro");
+				sounds.play("buttonl");
+				game.moveToSequence("Intro");
 			}
 			else if(help.getBoundingRectangle().contains(x,y))
 			{
-				Sounds.play("buttonl");
-				TheDevice.moveToTutorial();
+				sounds.play("buttonl");
+				game.moveToTutorial();
 			}
-			else if(post.getBoundingRectangle().contains(x,y))
-			{
-				fb.switchActivity();
+			else if(shop.getBoundingRectangle().contains(x,y)){
+				game.moveToShop();
 			}
 		}
 	}

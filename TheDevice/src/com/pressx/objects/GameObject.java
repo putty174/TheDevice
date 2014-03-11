@@ -11,12 +11,19 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.pressx.actions.ActionQueue;
-import com.pressx.managers.Graphics;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
+import com.pressx.managers.Textures;
 import com.pressx.objects.attributes.MovementAttributes;
 import com.pressx.objects.attributes.StandardAttributes;
 import com.pressx.objects.device.Device;
 
 public class GameObject implements Comparable<GameObject>{
+	/* Managers */
+	protected Draw draw;
+	protected Sounds sounds;
+	protected Textures textures;
+	
 	/* Stats */
 	public MovementAttributes movement = new MovementAttributes();
 	protected StandardAttributes health = new StandardAttributes();
@@ -88,8 +95,13 @@ public class GameObject implements Comparable<GameObject>{
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
-	public GameObject(int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	public GameObject(Draw draw, Sounds sounds, Textures textures, int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	{
+		/* Managers */
+		this.draw = draw;
+		this.sounds = sounds;
+		this.textures = textures;
+		
 		/* ID */
 		this.objectID = objectID;
 		
@@ -225,7 +237,7 @@ public class GameObject implements Comparable<GameObject>{
 	
 	private boolean offscreenX(Vector2 nextPos)
 	{
-		if(this.screenBound && (nextPos.x < srcWidth * .02 || nextPos.x > 100*(1-0.15) - (srcWidth * .02)))
+		if(this.screenBound && (nextPos.x < srcWidth * .02 || nextPos.x > 100*(0.8f) - (srcWidth * .02)))
 		{
 			this.velocity.x = -this.velocity.x;
 			return true;
@@ -235,7 +247,7 @@ public class GameObject implements Comparable<GameObject>{
 	
 	private boolean offscreenY(Vector2 nextPos)
 	{
-		if(this.screenBound && (nextPos.y < srcHeight * .02 || nextPos.y > (330 * 100 / 557) - (srcHeight * .042)))
+		if(this.screenBound && (nextPos.y < srcHeight * .02 || nextPos.y > 100*(0.7f) - (srcHeight * .042)))
 		{
 			this.velocity.y = -this.velocity.y;
 			return true;
@@ -664,7 +676,7 @@ public class GameObject implements Comparable<GameObject>{
 		this.sprite.setPosition(xPos, yPos);
 		this.sprite.draw(spritebatch);
 		
-		Graphics.draw(Graphics.TYPES.ACTOR, sprite, xPos, yPos, width, height);
+		draw.draw(Draw.TYPES.ACTOR, sprite, xPos, yPos, width, height);
 	}//END render
 	
 	/* Update */

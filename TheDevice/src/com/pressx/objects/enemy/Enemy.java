@@ -4,7 +4,13 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.pressx.actions.Attack;
+<<<<<<< HEAD
 import com.pressx.control.GameTimer;
+=======
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
+import com.pressx.managers.Textures;
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.attributes.AttackAttributes;
@@ -24,12 +30,12 @@ public class Enemy extends AnimatedObject {
 	float speedCopy = this.get_speed();
 	GameTimer atkTimer;
 	
-	public Enemy(String name, GameObject device, int objectID, float posX, float posY, float mass,
+	public Enemy(Draw d, Sounds s, Textures t, String name, GameObject device, int objectID, float posX, float posY, float mass,
 			float friction, float hitWidth, float hitHeight, float hitX,
 			float hitY, boolean isSolid, float touchRadius,
 			boolean isTouchable, float drawWidth, float drawHeight,
 			Texture sprites, int srcWidth, int srcHeight, Room room) {
-		super(name, objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY,
+		super(d,s,t,name, objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY,
 				isSolid, touchRadius, isTouchable, drawWidth, drawHeight,
 				sprites, srcWidth, srcHeight);
 		

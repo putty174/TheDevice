@@ -41,8 +41,10 @@ public abstract class GuiButton extends GuiObject{//Standard fancy gui button
     /////Draw
     //final int DRAW_SIDELENGTH = 7;
     
-    protected void drawToggleSelectedBox(){
-	GraphicsDraw.fillRectangle(getCenter().add(2),size.div(3).add(0));
+    protected void drawToggleSelectedBox(boolean on){
+		GraphicsDraw.rectangle(getCenter().add(1),size.div(3).add(2));
+    	if(on)
+    		GraphicsDraw.fillRectangle(getCenter().add(1),size.div(3).add(-1));
     }
     
     public void draw(){

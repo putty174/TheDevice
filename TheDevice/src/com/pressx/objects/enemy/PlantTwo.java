@@ -2,6 +2,7 @@ package com.pressx.objects.enemy;
 
 import java.util.ArrayList;
 
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -9,10 +10,10 @@ import com.pressx.screens.game.Room;
 
 public class PlantTwo extends Enemy {
 	private float lastHP;
-	public PlantTwo(GameObject device, float posX, float posY, Room room) {
-		super("plant2",device, 3, posX, posY, 2, 5, 6, 6, 0,
+	public PlantTwo(Draw d, Sounds s, Textures t, GameObject device, float posX, float posY, Room room) {
+		super(d,s,t,"plant2",device, 3, posX, posY, 2, 5, 6, 6, 0,
 				0, true, 10, true, 9, 9,
-				Textures.getArtAsset("plant2"), 256, 256, room);
+				t.getArtAsset("plant2"), 256, 256, room);
 		
 		this.device = device;
 		this.evolution = 2;
@@ -43,16 +44,16 @@ public class PlantTwo extends Enemy {
 	}
 	
 	public void playSound(){
-		Sounds.play("fuzzie2.bite");
+		sounds.play("fuzzie2.bite");
 	}
 	
 	public void playHit(){
-		Sounds.play("fuzzie2.damage");
+		sounds.play("fuzzie2.damage");
 	}
 	
 	@Override
 	public void playDeath() {
-		Sounds.play("plant2.death");
+		sounds.play("plant2.death");
 	}
 	
 	@Override

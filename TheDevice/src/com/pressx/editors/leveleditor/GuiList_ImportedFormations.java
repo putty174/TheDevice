@@ -14,11 +14,33 @@ public class GuiList_ImportedFormations extends GuiList<ImportedFormation>{//For
 	/////STATICS
 	static ArrayList<ImportedFormation> values = new ArrayList<ImportedFormation>();
 	static GuiList_ImportedFormations instance;
-	public static void tryAddImportedFormation(ImportedFormation newform){
-		ImportedFormation form = checkValueAlreadyImported(newform.name);
-		if(form == null)
-			values.add(form = newform);
-		//instance.selectValue(form);
+	
+	static int getNumberFromName(String name){
+		int ans = -1;
+		for(int i = 0; i < name.length(); i++){
+			byte c = (byte)name.charAt(i);
+			if(c < 48 || c > 57) break;
+			if(ans == -1)
+				ans = c;
+			else
+				ans = ans*10+c;
+		}
+		return ans;
+	}
+	public static void tryAddImportedFormation(ImportedFormation form){
+		if(checkValueAlreadyImported(form.name) != null) return;
+		int num = getNumberFromName(form.name);
+		if(num == -1)
+			values.add(form);
+		else{//sort according to Khai's naming system (names start with the number of enemies)
+			for(int i = 0; i < values.size(); i++){
+				int othernum = getNumberFromName(values.get(i).name);
+				if(othernum == -1 || num < othernum){
+					values.add(i,form);
+					break;
+				}
+			}
+		}
 	}
 	static ImportedFormation checkValueAlreadyImported(String name){
 		for(ImportedFormation value : values)
@@ -28,17 +50,25 @@ public class GuiList_ImportedFormations extends GuiList<ImportedFormation>{//For
 	}
 	static boolean valueShouldBeGrayed(ImportedFormation val){
 		if(!GuiList_Wave.ready) return true;
+		if(!GuiList_Wave.checkWaveIsRandomized()) return false;
 		for(SingleFormation f : GuiList_Wave.values)
 			if(f.name.equals(val.name))
 				return true;
 		return false;
 	}
 	
+	static final Color UNITDEFAULTDRAWCOLOR_RANDOMIZED = new Color(.85f,1,.95f);	
+	static final Color UNITDEFAULTDRAWCOLOR_UNRANDOMIZED = new Color(1,.95f,.85f);
+    protected Color getUnitDefaultDrawColor(){
+		return GuiList_Wave.checkWaveIsRandomized() ? UNITDEFAULTDRAWCOLOR_RANDOMIZED : UNITDEFAULTDRAWCOLOR_UNRANDOMIZED;//super.getUnitDefaultDrawColor();
+    }
+	
 	/////NON-STATICS
 	public void addSelectedFormationToWave(){
 		if(selectedIndex == -1 || !GuiList_Wave.ready) return;
 		GuiList_Wave.addFormationFromImportedFormation(values.get(selectedIndex));
-		selectFirstOpenIndexFrom(selectedIndex+1);
+		if(GuiList_Wave.checkWaveIsRandomized())
+			selectFirstOpenIndexFrom(selectedIndex+1);
 	}
 	
 	public void selectFirstOpenIndexFrom(int index){
@@ -129,7 +159,7 @@ public class GuiList_ImportedFormations extends GuiList<ImportedFormation>{//For
 class FileManager_ReimportFormationsButton extends GuiButton{
 	static final Vector2 SIZE = new Vector2(GuiList.SIZE.x,25);
 	static final Vector2 OFFSET = new Vector2(GuiList_ImportedFormations.GUILIST_IMPORTEDFORMATIONS_OFFSET.x,GuiList.EXTRABUTTONOFFSETY);
-	static final String TEXT = "Reimport Formations [R]";
+	static final String TEXT = "Reimport Formations [CTRL+R]";
 	CenteredText text;
 	GuiList_ImportedFormations parent;
 	public FileManager_ReimportFormationsButton(GuiList_ImportedFormations parent){
@@ -153,7 +183,7 @@ class FileManager_ReimportFormationsButton extends GuiButton{
 	}
 	
 	public boolean checkMouseClicked(){
-		return super.checkMouseClicked() || Center.getKey(Keys.R);
+		return super.checkMouseClicked() || Center.getKey(Keys.CONTROL) && Center.getKey(Keys.R);
 	}
 	
 	public void draw(){

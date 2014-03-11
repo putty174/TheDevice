@@ -1,36 +1,43 @@
 package com.pressx.thedevice;
 import com.badlogic.gdx.Gdx;
+import com.pressx.items.*;
+import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
+import com.pressx.managers.Textures;
+import com.pressx.objects.GameObject;
 import com.pressx.objects.player.Player;
 
-public final class GameStats {
-	private static int monsterCount = 0;
-	private static int score = 0;
-	private static int xpCount = 0;
-	private static int xpMax=20;
-	private static int level = 1;
-	private static int mineCount = 3;
-	private static int vortCount = 3;
-	private static int nukeCount = 3;
-	private static float nukeCD = 0;
-	private static int maxItemCount;
-	private static float boxHP;
-	private static float totalTimeElapsed;
-	private static Player player;
-	private static boolean pause = false;
-	private static int placeItem = 0;
-	private static boolean nukeState = false;
+public class GameStats {
+	private Sounds sound;
+	private int monsterCount = 0;
+	private int score = 0;
+	private int xpCount = 0;
+	private int xpMax=20;
+	private int level=1;
+	private int vortCount = 3;
+	private int nukeCount = 3;
+	private float nukeCD = 0;
+	private int maxItemCount;
+	private float totalTimeElapsed;
+	private Player player;
+	private GameObject box;
+	private boolean pause = false;
+	private int placeItem = 0;
+	private boolean nukeState = false;
+	private float maxHP;
 	
-	public GameStats(Player p){
+	public Item item0;
+	public Item item1;
+	
+	public GameStats(Draw d, Textures t, Sounds s, Player p){
 		player = p;
+		sound = s;
 		
 		monsterCount = 0;
 		score = 0;
 		xpCount = 0;
 		xpMax = 20;
 		level = 1;
-		mineCount = 3;
-		vortCount = 3;
 		nukeCount = 3;
 		nukeCD = 0;
 		maxItemCount = 3;
@@ -38,22 +45,40 @@ public final class GameStats {
 		pause = false;
 		placeItem = 0;
 		nukeState = false;
+		
+		maxHP = 10;
+		
+		item0 = new Item_Vortex(s, t);
+		item1 = new Item_Mine(s, t);
 	}
 	
-	public static void addMonsterKill()
+	public boolean addAmmo(String itemname){//adds ammo for the specified item; the itemname is the "name" parameter for Item's constructor
+		if(item0.name.equals(itemname))
+			if(item0.changeAmmo(1))//So that if we have two of the same item, it will be able to add ammo to both
+				return true;
+		if(item1.name.equals(itemname))
+			return item1.changeAmmo(1);
+		return false;
+	}
+	
+	public void setBox(GameObject b) {
+		box = b;
+	}
+	
+	public void addMonsterKill()
 	{
 		monsterCount++;
 	}
-	public static int getMonsterCount()
+	public int getMonsterCount()
 	{
 		return monsterCount;
 	}
 	
-	public static void addScore(int scoreAdd){
+	public void addScore(int scoreAdd){
 		score += scoreAdd;
 	}
 	
-	public static int getScore(){
+	public int getScore(){
 		return score;
 	}
 	
@@ -61,23 +86,23 @@ public final class GameStats {
 		return xpCount;
 	}
 	
-	public static void addXP(int XP){
+	public void addXP(int XP){
 		xpCount += XP;
 		if (xpCount > xpMax)
 		{
 			xpCount -= xpMax;
 			setXPMax((int)Math.floor(getXPMax() * 1.2));
 			level++;
-			Sounds.play("hero.level");
+			sound.play("hero.level");
 			player.levelUp = 3;
 		}
 	}
 	
-	public static int getXPMax(){
+	public int getXPMax(){
 		return xpMax;
 	}
 	
-	public static void setXPMax(int XP){
+	public void setXPMax(int XP){
 		xpMax = XP;
 	}
 	
@@ -85,7 +110,7 @@ public final class GameStats {
 		return (float)xpCount/xpMax;
 	}
 	
-	public static int getLevel(){
+	public int getLevel(){
 		return level;
 	}
 	
@@ -94,11 +119,19 @@ public final class GameStats {
 	}
 	
 	public float getboxHP(){
-		return boxHP;
+		return box.getHp();
 	}
 	
-	public static void setBoxHP(float f){
-		boxHP = f;
+	public void setBoxHP(float f){
+		box.setHp(f);
+	}
+	
+	public float getBoxMaxHP() {
+		return maxHP;
+	}
+	
+	public void setBoxMaxHP(float f) {
+		maxHP = f;
 	}
 	
 	public int minutesElapsed(){
@@ -109,78 +142,17 @@ public final class GameStats {
 		return (int)totalTimeElapsed % 60;
 	}
 	
-	public static int timeElapsed(){
+	public int timeElapsed(){
 		return (int)totalTimeElapsed;
 	}
 	
-	public static void updateTimeElapsed(){
+	public void updateTimeElapsed(){
 		float dt = Gdx.graphics.getDeltaTime();
 		totalTimeElapsed += dt;
 		nukeCD -= dt;
 	}
 	
-	public static int getMineCount(){
-		return mineCount;
-	}
-	
-	public static boolean useMine(){
-		if(mineCount > 0 && placeItem == 0){
-			mineCount--;
-			placeItem = 1;
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean placeMine()
-	{
-		placeItem = 0;
-		return true;
-	}
-	
-	public static boolean mineReady()
-	{
-		return (mineCount > 0 && placeItem != 1);
-	}
-	
-	public static boolean addMine(){
-		if(mineCount + 1 > maxItemCount){
-			return false;
-		}
-		mineCount ++;
-		return true;
-	}
-	
-	public static int getVortCount(){
-		return vortCount;
-	}
-	
-	public static boolean useVort(){
-		if(vortCount > 0 && placeItem == 0){
-			vortCount--;
-			placeItem = 2;
-			return true;
-		}
-		return false;
-	}
-	
-	public static void placeVort(){
-		placeItem = 0;
-	}
-	
-	public static boolean vortexReady(){
-		return (vortCount > 0 && placeItem != 2);
-	}
-	
-	public static boolean addVortex() {
-		if(vortCount + 1 > maxItemCount){
-			return false;
-		}
-		vortCount ++;
-		return true;
-	}
-	
-	public static boolean useNuke(){
+	public boolean useNuke(){
 		if (nukeCount > 0)
 		{
 			nukeCount--;
@@ -191,31 +163,35 @@ public final class GameStats {
 		return false;
 	}
 	
-	public static void nukeStateOff(){
+	public void nukeStateOff(){
 		nukeState = false;
 	}
 	
-	public static boolean nukeState(){
+	public boolean nukeState(){
 		return nukeState;
 	}
 	
-	public static boolean nukeReady(){
+	public boolean nukeReady(){
 		return nukeCount > 0 && nukeCD <= 0;
 	}
 	
-	public static int nukeCount(){
+	public int nukeCount(){
 		return nukeCount;
 	}
 	
-	public static void pauseToggle(){
+	public void pauseToggle(){
 		pause = !pause;
 	}
 	
-	public static boolean pauseState(){
+	public boolean pauseState(){
 		return pause;
 	}
 	
-	public static int placeItem(){
+	public int placeItem(){
 		return placeItem;
+	}
+	
+	public void pausePlayerTouchToMove(){
+		player.pause_touch();
 	}
 }

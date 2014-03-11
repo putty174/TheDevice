@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.pressx.control.GameTimer;
 import com.pressx.draw.Animator;
+<<<<<<< HEAD
 import com.pressx.managers.AnimationManager;
+=======
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 import com.pressx.managers.Textures;
 
 public class AnimatedObject extends GameObject {
@@ -40,11 +45,18 @@ public class AnimatedObject extends GameObject {
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
+<<<<<<< HEAD
 	public AnimatedObject(String animatorName, int objectID, float posX, float posY, float mass, float friction, float hitWidth,
 			float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	{
 		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
 		//this.animationManager = animManager;
+=======
+	public AnimatedObject(Draw d, Sounds s, Textures t, String animatorName, int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	{
+		super(d, s, t, objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
+		
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 		this.animator = new Animator(animatorName, this.sprite, srcWidth, srcHeight);
 		this.deathTimer = new GameTimer(30);
 	}//END AnimatedObject

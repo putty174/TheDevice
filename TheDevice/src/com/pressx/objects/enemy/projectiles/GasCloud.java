@@ -3,6 +3,8 @@ package com.pressx.objects.enemy.projectiles;
 import java.util.ArrayList;
 
 import com.pressx.control.GameTimer;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
@@ -12,9 +14,9 @@ public class GasCloud extends AnimatedObject {
 	private GameTimer timer;
 	private boolean isDone = false;
 	
-	public GasCloud(float posX, float posY) {
-		super("gasCloud", 18, posX, posY, 1, 1, 0, 0, 0, 0,
-				false, 0, false, 10, 10, Textures.getArtAsset("gas_cloud"),
+	public GasCloud(Draw d, Sounds s, Textures t,float posX, float posY) {
+		super(d,s,t,"gasCloud", 18, posX, posY, 1, 1, 0, 0, 0, 0,
+				false, 0, false, 10, 10, t.getArtAsset("gas_cloud"),
 				264, 151);
 		
 		

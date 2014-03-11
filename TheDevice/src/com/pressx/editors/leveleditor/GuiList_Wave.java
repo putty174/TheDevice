@@ -16,7 +16,7 @@ public class GuiList_Wave extends GuiList<SingleFormation>{
 	public static final Vector2 BOTTOMPOINT = new Vector2(GUILIST_WAVE_OFFSET.x-20,GUILIST_WAVE_OFFSET.y+SIZE.y-20);
 
 	public static boolean ready;
-	static LevelWave currentWave;
+	public static LevelWave currentWave;
 	static String title;
 	public static ArrayList<SingleFormation> values;
 	static GuiList_Wave instance;
@@ -25,6 +25,8 @@ public class GuiList_Wave extends GuiList<SingleFormation>{
 	static WaveDelayVariator waveDelayVariator;
 	static FormationAngleVariator formationAngleVariator;
 	
+	public static boolean checkWaveIsRandomized(){return currentWave != null && currentWave.isRandomized;}
+	
 	public static void useWave(String name,LevelWave w){
 		ready = true;
 		title = name;
@@ -32,7 +34,7 @@ public class GuiList_Wave extends GuiList<SingleFormation>{
 		values = currentWave.formations;
 		numFormationsVariator.setValue(currentWave.numFormationsUsed);
 		waveDelayVariator.setValue((int)(currentWave.delayBetweenFormations/WaveDelayVariator.VALUEMULTIPLIER));
-		instance.selectIndex(instance.selectedIndex);
+		instance.selectIndex(instance.selectedIndex >= values.size() ? values.size()-1 : instance.selectedIndex);
 	}
 	public static void setWaveNumFormationsUsed(byte b){
 		currentWave.numFormationsUsed = b;
@@ -46,9 +48,10 @@ public class GuiList_Wave extends GuiList<SingleFormation>{
 		title = "(Wave will appear here)";
 	}
 	public static void addFormationFromImportedFormation(ImportedFormation form){
-		for(SingleFormation f : values)
-			if(f.name == form.name)
-				return;
+		if(checkWaveIsRandomized())
+			for(SingleFormation f : values)
+				if(f.name == form.name)
+					return;
 		SingleFormation newformation = new SingleFormation(form);
 		values.add(newformation);
 		//instance.selectValue(newformation);
@@ -84,6 +87,8 @@ public class GuiList_Wave extends GuiList<SingleFormation>{
 		formationAngleVariator = new FormationAngleVariator();
 		formationAngleVariator.register();
 		
+		new WaveModeToggler(this).register();
+		
 		new OpenInFormationEditorButton().register();
 	}
 	
@@ -109,6 +114,21 @@ public class GuiList_Wave extends GuiList<SingleFormation>{
 	
 	public String getTitle(){
 		return title;
+	}
+	
+	public void toggleWaveRandomization(){
+		currentWave.isRandomized = !currentWave.isRandomized;
+		if(checkWaveIsRandomized()){
+			for(int i = 0; i < values.size(); i++){
+				SingleFormation form = values.get(i);
+				for(int j = values.size()-1; j > i; j--){
+					if(form.name == values.get(j).name){
+						selectIndex(j);
+						removeSelectedFormation();
+					}
+				}
+			}
+		}
 	}
     
     public void update(){

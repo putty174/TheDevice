@@ -1,19 +1,28 @@
 package com.pressx.objects.device;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
+=======
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
 
 public class XP extends AnimatedObject {
+<<<<<<< HEAD
 	
 	GameObject noTouch;
 	float currentRot;
 	
 	public XP(float posX, float posY, float speed, float direction)
+=======
+	public XP(Draw d, Sounds s, Textures t, float posX, float posY, float speed, float direction)
+>>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 	{
-		super(
+		super(d,s,t,
 				"XP",
 				2, //ID
 				posX, posY, //Position
@@ -25,7 +34,7 @@ public class XP extends AnimatedObject {
 				0, //Touch Radius
 				true, //Touchable
 				3, 3, //Draw width and height
-				Textures.getArtAsset("exp"), //Spritesheet
+				t.getArtAsset("exp"), //Spritesheet
 				30, 30 //srcwidth and height
 				);
 		
