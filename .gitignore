@@ -1,4 +1,4 @@
 .metadata/*.class
 *.class
 *.jar
-*.db
+Thumbs.db
