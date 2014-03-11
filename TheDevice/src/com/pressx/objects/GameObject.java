@@ -14,6 +14,7 @@ import com.pressx.actions.ActionQueue;
 import com.pressx.managers.Graphics;
 import com.pressx.objects.attributes.MovementAttributes;
 import com.pressx.objects.attributes.StandardAttributes;
+import com.pressx.objects.device.Device;
 
 public class GameObject implements Comparable<GameObject>{
 	/* Stats */
@@ -678,9 +679,13 @@ public class GameObject implements Comparable<GameObject>{
 		this.action_queue.act(this);
 		this.update_move(dt, objects);
 		this.update_friction(dt);
-		if(isInvincible){
-			this.setHp(9001);
-		}
+//		try{
+//			Device dev = (Device) this;
+//			this.setHp(9001);
+//		}
+//		catch (Exception e){
+//			
+//		}
 	}//END update
 	
 	/**

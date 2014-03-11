@@ -1,5 +1,7 @@
 package com.pressx.objects.enemy;
 
+import java.util.ArrayList;
+
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -25,10 +27,28 @@ public class FuzzOne extends Enemy {
 		this.health.max = 1;
 		this.worth = 3;
 		
-		this.add_animation("death", 0, 0, 7, 12, false);
-		this.animator.add_animation("attack", 0, 1, 16, false, 0,1,2,1,0,3,4,0,2);
-		this.animator.add_animation("walk", 0, 2, 5, true, 0, 1, 2, 3, 4, 3, 2, 1, 0);
-		this.set_animation("walk", true);
+		this.animationManager = Textures.getAnimManager("Fuzzy1").copy();
+		this.animationManager.changeAnimation("Movement", 60, true);
+		this.animationManager.setEndCondition("Death");
+		this.animationManager.setStdCondition("Movement");
+		
+		
+//		this.add_animation("death", 0, 0, 7, 12, false);
+//		this.animator.add_animation("attack", 0, 1, 16, false, 0,1,2,1,0,3,4,0,2);
+//		this.animator.add_animation("walk", 0, 2, 5, true, 0, 1, 2, 3, 4, 3, 2, 1, 0);
+//		this.set_animation("walk", true);
+	}
+	
+	@Override
+	public void update(float dt, ArrayList<GameObject> objects){
+		if(this.getHp() <= 0){
+			super.update(dt, objects);
+			return;
+		}
+		if(this.attack.isAttacking){
+			this.atkBehavior(dt);
+		}
+		super.update(dt, objects);
 	}
 	
 	@Override
@@ -38,6 +58,7 @@ public class FuzzOne extends Enemy {
 	public void playHit()
 	{
 		playDeath();
+		//this.animationManager.changeAnimation("Death");
 	}
 	@Override
 	public void playAttack(){

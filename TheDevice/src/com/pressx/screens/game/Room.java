@@ -15,6 +15,7 @@ import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.device.Device;
 import com.pressx.objects.enemy.projectiles.GasCloud;
+import com.pressx.objects.enemy.projectiles.Seed;
 import com.pressx.objects.enemy.projectiles.Shockwave;
 import com.pressx.objects.items.MineDrop;
 import com.pressx.objects.items.VortexDrop;
@@ -448,6 +449,10 @@ public class Room implements Controllable {
 	
 	public void addGas(GameObject obj){
 		this.spawn_object(new GasCloud(obj.get_positionX(), obj.get_positionY()));
+	}
+	
+	public void addSeed(GameObject start, GameObject end){
+		this.spawn_object(new Seed(start, end));
 	}
 	
 	public void toggleSpawn(){

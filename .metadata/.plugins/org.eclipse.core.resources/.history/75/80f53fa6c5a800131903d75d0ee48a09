@@ -1,0 +1,5 @@
+package com.pressx.objects.enemy.projectiles;
+
+public class Seed {
+
+}

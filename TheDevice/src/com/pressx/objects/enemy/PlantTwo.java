@@ -30,11 +30,16 @@ public class PlantTwo extends Enemy {
 		this.worth = 7;
 		this.lastHP = this.getHp();
 		
-		this.animator.add_animation("death", 0, 0, 5, false, 0,1,2,3,4,3,2,1,0);
-		this.animator.add_animation("attack", 0, 0, 5, true, 0,1,2,3,4,3,2,1,0);
-		this.animator.add_animation("walk", 0, 0, 5, true, 0,1,2,3,4,3,2,1,0);
-
-		this.set_animation("walk", true);
+//		this.animator.add_animation("death", 0, 0, 5, false, 0,1,2,3,4,3,2,1,0);
+//		this.animator.add_animation("attack", 0, 0, 5, true, 0,1,2,3,4,3,2,1,0);
+//		this.animator.add_animation("walk", 0, 0, 5, true, 0,1,2,3,4,3,2,1,0);
+//
+//		this.set_animation("walk", true);
+		this.animationManager = Textures.getAnimManager("Plant2").copy();
+		this.animationManager.changeAnimation("Movement", 60, true);
+		this.animationManager.setEndCondition("Death");
+		this.animationManager.setStdCondition("Movement");
+		this.animator = null;
 	}
 	
 	public void playSound(){
@@ -57,6 +62,30 @@ public class PlantTwo extends Enemy {
 			room.addGas(this);
 			this.lastHP = this.getHp();
 		}
+		if(this.attack.isAttacking){
+			this.atkBehavior(dt);
+			super.update(dt, objects);
+			return;
+		}
 		super.update(dt, objects);
+	}
+	
+	@Override
+	protected void atkBehavior(float dt){
+		atkTimer.update_timer(dt);
+		if(atkTimer.isDone()){
+			this.action_queue.clear();
+		}
+		return;
+	}
+	
+	@Override
+	protected void evolve(){
+		this.worth = 0;
+		GameObject monster = new PlantThree(device, this.get_positionX(), this.get_positionY(), room);
+		this.terminate();
+		monster.levelUp = 3;
+		room.spawn_object(monster);
+		Sounds.play("monster.level");
 	}
 }

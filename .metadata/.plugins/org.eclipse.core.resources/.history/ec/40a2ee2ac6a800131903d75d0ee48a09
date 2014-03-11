@@ -1,0 +1,17 @@
+package com.pressx.objects.enemy.projectiles;
+
+import com.pressx.managers.Textures;
+import com.pressx.objects.AnimatedObject;
+
+public class Seed extends AnimatedObject{
+	public Seed(float posX, float posY){
+		super("seed", 30, posX, posY, 1, 1, 0, 0, 0, 0,
+				false, 0, false, 10, 10, Textures.getArtAsset("plant3"),
+				256, 256);
+		
+		this.animationManager = Textures.getAnimManager("plant3");
+		this.animationManager.changeAnimation("Seed");
+		this.animationManager.setStdCondition("Seed");
+	}
+	
+}

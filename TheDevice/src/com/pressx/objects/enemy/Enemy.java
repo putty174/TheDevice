@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.pressx.actions.Attack;
+import com.pressx.control.GameTimer;
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.attributes.AttackAttributes;
+import com.pressx.objects.device.XP;
 import com.pressx.screens.game.Room;
 
 public class Enemy extends AnimatedObject {
@@ -20,6 +22,7 @@ public class Enemy extends AnimatedObject {
 	byte track;
 	boolean isWalking, isAttacking;
 	float speedCopy = this.get_speed();
+	GameTimer atkTimer;
 	
 	public Enemy(String name, GameObject device, int objectID, float posX, float posY, float mass,
 			float friction, float hitWidth, float hitHeight, float hitX,
@@ -34,20 +37,25 @@ public class Enemy extends AnimatedObject {
 		this.device = device;
 		/* Stats */
 		isWalking = true;
+		atkTimer = new GameTimer(30);
+		this.animator = null;
 	}
 	
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects)
 	{
+		//this.sprite = this.animationManager.update();
 		if(this.isDying){
-			if(!this.animator.get_currentAnimation().equals("death")){
-				this.animator.playAnimation("death", 15, false);
+			if(!this.animationManager.getCurrentAnimation().equals("Death")){
+				this.animationManager.changeAnimation("Death", 60, true);
 				this.isTouchable = false;
 				this.isSolid = false;
 				playDeath();
 			}
 			super.update(dt, objects);
+			return;
 		}
+			
 		if(this.getHp() <= 0){
 			this.isDying = true;
 			this.friction = 5000000;
@@ -55,17 +63,11 @@ public class Enemy extends AnimatedObject {
 		}
 		
 		if(this.attack.isAttacking){
-			if(!this.animator.get_currentAnimation().equals("attack")){
-				this.animator.playAnimation("attack", 15, false);
-			}
-			if(this.animator.isDone()){
-				//this.action_queue.clear();
-			}
+			//this.atkBehavior(dt);
 			super.update(dt, objects);
-			return;
 		}
 		else{
-			this.animator.playAnimation("walk", 10, true);
+			this.animationManager.changeAnimation("Movement");
 		}
 		
 		if(!stunned)
@@ -99,6 +101,17 @@ public class Enemy extends AnimatedObject {
 	protected void playAttack() {
 	}
 
+	protected void atkBehavior(float dt){
+		if(!this.animationManager.getCurrentAnimation().equals("Attack")){
+			this.animationManager.changeAnimation("Attack");
+		}
+		atkTimer.update_timer(dt);
+		if(atkTimer.isDone()){
+			this.action_queue.clear();
+		}
+		return;
+	}
+	
 	public void stun()
 	{
 		this.isSolid = false;
@@ -134,13 +147,27 @@ public class Enemy extends AnimatedObject {
 		
 		if(collider.getID() == 2 && !this.isDying)
 		{
-			collider.worth = 0;
-			collider.terminate();
-			xpcounter++;
-			if(this.xpcounter >= this.evolution)
-			{
-				this.evolve();
+			try{
+				XP temp = (XP) collider;
+				if(temp.cannotTouch() == null || !temp.cannotTouch().equals(this)){
+					collider.worth = 0;
+					collider.terminate();
+					xpcounter++;
+					if(this.xpcounter >= this.evolution){
+						this.evolve();
+					}
+				}
 			}
+			catch(Exception e){
+				
+			}
+//			collider.worth = 0;
+//			collider.terminate();
+//			xpcounter++;
+//			if(this.xpcounter >= this.evolution)
+//			{
+//				this.evolve();
+//			}
 		}
 	}//END behavior_collision
 	

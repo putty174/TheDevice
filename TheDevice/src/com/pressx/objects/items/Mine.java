@@ -19,9 +19,13 @@ public class Mine extends AnimatedObject {
 		
 		this.screenBound = true;
 		this.drawOffsetY = 6.5f;
-		this.add_animation("mine_active", 1, 0, 5, 10, false);
-		this.add_animation("mine_passive", 0, 0, 1, 1, true);
-		this.animator.set_animation("mine_passive", true);
+//		this.add_animation("mine_active", 1, 0, 5, 10, false);
+//		this.add_animation("mine_passive", 0, 0, 1, 1, true);
+//		this.animator.set_animation("mine_passive", true);
+		this.animationManager = Textures.getAnimManager("Landmine");
+		this.animationManager.changeAnimation("Passive", 10, true);
+		this.animationManager.setEndCondition("Explode");
+		this.animator = null;
 	}
 	
 	@Override
@@ -34,7 +38,8 @@ public class Mine extends AnimatedObject {
 			this.drawOffsetY = 10;
 			this.drawWidth = 30;
 			this.drawHeight = 30;
-			this.animator.set_animation("mine_active", false);
+			//this.animator.set_animation("mine_active", false);
+			this.animationManager.changeAnimation("Explode", 60, false);
 			this.set_velocity(0, 0);
 			this.isTouchable = false;
 		}
@@ -43,6 +48,7 @@ public class Mine extends AnimatedObject {
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects){
 		super.update(dt, objects);
+		this.sprite = this.animationManager.update();
 		if(isExploding2){
 			Iterator<GameObject> iter = objects.iterator();
 			while(iter.hasNext())
@@ -56,8 +62,9 @@ public class Mine extends AnimatedObject {
 			}
 			this.isExploding2 = false;
 		}
-		if(isExploding && this.animator.isDone()){
+		if(isExploding && this.animationManager.isDone()){
 			this.terminate();
 		}
+		
 	}
 }

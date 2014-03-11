@@ -1,9 +1,16 @@
 package com.pressx.objects.device;
 
+import java.util.ArrayList;
+
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
+import com.pressx.objects.GameObject;
 
 public class XP extends AnimatedObject {
+	
+	GameObject noTouch;
+	float currentRot;
+	
 	public XP(float posX, float posY, float speed, float direction)
 	{
 		super(
@@ -28,7 +35,29 @@ public class XP extends AnimatedObject {
 		this.set_velocity(xComp, yComp);
 		this.worth = 5;
 		
-		this.add_animation("xp_float", 0, 0, 3, 6, true);
-		this.set_animation("xp_float", true);
+		this.animationManager = Textures.getAnimManager("ExpOrb").copy();
+		this.animationManager.setStdCondition("Bounce");
+		this.animationManager.changeAnimation("Bounce", 30, true);
+		
+		
+		this.animator = null;
+//		this.add_animation("xp_float", 0, 0, 3, 6, true);
+//		this.set_animation("xp_float", true);
 	}//END XP
+	
+	public XP(GameObject noTouch){
+		this(noTouch.get_positionX(), noTouch.get_positionY(), 30, (float)Math.random());
+		this.noTouch = noTouch;
+	}
+	
+	@Override
+	public void update(float dt, ArrayList<GameObject> objects){
+		this.set_position(this.get_positionX(), this.get_positionY() + (float) (0.125 * Math.sin(currentRot * 0.125)));
+		currentRot = currentRot % 360 + 1;
+		super.update(dt, objects);
+	}
+	
+	public GameObject cannotTouch(){
+		return noTouch;
+	}
 }

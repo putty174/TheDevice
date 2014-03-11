@@ -4,11 +4,13 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public final class Textures {
 	public static AssetManager a_manager = new AssetManager();
 	private static HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
 	private static HashMap<String, String> currentPackage = new HashMap<String, String>();
+	private static HashMap<String, HashMap<String, AnimationManager>> animManagers = new HashMap<String, HashMap<String, AnimationManager>>();
 	
 	public Textures()
 	{
@@ -25,6 +27,7 @@ public final class Textures {
 				"shock_wave","data/art/game/monsters/Fuzzies/3/shock_wave.png",
 				"plant1", "data/art/game/monsters/Plants/1/plant_one.png",
 				"plant2", "data/art/game/monsters/Plants/2/plant_two.png",
+				"plant3", "data/art/game/monsters/Plants/3/plant_three.png",
 				"gas_cloud", "data/art/game/monsters/Plants/2/gas_cloud.png",
 				"device", "data/art/game/objects/device/device.png",
 				"device_hit", "data/art/game/objects/device/device_hit.png",
@@ -91,6 +94,9 @@ public final class Textures {
 				"end_bg", "data/art/end/gameover.png",
 				"end_retry", "data/art/end/buttons/retry.png",
 				"end_quit", "data/art/end/buttons/quitter.png");
+		
+		animManagers = AnimationManagerLoader.placeHolderShit();
+		
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.
@@ -108,6 +114,20 @@ public final class Textures {
 		for(String str : entries.get(packName).values())		
 			a_manager.load(str, Texture.class);
 		a_manager.finishLoading();
+		if(packName.equals("Loading")){
+			
+			for(AnimationManager m : animManagers.get(packName).values()){
+				m.setSprite(new Sprite(getArtAsset(m.texturesAccessor)));
+			}
+		}	
+	}
+	
+	public static AnimationManager getAnimManager(String str){
+		HashMap<String, AnimationManager> eh = animManagers.get("Loading");
+		if(eh.containsKey(str)){
+			return eh.get(str);
+		}
+		return null;
 	}
 	
 	public static Texture getArtAsset(String file)
@@ -120,5 +140,11 @@ public final class Textures {
 	
 	public static void unloadArtAssets(){
 		a_manager.clear();
+		for(HashMap<String, AnimationManager> m : animManagers.values()){
+			for(AnimationManager em : m.values()){
+				em.clearSprite();
+			}
+		}
 	}
+	
 }

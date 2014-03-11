@@ -3,14 +3,18 @@ package com.pressx.objects;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.pressx.control.GameTimer;
 import com.pressx.draw.Animator;
+import com.pressx.managers.AnimationManager;
+import com.pressx.managers.Textures;
 
 public class AnimatedObject extends GameObject {
 	/* Animation */
 	protected Animator animator; //List of animations.
-
+	protected AnimationManager animationManager;
 	protected int animation_state; //The current animation that should be playing.
 	protected boolean animationSet; //Whether the animation 
+	protected GameTimer deathTimer;
 	
 	protected boolean isDying;
 	
@@ -36,16 +40,21 @@ public class AnimatedObject extends GameObject {
 	 * @param srcWidth the width of a sprite
 	 * @param srcHeight the height of a sprite
 	 */
-	public AnimatedObject(String animatorName, int objectID, float posX, float posY, float mass, float friction, float hitWidth, float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
+	public AnimatedObject(String animatorName, int objectID, float posX, float posY, float mass, float friction, float hitWidth,
+			float hitHeight, float hitX, float hitY, boolean isSolid, float touchRadius, boolean isTouchable, float drawWidth, float drawHeight, Texture sprites, int srcWidth, int srcHeight)
 	{
 		super(objectID, posX, posY, mass, friction, hitWidth, hitHeight, hitX, hitY, isSolid, touchRadius, isTouchable, drawWidth, drawHeight, sprites, srcWidth, srcHeight);
-		
+		//this.animationManager = animManager;
 		this.animator = new Animator(animatorName, this.sprite, srcWidth, srcHeight);
+		this.deathTimer = new GameTimer(30);
 	}//END AnimatedObject
 	
 	/* Animation */
 	public int get_frame()
 	{
+		if(this.animator == null){
+			return this.animationManager.getCurrentFrame();
+		}
 		return this.animator.getCurrentFrame();
 	}//END get_frame
 	
@@ -97,15 +106,29 @@ public class AnimatedObject extends GameObject {
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects)
 	{
-		this.animator.update(dt);
-		if(this.isDying){
-			if(this.animator.isDone()){
-				this.terminate();
+		if(this.animator == null){
+			this.sprite = this.animationManager.update();
+			if(this.isDying){
+				if(this.animationManager.isDone()){
+					this.terminate();
+				}
+				return;
 			}
-			return;
+			
+			super.update(dt, objects);
 		}
-		update_animation();
-		super.update(dt, objects);
+		else{
+			this.animator.update(dt);
+			if(this.isDying){
+				if(this.animator.isDone()){
+					this.terminate();
+				}
+				return;
+			}
+			update_animation();
+			super.update(dt, objects);
+		}
+		
 	}//END update
 	
 	protected void update_animation()

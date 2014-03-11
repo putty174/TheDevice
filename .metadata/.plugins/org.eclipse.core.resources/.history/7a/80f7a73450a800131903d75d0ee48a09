@@ -1,0 +1,115 @@
+package com.pressx.objects.enemy;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.math.Vector2;
+import com.pressx.control.GameTimer;
+import com.pressx.managers.Sounds;
+import com.pressx.managers.Textures;
+import com.pressx.objects.GameObject;
+import com.pressx.screens.game.Room;
+
+public class PlantThree extends Enemy {
+	
+	GameTimer deployTimer;
+	GameTimer shotTimer;
+	int shotCount;
+	boolean deployed;
+	
+	public PlantThree(GameObject device, float posX, float posY, Room room) {
+		super("plant3",device, 3, posX, posY, 30, 50, 12, 12, 0,
+				0, true, 15, true, 12, 12,
+				Textures.getArtAsset("plant3"), 128, 128, room);
+		
+		this.device = device;
+		
+		this.attack.damage = 2;
+		this.attack.power = 20;
+		this.attack.attackframe = 6;
+		this.attack.range = 10;
+		this.attack.attackrange_limit = 14;
+		this.movement.speed = 10;
+		this.movement.speedcap = 35;
+		this.movement.acceleration = 1;
+		this.health.current = 6;
+		this.health.max = 6;
+		this.worth = 13;
+		
+		this.drawOffsetY = 2;
+		
+		deployTimer = new GameTimer(2);
+		shotTimer = new GameTimer(2);
+		deployed = false;
+		
+//		this.add_animation("death", 0, 0, 7, 7, false);
+//		this.animator.add_animation("attack", 0, 1, 13, false, 0,1,2,3,4,5,6);
+//		this.animator.add_animation("walk", 0, 2, 5, true,0,1,2,1,0,3,4,3,0);
+//		
+//		this.set_animation("walk", true);
+		
+		this.animationManager = Textures.getAnimManager("Plant3").copy();
+		this.animationManager.changeAnimation("Movement", 30, true);
+		this.animationManager.setEndCondition("Death");
+		this.animationManager.setStdCondition("Movement");
+		
+		this.animator = null;
+		
+	}
+	
+	private void spawnProjectile(GameObject obj){
+		
+	}
+	
+	@Override
+	public void update(float dt, ArrayList<GameObject> objects){
+		if(!deployed){
+			if(deployTimer.isDone()){
+				if(!this.animationManager.getCurrentAnimation().equals("Deployment")){
+					this.animationManager.changeAnimation("Deployment", 30, false);
+					Vector2 tempDir = objects.get(0).get_position().sub(this.get_position());
+					float tempAngle = tempDir.angle();
+					if(tempAngle <= 45){
+						
+					}
+					else if(tempAngle <= 135){
+						
+					}
+					else if(tempAngle <= 225){
+						
+					}
+					else if(tempAngle <= 315){
+						
+					}
+					else{
+						
+					}
+				}
+				this.sprite = this.animationManager.update();
+				if(this.animationManager.isDone()){
+					deployed = true;
+					deployTimer.reset_timer();		
+				}
+				//super.update(dt, objects);
+				return;			
+			}
+			super.update(dt, objects);	
+			deployTimer.update_timer(dt);
+		}
+		else{
+			
+		}
+	}
+	
+	public void playSound(){
+		Sounds.play("fuzzie3.attack");
+	}
+	
+	public void playHit(){
+		Sounds.play("fuzzie3.damage");
+	}
+	
+	@Override
+	public void playDeath() {
+		Sounds.play("plant3.death");
+	}
+}

@@ -37,12 +37,20 @@ public class FuzzTwo extends Enemy {
 		this.health.max = 2;
 		this.worth = 7;
 		
-		this.add_animation("death",0, 0, 7, 12, false);
-		this.add_animation("attack",0, 1, 2, 5, true);
-		this.animator.add_animation("walk",0, 2, 5, true, 0,1,0,2);
-		this.add_animation("charge",0, 3, 3, 5, true);
+//		this.add_animation("death",0, 0, 7, 12, false);
+//		this.add_animation("attack",0, 1, 2, 5, true);
+//		this.animator.add_animation("walk",0, 2, 5, true, 0,1,0,2);
+//		this.add_animation("charge",0, 3, 3, 5, true);
+//
+//		this.set_animation("walk", true);
+		
+		this.animationManager = Textures.getAnimManager("Fuzzy2").copy();
+		this.animationManager.changeAnimation("Movement", 60, true);
+		this.animationManager.setEndCondition("Death");
+		this.animationManager.setStdCondition("Movement");
 
-		this.set_animation("walk", true);
+		
+		this.animator = null;
 	}
 	
 	@Override
@@ -51,14 +59,26 @@ public class FuzzTwo extends Enemy {
 			super.update(dt, objects);
 			return;
 		}
-		if((!isPrepping && !isRunning) && !this.animator.get_currentAnimation().equals("walk")){
-			this.animator.set_animation("walk", true);
+		if(this.attack.isAttacking){
+			this.atkBehavior(dt);
+			super.update(dt, objects);
+		}
+//		if((!isPrepping && !isRunning) && !this.animator.get_currentAnimation().equals("walk")){
+//			this.animator.set_animation("walk", true);
+//			return;
+//		}
+		if((!isPrepping && !isRunning) && !this.animationManager.getCurrentAnimation().equals("Movement")){
+			this.animationManager.changeAnimation("Movement", 40, true);
 			return;
 		}
 		if(timer.isDone()){
 			this.action_queue.clear();
-			if(!this.animator.get_currentAnimation().equals("charge")){
-				this.animator.set_animation("charge", true);
+//			if(!this.animator.get_currentAnimation().equals("charge")){
+//				this.animator.set_animation("charge", true);
+//				isPrepping = true;
+//			}
+			if(!this.animationManager.getCurrentAnimation().equals("Charging")){
+				this.animationManager.changeAnimation("Charging", 40, false);
 				isPrepping = true;
 			}
 			if(isPrepping){
@@ -74,11 +94,12 @@ public class FuzzTwo extends Enemy {
 					Sounds.play("fuzzie2.charge");
 					isPrepping = false;
 					prepTime.reset_timer();
-					this.animator.set_animation("attack", true);
+					//this.animator.set_animation("attack", true);
+					this.animationManager.changeAnimation("Attack", 50, false);
 					timer.reset_timer();
 				}
 				else{
-					this.animator.update(dt);
+					//this.animator.update(dt);
 				}				
 			}
 			return;				
@@ -116,7 +137,8 @@ public class FuzzTwo extends Enemy {
 		isRunning = false;
 		this.mass = 2;
 		runTime.reset_timer();
-		this.animator.set_animation("walk", true);
+		//this.animator.set_animation("walk", true);
+		this.animationManager.changeAnimation("Movement", 60, true);
 	}
 	
 	private void charge(GameObject obj){

@@ -1,12 +1,18 @@
 package com.pressx.objects.enemy;
 
+import java.util.ArrayList;
+
+import com.pressx.control.GameTimer;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
+import com.pressx.objects.device.XP;
 import com.pressx.screens.game.Room;
 
 public class PlantOne extends Enemy {
-	float cooldown = 0.6f;
+
+	private GameTimer activityTimer;
+	private boolean usingAction = false;
 	
 	public PlantOne(GameObject device, float posX, float posY, Room room) {
 		super("plant1", device, 3, posX, posY, 12, 12, 6, 6, 0,
@@ -26,10 +32,19 @@ public class PlantOne extends Enemy {
 		this.health.max = 1;
 		this.worth = 3;
 		
-		this.animator.add_animation("death", 0, 0, 5, false, 0, 1, 2, 3, 2, 1, 0);
-		this.animator.add_animation("attack", 0, 0, 5, true, 0, 1, 2, 3, 2, 1, 0);
-		this.animator.add_animation("walk", 0, 0, 5, true, 0, 1, 2, 3, 2, 1, 0);
-		this.set_animation("walk", true);
+		this.activityTimer = new GameTimer(6);
+		
+//		this.animator.add_animation("death", 0, 0, 5, false, 0, 1, 2, 3, 2, 1, 0);
+//		this.animator.add_animation("attack", 0, 0, 5, true, 0, 1, 2, 3, 2, 1, 0);
+//		this.animator.add_animation("walk", 0, 0, 5, true, 0, 1, 2, 3, 2, 1, 0);
+//		this.set_animation("walk", true);
+		
+		this.animationManager = Textures.getAnimManager("Plant1").copy();
+		this.animationManager.changeAnimation("Movement", 30, true);
+		this.animationManager.setEndCondition("Death");
+		this.animationManager.setStdCondition("Movement");
+		this.animator = null;
+		
 	}
 	
 	@Override
@@ -42,6 +57,40 @@ public class PlantOne extends Enemy {
 	@Override
 	public void playAttack(){
 		Sounds.play("fuzzie1.bite");
+	}
+	
+	@Override
+	public void update(float dt, ArrayList<GameObject> objects){
+		if(this.getHp() <= 0){
+			super.update(dt, objects);
+			return;
+		}
+		if(this.attack.isAttacking){
+			this.atkBehavior(dt);
+		}
+		if(activityTimer.isDone()){
+			usingAction = true;
+			this.animationManager.changeAnimation("MovementGlow", 30, false);
+			activityTimer.reset_timer();
+		}
+		else if(!usingAction){
+			activityTimer.update_timer(dt);
+		}
+		if(this.animationManager.getCurrentAnimation().equals("MovementGlow") && this.animationManager.isDone()){
+			this.room.spawn_object(new XP(this));
+			usingAction = false;
+			this.animationManager.changeAnimation("Movement", 30, true);
+		}
+		super.update(dt, objects);
+	}
+	
+	@Override
+	protected void atkBehavior(float dt){
+		atkTimer.update_timer(dt);
+		if(atkTimer.isDone()){
+			this.action_queue.clear();
+		}
+		return;
 	}
 	
 	

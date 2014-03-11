@@ -16,21 +16,37 @@ public class Shockwave extends AnimatedObject {
 				false, 0, false, 10, 10, Textures.getArtAsset("shock_wave"),
 				512, 512);
 		
-		this.add_animation("shock", 0, 0, 3, 3, false);
-		this.set_animation("shock", true);
+//		this.add_animation("shock", 0, 0, 3, 3, false);
+//		this.set_animation("shock", true);
+		
+		this.animator = null;
+		
+		this.animationManager = Textures.getAnimManager("Shockwave").copy();
+		this.animationManager.changeAnimation("Shock", 10, false);
+		this.animationManager.setEndCondition("Shock");
 	}
 	
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects){
-		displayTime.update_timer(dt);
-		if(!displayTime.isDone())
-		{
+//		displayTime.update_timer(dt);
+//		if(!displayTime.isDone())
+//		{
+//			this.drawWidth += dt * 100;
+//			this.drawHeight += dt * 100;
+//			this.sprite.setColor(1, 1, 1, this.currentScale -= dt);
+//		}
+//		else
+//			this.terminate();
+		if(this.animationManager.isDone()){
+			this.terminate();
+		}
+		else{
 			this.drawWidth += dt * 100;
 			this.drawHeight += dt * 100;
+			this.sprite = this.animationManager.update();
 			this.sprite.setColor(1, 1, 1, this.currentScale -= dt);
+			//super.update(dt, objects);
 		}
-		else
-			this.terminate();
 	}
 	
 	@Override
