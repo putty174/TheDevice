@@ -1,4 +1,4 @@
-package com.pressx.items;
+package com.pressx.gadgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,6 +20,12 @@ public abstract class Item extends ShopItem{
 	
 	public Item(Textures texture,Sounds sounds,String name,String icon,String largeicon){
 		super(texture,sounds,name,icon,largeicon);
+	}
+	
+	public void initializeForGame(){
+		spr_button = getspr(getButtonSpriteName());
+		spr_count = getspr(getCountSpriteName());
+		updateButton();
 	}
 	
 	public void setGameStats(GameStats stats){
@@ -111,11 +117,6 @@ public abstract class Item extends ShopItem{
 	
 	/////draw
 	public void drawButton(Draw draw,int index){//0 for the first item, 1 for the second item (can be changed if we want more carryable items)
-		if(spr_button == null){
-			spr_button = getspr(getButtonSpriteName());
-			spr_count = getspr(getCountSpriteName());
-			updateButton();
-		}
 		draw.draw(Draw.TYPES.BUTTON,spr_button,.83f,.35f+.22f*index,.17f,.165f);
 		draw.draw(Draw.TYPES.EXTRAS,spr_count,.935f,(buttonup ? .40f : .38f)+.22f*index,.04f,.06f);
 	}

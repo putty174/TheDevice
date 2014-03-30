@@ -1,11 +1,11 @@
-package com.pressx.items;
+package com.pressx.gadgets;
 
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.GameStats;
 
 public class PlayerInventory{
-	final int TOTALITEMS = 5;
+	final int TOTALITEMS = 6;
 	
 	public int numExperience = 132;//temporary
 	
@@ -18,12 +18,20 @@ public class PlayerInventory{
 		allItems[1] = new Item_Mine(s,t);
 		allItems[2] = new Item_Gear(s,t);
 		allItems[3] = new Item_Control(s,t);
-		allItems[4] = new Item_Mine(s,t);
+		allItems[4] = new Item_Hammer(s,t);
+		allItems[5] = new Item_Mine(s,t);
 		//for now
 		itemOwned[0] = true;
 		itemOwned[1] = true;
 		item0 = allItems[0];
 		item1 = allItems[1];
+	}
+	
+	public void initializeItemsForGame(){
+		if(item0 != null)
+			item0.initializeForGame();
+		if(item1 != null)
+			item1.initializeForGame();
 	}
 	
 	public void updateItemShopButtons(ShopItem item){

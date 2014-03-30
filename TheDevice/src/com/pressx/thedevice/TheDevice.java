@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
-import com.pressx.items.PlayerInventory;
+import com.pressx.gadgets.PlayerInventory;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -15,6 +15,7 @@ import com.pressx.screens.BaseState;
 import com.pressx.screens.CutsceneScreen;
 import com.pressx.screens.GameOverScreen;
 import com.pressx.screens.GameScreen;
+import com.pressx.screens.LevelSelectScreen;
 import com.pressx.screens.LoadingScreen;
 import com.pressx.screens.MainMenuScreen;
 import com.pressx.screens.ShopScreen;
@@ -24,7 +25,7 @@ import com.pressx.screens.game.UI;
 import com.pressx.spawner.CustomSpawner;
 
 public class TheDevice implements ApplicationListener {
-	private int NUMSTATES = 9;
+	private int NUMSTATES = 10;
 	
 	public Sounds sounds;
 	public Textures textures;
@@ -113,6 +114,14 @@ public class TheDevice implements ApplicationListener {
 		posStates[4] = new TutorialScreen(this, textures, sounds);
 		posStates[4].create();
 		currentState = 4;
+	}
+	
+	public void moveToLevelSelect(){
+		textures.unloadArtAssets();
+		textures.loadArtAssets("LevelSelect");
+		posStates[9] = new LevelSelectScreen(this);
+		posStates[9].create();
+		currentState = 9;
 	}
 	
 	public void moveToLoading() {

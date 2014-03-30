@@ -65,7 +65,7 @@ public class MainMenuScreen extends BaseState {
 			if(play.getBoundingRectangle().contains(x, y))
 			{
 				sounds.play("buttonl");
-				game.moveToSequence("Intro");
+				game.moveToLevelSelect();
 			}
 			else if(help.getBoundingRectangle().contains(x,y))
 			{

@@ -1,16 +1,16 @@
-package com.pressx.items;
+package com.pressx.gadgets;
 
+import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.items.Vortex;
 import com.pressx.objects.items.VortexDrop;
-import com.pressx.thedevice.GameStats;
 
-public class Item_Gear extends Item{
-	public Item_Gear(Sounds sounds, Textures textures){
-		super(textures, sounds, "Gear","gear_drop","largeicon_gear");
+public class Item_Hammer extends Item{
+	public Item_Hammer(Sounds sounds, Textures textures){
+		super(textures, sounds, "Hammer Time","hammer_drop","hammer_drop"/*"largeicon_hammer"*/);
 	}
 
 	@Override
@@ -49,5 +49,5 @@ public class Item_Gear extends Item{
 	}
 	
 	@Override
-	public int getCost(){return 100;}
+	public int getCost(){return 200;}
 }

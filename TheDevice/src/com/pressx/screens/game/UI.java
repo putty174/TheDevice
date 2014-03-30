@@ -2,10 +2,11 @@ package com.pressx.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.pressx.items.PlayerInventory;
+import com.pressx.gadgets.PlayerInventory;
 import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
+import com.pressx.spawner.CustomSpawner;
 import com.pressx.thedevice.GameStats;
 
 public class UI {
@@ -28,6 +29,8 @@ public class UI {
 	private String time;
 	private String score;
 	
+	private CustomSpawner spawner;
+	
 	public UI(Draw draw, Sounds sounds, Textures textures, GameStats stats, Room room,PlayerInventory inventory){
 		this.draw = draw;
 		this.sound = sounds;
@@ -49,6 +52,10 @@ public class UI {
 		stats.item1.setDraw(draw);
 		stats.item0.setRoom(room);
 		stats.item1.setRoom(room);
+	}
+	
+	public void setSpawner(CustomSpawner spawner){
+		this.spawner = spawner;
 	}
 	
 	public void create()
@@ -148,6 +155,15 @@ public class UI {
 		
 		//Draw Score
 		draw.write(score, ((draw.screenWidth * 0.99f) - draw.font.getBounds(score).width) / draw.screenWidth, 0.825f);
+
+		if(room.monsterCount == 0 && spawner.nextwavedelaytimer > 0){
+			draw.write("Next wave in "+(int)spawner.nextwavedelaytimer+" seconds",.35f,.9f);
+		}else{
+			//Draw wave info (temporary)
+			draw.write("Wave "+spawner.ui_currentWaveNumber+'/'+spawner.ui_totalWaveCount,.45f,.9f);
+			//Draw enemies left (temporary)
+			draw.write("Enemies left: "+spawner.ui_enemiesLeftInWave,.35f,.8f);
+		}
 	}
 	
 	public void setDraw(Draw d) {

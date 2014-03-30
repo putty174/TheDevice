@@ -1,4 +1,4 @@
-package com.pressx.items;
+package com.pressx.gadgets;
 
 import java.util.Random;
 import com.badlogic.gdx.Gdx;
@@ -11,7 +11,7 @@ import com.pressx.objects.items.VortexDrop;
 public class Item_Control extends Item{
 	static String generate_name(){return new String[]{"Mind","Mine","Mime","Lime","Slime","Time","Grime","Dime","Dine","Line","Pine","Sine","Vine","Name Too Long Anyway So You Probably Won't See This"}[new Random().nextInt(14)];}
 	public Item_Control(Sounds sounds, Textures textures){
-		super(textures, sounds, generate_name()+" Control","vortex_drop","largeicon_control");
+		super(textures, sounds, generate_name()+" Control","controller_drop","largeicon_control");
 	}
 
 	@Override

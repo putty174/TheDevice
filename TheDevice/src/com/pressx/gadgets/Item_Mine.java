@@ -1,4 +1,4 @@
-package com.pressx.items;
+package com.pressx.gadgets;
 
 import com.badlogic.gdx.Gdx;
 import com.pressx.managers.Draw;

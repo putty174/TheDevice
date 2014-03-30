@@ -1,7 +1,6 @@
-package com.pressx.items;
+package com.pressx.gadgets;
 
 import com.badlogic.gdx.Gdx;
-import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
@@ -9,9 +8,9 @@ import com.pressx.objects.items.Vortex;
 import com.pressx.objects.items.VortexDrop;
 import com.pressx.thedevice.GameStats;
 
-public class Item_Vortex extends Item{
-	public Item_Vortex(Sounds sounds, Textures textures){
-		super(textures, sounds, "Vortex","vortex_drop","largeicon_vortex");
+public class Item_Gear extends Item{
+	public Item_Gear(Sounds sounds, Textures textures){
+		super(textures, sounds, "Gear","gear_drop","largeicon_gear");
 	}
 
 	@Override
@@ -46,9 +45,9 @@ public class Item_Vortex extends Item{
 
 	@Override
 	public AnimatedObject dropAmmo(float posx, float posy) {
-		return new VortexDrop(draw, sound, textures, stats, posx,posy);
+		return new VortexDrop(draw, sound, textures, stats, posx, posy);
 	}
 	
 	@Override
-	public int getCost(){return 0;}
+	public int getCost(){return 100;}
 }

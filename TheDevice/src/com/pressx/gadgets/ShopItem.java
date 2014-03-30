@@ -1,4 +1,4 @@
-package com.pressx.items;
+package com.pressx.gadgets;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.pressx.managers.Draw;
@@ -34,9 +34,9 @@ public abstract class ShopItem{
 	public void initializeForShop(){
 		this.icon = getspr(iconname);
 		this.largeicon = getspr(largeiconname);
-		this.description = "DESCRIPTION HERE";//description;
+		this.description = "DESCRIPTION HERE";
 		background = getspr("itembackground");
-		setState(ShopItemState.LOCKED);
+		setState(ShopItemState.NULL);
 	}
 	
 	public void setState(ShopItemState s){
