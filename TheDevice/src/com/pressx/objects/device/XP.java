@@ -28,7 +28,7 @@ public class XP extends AnimatedObject {
 				true, //Touchable
 				3, 3, //Draw width and height
 				t.getArtAsset("exp"), //Spritesheet
-				30, 30 //srcwidth and height
+				128, 128 //srcwidth and height
 				);
 		
 		double dir = direction * Math.PI / 180;

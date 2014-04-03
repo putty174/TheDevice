@@ -34,9 +34,9 @@ public abstract class ShopItem{
 	public void initializeForShop(){
 		this.icon = getspr(iconname);
 		this.largeicon = getspr(largeiconname);
-		this.description = "DESCRIPTION HERE";//description;
+		this.description = "DESCRIPTION HERE";
 		background = getspr("itembackground");
-		setState(ShopItemState.LOCKED);
+		setState(ShopItemState.NULL);
 	}
 	
 	public void setState(ShopItemState s){

@@ -58,12 +58,12 @@ public class ShopScreen extends BaseState {
 	final float ITEMLARGEUPGRADE_WIDTH = ITEMDESCBUTTON_WIDTH;
 	final float ITEMLARGEUPGRADE_HEIGHT = ITEMDESCBUTTON_HEIGHT;
 	final float LOADOUT_WIDTH = .55f;//LOADOUT: The bar at the bottom with the two currently-equipped items
-	final float LOADOUT_HEIGHT = ITEMICON_HEIGHT+.05f;
+	final float LOADOUT_HEIGHT = ITEMICON_HEIGHT;//+.05f;
 	final float LOADOUT_OFFSETX = 1-LOADOUT_WIDTH;
 	final float LOADOUT_OFFSETY = 0;
 	final float LOADOUTICON0_OFFSETX_CENTER = LOADOUT_OFFSETX+LOADOUT_WIDTH/4+.025f;
 	final float LOADOUTICON1_OFFSETX_CENTER = LOADOUT_OFFSETX+LOADOUT_WIDTH*3/4+.025f;
-	final float LOADOUTICON_OFFSETY = LOADOUT_HEIGHT-ITEMICON_HEIGHT-.025f;
+	final float LOADOUTICON_OFFSETY = LOADOUT_HEIGHT-ITEMICON_HEIGHT-.0125f;
 	
 	float ITEMSCROLL_MAX;
 	
@@ -152,7 +152,7 @@ public class ShopScreen extends BaseState {
 		
 		//Draw experience count
 		int anim_exp = (animcycle/5)%4;
-		spr_experience.setRegion(30*(anim_exp == 0 ? 0 : anim_exp == 2 ? 2 : 1), 0, 30, 30);
+		spr_experience.setRegion(128*(anim_exp == 0 ? 0 : anim_exp == 2 ? 2 : 1), 0, 128, 128);
 		draw.draw(Draw.TYPES.BUTTON,spr_experience,.275f,.9f,1f/20,/*.075f*/1f/15f);
 		draw.write(""+game.inventory.numExperience,.33f,.975f);
 		
@@ -170,9 +170,9 @@ public class ShopScreen extends BaseState {
 				draw.draw(Draw.TYPES.EXTRAS,spr_itemselectback,ITEMUNIT_OFFSETX+ITEMUNIT_WIDTH/2-sizex/2,posy+ITEMUNIT_HEIGHT/2-sizey/2,sizex,sizey);
 				int anim = (animcycle/4)%6;
 				anim = anim == 5 ? 1 : anim == 4 ? 2 : anim;
-				items[i].icon.setRegion(200*anim,0,200,200);
+				items[i].icon.setRegion(128*anim,0,128,128);
 			}else{
-				items[i].icon.setRegion(0,0,200,200);
+				items[i].icon.setRegion(0,0,128,128);
 			}
 			draw.draw(Draw.TYPES.EXTRAS,items[i].icon,ITEMUNIT_OFFSETX+ITEMICON_OFFSETX,posy+ITEMICON_OFFSETY,itemiconwidth,ITEMICON_HEIGHT);
 			draw.draw(Draw.TYPES.BUTTON,items[i].background,ITEMUNIT_OFFSETX,posy,ITEMUNIT_WIDTH,ITEMUNIT_HEIGHT);
@@ -210,14 +210,14 @@ public class ShopScreen extends BaseState {
 
 		//Draw loadout bar and two equipped items
 		draw.draw(Draw.TYPES.SUPEREXTRAS,spr_loadoutbar,LOADOUT_OFFSETX,LOADOUT_OFFSETY,LOADOUT_WIDTH,LOADOUT_HEIGHT);
-		draw.write("1",LOADOUTICON0_OFFSETX_CENTER-.1f,LOADOUTICON_OFFSETY+ITEMICON_HEIGHT/2);
+		draw.write("1",LOADOUTICON0_OFFSETX_CENTER-.1f,LOADOUTICON_OFFSETY+ITEMICON_HEIGHT/2+.01f);
 		if(game.inventory.item0 != null){
-			spr_loadouticon0.setRegion(0,0,200,200);
+			spr_loadouticon0.setRegion(0,0,128,128);
 			draw.draw(Draw.TYPES.MEGAEXTRAS,spr_loadouticon0,LOADOUTICON0_OFFSETX_CENTER-itemiconwidth/2,LOADOUTICON_OFFSETY,itemiconwidth,ITEMICON_HEIGHT);
 		}
-		draw.write("2",LOADOUTICON1_OFFSETX_CENTER-.1f,LOADOUTICON_OFFSETY+ITEMICON_HEIGHT/2);
+		draw.write("2",LOADOUTICON1_OFFSETX_CENTER-.1f,LOADOUTICON_OFFSETY+ITEMICON_HEIGHT/2+.01f);
 		if(game.inventory.item1 != null){
-			spr_loadouticon1.setRegion(0,0,200,200);
+			spr_loadouticon1.setRegion(0,0,128,128);
 			draw.draw(Draw.TYPES.MEGAEXTRAS,spr_loadouticon1,LOADOUTICON1_OFFSETX_CENTER-itemiconwidth/2,LOADOUTICON_OFFSETY,itemiconwidth,ITEMICON_HEIGHT);
 		}
 		

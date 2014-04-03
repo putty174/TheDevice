@@ -65,7 +65,7 @@ public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,Le
 		try{
 		    stream = new DataInputStream(new BufferedInputStream(file.read()));
 		    byte version = stream.readByte();
-		    System.out.println("Level version: "+version);
+		    //System.out.println("Level version: "+version);
 		    
 		    int numFormationTypes = convbyte(stream.readByte());
 		    for(int b = 0; b < numFormationTypes; b++){
@@ -76,7 +76,7 @@ public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,Le
 			formationManager.finishLoading();
 		    
 		    int numWaves = convbyte(stream.readByte());
-		    System.out.println(""+numWaves);
+		    //System.out.println(""+numWaves);
 		    for(int i = 0; i < numWaves; i++){
 	    		LevelWave wave = new LevelWave();
 		    	int numFormationsInWave = convbyte(stream.readByte());

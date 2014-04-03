@@ -43,6 +43,11 @@ public class GameScreen extends BaseState {
 		this.spawner = spawner;
 		this.gameUI = gameUI;
 		this.controller = controller;
+		
+		gameUI.setSpawner(spawner);
+		
+		g.inventory.initializeItemsForGame();
+		
 		stats.setBox(box);
 		
 	}

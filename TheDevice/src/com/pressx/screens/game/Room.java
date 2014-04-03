@@ -46,9 +46,9 @@ public class Room implements Controllable {
 	private GameObject device;
 	public int monsterCount;
 	
-	/* Drop Chance */
-	private float mineChance = 0.3f;
-	private float vortexChance = 0.2f;
+	/* Drop Chance (UNUSED)*/
+	/*private float mineChance = 0.3f;
+	private float vortexChance = 0.2f;*
 	
 	/* Health */
 	private Sprite HPBar;

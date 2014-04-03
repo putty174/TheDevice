@@ -20,8 +20,9 @@ public class CustomSpawner {
 	//////////Constants
 	static final boolean LOOPWHENFINISHED = true;//Will start over if it is finished
 	static final float LOOPDELAY = 3;//Delay when looping
-	static final Vector2 center = new Vector2(45,30);//The center of the map
-	static final float baseDistance = 27;//The distance from the center to the corner
+	static final Vector2 MAP_CENTER = new Vector2(45,30);//The center of the map
+	static final float MAP_BASEDISTANCE = 27;//The distance from the center to the corner
+	static final float DELAYBETWEENWAVES = (float)Math.PI;//Delay (in seconds) between killing the last enemy in a wave and the next wave starting
 	//////////END Constants
 	
 	GameObject gameObject;
@@ -35,12 +36,17 @@ public class CustomSpawner {
 	
 	private String levelName;
 	
-	private float timer;
+	private float formationtimer;
 	private int currentWaveIndex,currentFormationIndex;
-	//private HashMap<String,FormationLoader.FormationData> formationNameToData = new HashMap<String,FormationLoader.FormationData>();
 	private LevelLoader levelLoader;
 	private AssetManager levelManager = new AssetManager();
 	private ArrayList<LevelWave> waves;
+	
+	public float nextwavedelaytimer;
+	
+	public int ui_totalWaveCount,ui_currentWaveNumber,ui_enemiesLeftInWave;//for the UI
+	
+	private ArrayList<SingleFormation> currentWaveFormationOrder;
 	
 	public CustomSpawner(Draw d, Sounds s, Textures t, String levelname,GameObject gameObject/*,GraphicsManager graphicsManager*/,Room room){
 		this.levelName = levelname;
@@ -58,18 +64,18 @@ public class CustomSpawner {
 	
 	/////Helpful Functions
 	public void reset(){
-		System.out.println("GL HF!");
+		//System.out.println("GL HF!");
 		currentWaveIndex = 0;
-		timer = 0;
+		formationtimer = 0;
 		loadLevelFromFile(levelName);
 	}
 	
 	public void onLevelFinished(){//Don't know what to do here yet
-		System.out.println("Level finished!");
+		//System.out.println("Level finished!");
 		if(LOOPWHENFINISHED){
-			System.out.println("Resetting spawner!");
+			//System.out.println("Resetting spawner!");
 			reset();
-			timer = -LOOPDELAY;
+			formationtimer = -LOOPDELAY;
 		}
 	}
 	
@@ -81,49 +87,77 @@ public class CustomSpawner {
 			levelManager.finishLoading();
 		}
 		waves = levelManager.get(filepath,LevelLoader.LevelData.class).waves;
+		ui_totalWaveCount = waves.size();
+		startWave();
 	}
 	
 	/////Spawning Functions
 	void spawnEnemy(FormationLoader.SpawnData data,float rotation){
 		Vector2 pos = vmath.rotate(data.position,rotation);
-		pos = new Vector2(center.x+pos.x*baseDistance,center.y-pos.y*baseDistance);//Negative Y because GDX's system has a positive Y go upward rather than downward
+		pos = new Vector2(MAP_CENTER.x+pos.x*MAP_BASEDISTANCE,MAP_CENTER.y-pos.y*MAP_BASEDISTANCE);//Negative Y because GDX's system has a positive Y go upward rather than downward
 		Enemy enemy = monsterManager.spawnMonster(data.type+1,pos.x,pos.y);
 		room.spawn_object(enemy);
 	}
-	void spawnFormationFrom(LevelWave currentWave,int currentFormationIndex){//currentFormationIndex is only needed if the wave isn't randomized
-		SingleFormation formation;
-		if(currentWave.isRandomized)
-			formation = currentWave.formations.get(rand.nextInt(currentWave.formations.size()));
-		else
-			formation = currentWave.formations.get(currentFormationIndex);
+	void spawnFormation(SingleFormation formation){//currentFormationIndex is only needed if the wave isn't randomized
 		float rotation = SingleFormation.spawnAngleToRadians(formation.spawnAngle,rand);
-		for(FormationLoader.SpawnData spawn : levelLoader.getFormationManager().get(formation.name,FormationLoader.FormationData.class).list){
+		for(FormationLoader.SpawnData spawn : getFormationData(formation.name))
 			spawnEnemy(spawn,rotation);
-		}
+	}
+	ArrayList<FormationLoader.SpawnData> getFormationData(String name){
+		return levelLoader.getFormationManager().get(name,FormationLoader.FormationData.class).list;
 	}
 	
 	/////Update
+	void startWave(){//initializes for current wave
+		LevelWave currentWave = waves.get(currentWaveIndex);
+		currentFormationIndex = 0;
+		currentWaveFormationOrder = new ArrayList<SingleFormation>();
+		for(int i = 0; i < currentWave.numFormationsUsed; i++){
+			if(currentWave.isRandomized)
+				currentWaveFormationOrder.add(currentWave.formations.get(rand.nextInt(currentWave.formations.size())));
+			else
+				currentWaveFormationOrder.add(currentWave.formations.get(currentFormationIndex));
+		}
+	}
+	
+	void nextWave(){//goes to next wave, or finishes if there is no next wave
+		++currentWaveIndex;
+		if(currentWaveIndex == waves.size())
+			onLevelFinished();
+		else
+			startWave();
+	}
+	
 	public void update(float dseconds){
-		timer += dseconds;
+		formationtimer += dseconds;
 		
 		if(waves.size() == 0){
-			System.out.println("PLEASE USE A LEVEL THAT ACTUALLY HAS WAVES IN IT!!!!");
+			//System.out.println("PLEASE USE A LEVEL THAT ACTUALLY HAS WAVES IN IT!!!! (or maybe CustomSpawner is broken?)");
 			return;
 		}
 		LevelWave currentWave = waves.get(currentWaveIndex);
 		
-		if(timer > currentWave.delayBetweenFormations){
-			timer = 0;
+		if(nextwavedelaytimer > 0){
+			if(room.monsterCount == 0){
+				nextwavedelaytimer -= dseconds;
+				if(nextwavedelaytimer <= 0)
+					nextWave();
+			}
+		}else if(formationtimer > currentWave.delayBetweenFormations){
+			formationtimer = 0;
 			if(currentFormationIndex == currentWave.numFormationsUsed){
-				currentFormationIndex = 0;
-				++currentWaveIndex;
-				if(currentWaveIndex == waves.size())
-					onLevelFinished();
+				nextwavedelaytimer = DELAYBETWEENWAVES;
 			}else{
-				spawnFormationFrom(currentWave,currentFormationIndex);
+				spawnFormation(currentWaveFormationOrder.get(currentFormationIndex));
 			}
 			++currentFormationIndex;
 		}
+		
+		/////Enemy counter (for UI)
+		ui_currentWaveNumber = currentWaveIndex+1;
+		ui_enemiesLeftInWave = room.monsterCount;
+		for(int i = currentFormationIndex; i < currentWaveFormationOrder.size(); i++)
+			ui_enemiesLeftInWave += getFormationData(currentWaveFormationOrder.get(i).name).size();
 	}
 	
 	public float getProgress(){
@@ -133,7 +167,7 @@ public class CustomSpawner {
 	public boolean getUpdate(){
 		return levelManager.update() && levelLoader.getUpdate();
 	}
-	}
+}
 	
 class VectorMath{
 	static final float pi = (float)Math.PI;

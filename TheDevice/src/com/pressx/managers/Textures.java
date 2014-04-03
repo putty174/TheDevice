@@ -46,10 +46,13 @@ public final class Textures {
 				"exp", "data/art/game/objects/device/exp.png",
 				"hero", "data/art/game/objects/hero/hero.png",
 				"mine","data/art/game/objects/mine/mine.png",
-				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
+				"mine_drop","data/art/game/objects/mine/minepickup.png",
 				"deathRing", "data/art/game/objects/nuke/death_ring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
-				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
+				"vortex_drop","data/art/game/objects/vortex/vortexpickup.png",
+				"gear_drop","data/art/game/objects/gear/gearpickup.png",
+				"hammer_drop","data/art/game/objects/hammer/hammerpickup.png",
+				"wrench_drop","data/art/game/objects/wrench/wrenchpickup.png",
 				"gear", "data/art/game/objects/gear/gear.png",
 				"wrench", "data/art/game/objects/wrench/wrench.png",
 				"indicate", "data/art/game/ui/extra/indication_sheet.png",
@@ -109,36 +112,48 @@ public final class Textures {
 				"end_retry", "data/art/end/buttons/retry.png",
 				"end_quit", "data/art/end/buttons/quitter.png");
 		
+<<<<<<< HEAD
 		animManagers = AnimationManagerLoader.placeHolderShit();
 		
 		final String path = "data/art/shop/";
+=======
+		final String shop = "data/art/shop/";
+>>>>>>> b59a385e5277770502cfcc66deed8e600679ddb5
 		addPath(
 				"Shop",
-				"shop_background",path+"shop_background.png",
-				"shop_backbutton",path+"backbutton.png",
-				"itembackground",path+"item_background.png",
-				"itembackground_selected",path+"item_background_selected.png",
-				"itemdescbackground",path+"itemdescbackground.png",
-				"itembutton_buy",path+"itembutton_buy.png",
-				"itembutton_equip",path+"itembutton_equip.png",
-				"itembutton_unequip",path+"itembutton_unequip.png",
-				"itembutton_loadoutfull_big",path+"itembutton_equip_gray_big.png",
-				"itembutton_buy_big",path+"itembutton_buy_big.png",
-				"itembutton_equip_big",path+"itembutton_equip_big.png",
-				"itembutton_unequip_big",path+"itembutton_unequip_big.png",
-				"itembutton_upgrade_big",path+"itembutton_upgrade_big.png",
+				"shop_background",shop+"shop_background.png",
+				"shop_backbutton",shop+"backbutton.png",
+				"itembackground",shop+"item_background.png",
+				"itembackground_selected",shop+"item_background_selected.png",
+				"itemdescbackground",shop+"itemdescbackground.png",
+				"itembutton_buy",shop+"itembutton_buy.png",
+				"itembutton_equip",shop+"itembutton_equip.png",
+				"itembutton_unequip",shop+"itembutton_unequip.png",
+				"itembutton_loadoutfull_big",shop+"itembutton_equip_gray_big.png",
+				"itembutton_buy_big",shop+"itembutton_buy_big.png",
+				"itembutton_equip_big",shop+"itembutton_equip_big.png",
+				"itembutton_unequip_big",shop+"itembutton_unequip_big.png",
+				"itembutton_upgrade_big",shop+"itembutton_upgrade_big.png",
 				"exp", "data/art/game/objects/device/exp.png",
-				"uparrow",path+"uparrow.png",
+				"uparrow",shop+"uparrow.png",
 				"ui_mine", "data/art/game/ui/uibase/buttons/mine/mine.png",
 				"ui_vortex", "data/art/game/ui/uibase/buttons/vortex/vortex.png",
-				"largeicon_mine",path+"mine_large.png",
-				"largeicon_vortex",path+"vortex_large.png",
-				"largeicon_control",path+"control_large.png",
-				"largeicon_gear",path+"gear_large.png",
-				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
-				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
-				"gear_drop","data/art/game/objects/gear/gear_pickup.png",
-				"loadoutbar",path+"loadoutbar.png");
+				"largeicon_mine",shop+"mine_large.png",
+				"largeicon_vortex",shop+"vortex_large.png",
+				"largeicon_control",shop+"control_large.png",
+				"largeicon_gear",shop+"gear_large.png",
+				"mine_drop","data/art/game/objects/mine/minepickup.png",
+				"vortex_drop","data/art/game/objects/vortex/vortexpickup.png",
+				"gear_drop","data/art/game/objects/gear/gearpickup.png",
+				"controller_drop","data/art/game/objects/controller/controllerpickup.png",
+				"hammer_drop","data/art/game/objects/hammer/hammerpickup.png",
+				"loadoutbar",shop+"loadoutbar.png");		
+		final String lselect = "data/art/levelselect/";
+		addPath(
+				"LevelSelect",
+				"levelselect_background",lselect+"background.png",
+				"levelselect_button",lselect+"button.png"
+				);
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.
@@ -192,5 +207,9 @@ public final class Textures {
 			}
 		}
 	}
+<<<<<<< HEAD
 	
 }
+=======
+}
+>>>>>>> b59a385e5277770502cfcc66deed8e600679ddb5

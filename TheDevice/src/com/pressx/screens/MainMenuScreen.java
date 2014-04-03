@@ -49,10 +49,10 @@ public class MainMenuScreen extends BaseState {
 		draw.draw(Draw.TYPES.BUTTON, shop, .23f, .67f, .1f, .135f);
 		draw.write("Shop is open!", .1f, .9f);
 		
-		if(blah.exists())
-			draw.write("Yes", 0.3f, 0.3f);
-		else
-			draw.write("No", 0.3f, 0.3f);
+//		if(blah.exists())
+//			draw.write("Yes", 0.3f, 0.3f);
+//		else
+//			draw.write("No", 0.3f, 0.3f);
 		draw.draw(batch);
 	}
 	
@@ -65,7 +65,7 @@ public class MainMenuScreen extends BaseState {
 			if(play.getBoundingRectangle().contains(x, y))
 			{
 				sounds.play("buttonl");
-				game.moveToSequence("Intro");
+				game.moveToLevelSelect();
 			}
 			else if(help.getBoundingRectangle().contains(x,y))
 			{
