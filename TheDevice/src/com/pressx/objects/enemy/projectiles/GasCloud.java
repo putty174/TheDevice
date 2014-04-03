@@ -21,10 +21,14 @@ public class GasCloud extends AnimatedObject {
 		
 		
 		timer = new GameTimer(5f);
-		this.animator.add_animation("gas_start", 0, 0, 10, false, 0,1,2,3);
-		this.animator.add_animation("gas_loop", 0, 0, 10, true, 0,1,2,3);
-		this.animator.add_animation("gas_end", 0, 0, 10, false, 3);
-		this.animator.set_animation("gas_start", false);
+//		this.animator.add_animation("gas_start", 0, 0, 10, false, 0,1,2,3);
+//		this.animator.add_animation("gas_loop", 0, 0, 10, true, 0,1,2,3);
+//		this.animator.add_animation("gas_end", 0, 0, 10, false, 3);
+//		this.animator.set_animation("gas_start", false);
+		this.animationManager = Textures.getAnimManager("GasEject");
+		this.animationManager.setStdCondition("GasEject");
+		this.animationManager.setEndCondition("GasEject");
+		this.animationManager.changeAnimation("GasEject", 60, false);
 	}
 	
 	@Override
@@ -36,31 +40,12 @@ public class GasCloud extends AnimatedObject {
 	
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects){
-
-		this.sprite.setColor(1.f, 1.f, 1.f, 0.75f + 0.25f*(float)Math.sin(timer.get_time()));
-		if(this.animator.get_currentAnimation().equals("gas_start")){
-			if(this.animator.isDone()) {
-				this.animator.set_animation("gas_loop", true);
-			}
+		this.sprite = this.animationManager.update();
+		this.sprite.setColor(1.f, 1.f, 1.f, 0.75f + 0.25f*(float)Math.sin(timer.get_time()));	
+		if(this.animationManager.isDone()){
+			this.terminate();
 		}
-		else if(this.animator.get_currentAnimation().equals("gas_loop")){
-			if(!isDone) {
-				timer.update_timer(dt);
-				isDone = timer.isDone();
-			}
-			else {
-				this.set_animation("gas_end", false);
-			}
-		}
-		else if(this.animator.get_currentAnimation().equals("gas_end")){
-			if(isDone){
-				this.terminate();
-			}
-			else{
-				super.update(dt, objects);
-				return;
-			}
-		}
-		super.update(dt, objects);
+		else
+			super.update(dt, objects);
 	}
 }

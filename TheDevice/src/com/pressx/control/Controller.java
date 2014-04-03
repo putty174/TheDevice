@@ -96,7 +96,7 @@ public class Controller implements InputProcessor{
 		{
 			float touchX = x / this.renderInfo[2];
 			float touchY = this.renderInfo[1] - (y / this.renderInfo[2]);
-	
+			
 			Iterator<Controllable> iter = this.controllables.iterator();
 			while(iter.hasNext())
 			{

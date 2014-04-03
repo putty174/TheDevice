@@ -22,14 +22,13 @@ public class MineDrop extends AnimatedObject {
 		this.stats = stats;
 		this.movement.speedcap = 100;
 		this.isActive = false;
-		this.add_animation("mine_item", 0, 0, 4, 8, true);
-		this.set_animation("mine_item", true);
-<<<<<<< HEAD
-		
-
-=======
+		this.screenBound = true;
+		//this.add_animation("mine_item", 0, 0, 4, 8, true);
+		//this.set_animation("mine_item", true);
+		this.animationManager = Textures.getAnimManager("MinePickup");
+		this.animationManager.setStdCondition("IdleBounce");
+		this.animationManager.changeAnimation("IdleBounce", 60, true);
 		this.stats = stats;
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 	}
 	
 	@Override

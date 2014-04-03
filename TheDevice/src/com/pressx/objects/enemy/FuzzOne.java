@@ -1,11 +1,7 @@
 package com.pressx.objects.enemy;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-
-=======
 import com.pressx.managers.Draw;
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -41,6 +37,7 @@ public class FuzzOne extends Enemy {
 //		this.animator.add_animation("attack", 0, 1, 16, false, 0,1,2,1,0,3,4,0,2);
 //		this.animator.add_animation("walk", 0, 2, 5, true, 0, 1, 2, 3, 4, 3, 2, 1, 0);
 //		this.set_animation("walk", true);
+		//this.animator = null;
 	}
 	
 	@Override

@@ -22,9 +22,13 @@ public class WrenchDrop extends AnimatedObject{
 		
 		this.stats = st;
 		this.lvl = 1;
+		this.screenBound = true;
+		//this.add_animation("wrench_item",0, 0, 1, 0, false);
+		//this.set_animation("wrench_item", false);
 		
-		this.add_animation("wrench_item",0, 0, 1, 0, false);
-		this.set_animation("wrench_item", false);
+		this.animationManager = Textures.getAnimManager("WrenchPickup");
+		this.animationManager.changeAnimation("IdleBounce", 60, true);
+		this.animationManager.setStdCondition("IdleBounce");
 	}
 	
 	@Override
@@ -47,7 +51,9 @@ public class WrenchDrop extends AnimatedObject{
 		if(ttl.isDone()){
 			this.terminate();
 		}
-		ttl.update_timer(dt);
-		super.update(dt, objects);
+		else{
+			ttl.update_timer(dt);
+			super.update(dt, objects);
+		}
 	}
 }

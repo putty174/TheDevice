@@ -51,7 +51,7 @@ public class FuzzTwo extends Enemy {
 		this.animationManager.setStdCondition("Movement");
 
 		
-		this.animator = null;
+		//this.animator = null;
 	}
 	
 	@Override

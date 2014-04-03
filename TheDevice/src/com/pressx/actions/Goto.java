@@ -37,8 +37,8 @@ private static final float bounds = 1;
 	{
 		if(
 			(self.get_positionX() >= this.x - bounds) && (self.get_positionX() <= this.x + bounds)
-			&&
-			(self.get_positionY() >= this.y - bounds) && (self.get_positionY() <= this.y + bounds)
+			//&&
+			//(self.get_positionY() >= this.y - bounds) //&& (self.get_positionY() <= this.y + bounds)
 		)
 		{
 			this.terminate();

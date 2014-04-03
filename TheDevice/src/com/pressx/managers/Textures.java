@@ -6,18 +6,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-<<<<<<< HEAD
 public final class Textures {
 	public static AssetManager a_manager = new AssetManager();
 	private static HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
 	private static HashMap<String, String> currentPackage = new HashMap<String, String>();
 	private static HashMap<String, HashMap<String, AnimationManager>> animManagers = new HashMap<String, HashMap<String, AnimationManager>>();
-=======
-public class Textures {
-	public AssetManager a_manager = new AssetManager();
-	private HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
-	private HashMap<String, String> currentPackage = new HashMap<String, String>();
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
+
 	
 	public Textures()
 	{
@@ -27,7 +21,6 @@ public class Textures {
 				"exp", "data/art/game/objects/device/exp.png",
 				"play", "data/art/main/buttons/play.png",
 				"game_bg","data/art/game/grass.png",
-<<<<<<< HEAD
 				"fuzz1", "data/art/game/monsters/Fuzzies/1/Fuzzies1.png",
 				"fuzz2", "data/art/game/monsters/Fuzzies/2/Fuzzies2.png",
 				"dust","data/art/game/monsters/Fuzzies/2/dust.png",
@@ -36,8 +29,7 @@ public class Textures {
 				"plant1", "data/art/game/monsters/Plants/1/plant_one.png",
 				"plant2", "data/art/game/monsters/Plants/2/plant_two.png",
 				"plant3", "data/art/game/monsters/Plants/3/plant_three.png",
-				"gas_cloud", "data/art/game/monsters/Plants/2/gas_cloud.png",
-=======
+				//"gas_cloud", "data/art/game/monsters/Plants/2/gas_cloud.png",
 				"fuzz1", "data/art/game/monsters/fuzzies/1/fuzzies1.png",
 				"fuzz2", "data/art/game/monsters/fuzzies/2/fuzzies2.png",
 				"dust","data/art/game/monsters/fuzzies/2/dust.png",
@@ -45,11 +37,12 @@ public class Textures {
 				"shock_wave","data/art/game/monsters/fuzzies/3/shock_wave.png",
 				"plant1", "data/art/game/monsters/plants/1/plant_one.png",
 				"plant2", "data/art/game/monsters/plants/2/plant_two.png",
-				"gas_cloud", "data/art/game/monsters/plants/2/gas_cloud.png",
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
+				"gasEject", "data/art/game/monsters/plants/2/gas_eject.png",
+				"attackBlob", "data/art/game/monsters/plants/2/gas_atk.png",
 				"device", "data/art/game/objects/device/device.png",
 				"device_hit", "data/art/game/objects/device/device_hit.png",
 				"device_spawn", "data/art/game/objects/device/device_spawn.png",
+				//"device", "data/art/game/objects/device/device_full.png",
 				"exp", "data/art/game/objects/device/exp.png",
 				"hero", "data/art/game/objects/hero/hero.png",
 				"mine","data/art/game/objects/mine/mine.png",
@@ -116,10 +109,8 @@ public class Textures {
 				"end_retry", "data/art/end/buttons/retry.png",
 				"end_quit", "data/art/end/buttons/quitter.png");
 		
-<<<<<<< HEAD
 		animManagers = AnimationManagerLoader.placeHolderShit();
 		
-=======
 		final String path = "data/art/shop/";
 		addPath(
 				"Shop",
@@ -148,7 +139,6 @@ public class Textures {
 				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
 				"gear_drop","data/art/game/objects/gear/gear_pickup.png",
 				"loadoutbar",path+"loadoutbar.png");
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 	}
 	
 	//Takes variable number of filepaths as strings to add into map for asset reference.
@@ -171,7 +161,9 @@ public class Textures {
 		if(packName.equals("Loading")){
 			
 			for(AnimationManager m : animManagers.get(packName).values()){
-				m.setSprite(new Sprite(getArtAsset(m.texturesAccessor)));
+				
+					m.setSprite(new Sprite(getArtAsset(m.texturesAccessor)));
+	
 			}
 		}	
 	}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.pressx.control.GameTimer;
+import com.pressx.managers.Draw;
+import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
@@ -17,9 +19,9 @@ public class Seed extends AnimatedObject{
 	GameObject end;
 	Vector2 direction;
 	
-	public Seed(GameObject start, GameObject target){
-		super("seed", 30, start.get_positionX(), start.get_positionY(), 1, 1, 0, 0, 0, 0,
-				false, 0, false, 10, 10, Textures.getArtAsset("plant3"),
+	public Seed(Draw d, Sounds s, Textures t, GameObject start, GameObject target){
+		super(d, s, t, "seed", 30, start.get_positionX(), start.get_positionY(), 1, 1, 0, 0, 0, 0,
+				false, 0, false, 10, 10, t.getArtAsset("plant3"),
 				256, 256);
 		
 		this.animationManager = Textures.getAnimManager("Plant3").copy();
@@ -30,10 +32,10 @@ public class Seed extends AnimatedObject{
 		this.timeAlive = new GameTimer(5);
 		
 		this.end = target;
-		this.position = new Vector2(start.get_positionX() - start.get_hitWidth()/4, 
-				start.get_positionY() - start.get_hitHeight()/2);
-		this.direction = (target.get_position().sub(new Vector2(target.get_hitOffsetX()/2, target.get_hitOffsetY()/2))).sub(this.get_position());
-		this.animator = null;
+		this.position = new Vector2(this.position.x + this.drawWidth/2 + this.drawOffsetX, 
+				this.position.y + this.drawHeight/2  + this.drawOffsetY);
+		this.direction = (target.get_position().sub(new Vector2(target.get_hitOffsetX()/2,0))).sub(this.get_position());
+		//this.animator = null;
 		
 	}
 	
@@ -51,12 +53,13 @@ public class Seed extends AnimatedObject{
 	@Override
 	public void render(SpriteBatch spritebatch, float[] renderInfo){
 		this.sprite = this.animationManager.update();
-		this.sprite.setOrigin(this.position.x, 
-				this.position.y);
-		this.sprite.setScale((float)0.5);
-		this.sprite.setPosition(renderInfo[2] * (this.position.x - end.get_hitWidth()/2), 
-				renderInfo[2] * (this.position.y ));//end.get_hitWidth()/2));
 		
+		this.sprite.setOrigin(renderInfo[2] * (this.drawWidth/2),
+				renderInfo[2] * (this.drawHeight/2));
+		this.sprite.setSize(renderInfo[2] * (this.drawWidth),
+				renderInfo[2] * (this.drawHeight));
+		this.sprite.setPosition(renderInfo[2] * (this.position.x - this.drawWidth/2 + this.drawOffsetX),
+				renderInfo[2] * (this.position.y - this.drawHeight/2  + this.drawOffsetY));		
 		this.sprite.rotate(this.direction.angle() + 270 % 360);
 		this.sprite.draw(spritebatch);
 		this.position.add(direction.nor());

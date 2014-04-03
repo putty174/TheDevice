@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;com.pressx.items&apos; to &apos;com.pressx.shop.items&apos;&#x0D;&#x0A;- Original project: &apos;TheDevice&apos;&#x0D;&#x0A;- Original element: &apos;TheDevice/src/com.pressx.items&apos;&#x0D;&#x0A;- Renamed element: &apos;TheDevice/src/com.pressx.shop.items&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;com.pressx.items&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;com.pressx.items" name="com.pressx.shop.items" qualified="false" references="true" stamp="1396123740199" textual="false" version="1.0"/>
+</session>

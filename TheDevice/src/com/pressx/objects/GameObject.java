@@ -235,7 +235,7 @@ public class GameObject implements Comparable<GameObject>{
 		this.jump(colliders, jump.x, jump.y);
 	}//END jump
 	
-	private boolean offscreenX(Vector2 nextPos)
+	protected boolean offscreenX(Vector2 nextPos)
 	{
 		if(this.screenBound && (nextPos.x < srcWidth * .02 || nextPos.x > 100*(0.8f) - (srcWidth * .02)))
 		{
@@ -245,9 +245,9 @@ public class GameObject implements Comparable<GameObject>{
 		return false;
 	}//END offscreenCheckX
 	
-	private boolean offscreenY(Vector2 nextPos)
+	protected boolean offscreenY(Vector2 nextPos)
 	{
-		if(this.screenBound && (nextPos.y < srcHeight * .02 || nextPos.y > 100*(0.7f) - (srcHeight * .042)))
+		if(this.screenBound && (nextPos.y < srcHeight * .02 || nextPos.y > 100*(0.7f) - (srcHeight * .02)))
 		{
 			this.velocity.y = -this.velocity.y;
 			return true;
@@ -691,13 +691,13 @@ public class GameObject implements Comparable<GameObject>{
 		this.action_queue.act(this);
 		this.update_move(dt, objects);
 		this.update_friction(dt);
-//		try{
-//			Device dev = (Device) this;
-//			this.setHp(9001);
-//		}
-//		catch (Exception e){
-//			
-//		}
+		try{
+			Device dev = (Device) this;
+			this.setHp(9001);
+		}
+		catch (Exception e){
+			
+		}
 	}//END update
 	
 	/**

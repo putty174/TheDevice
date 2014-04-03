@@ -40,7 +40,7 @@ public class FuzzThree extends Enemy {
 		this.animationManager.setEndCondition("Death");
 		this.animationManager.setStdCondition("Movement");
 
-		this.animator = null;
+		//this.animator = null;
 		
 	}
 	
@@ -65,13 +65,10 @@ public class FuzzThree extends Enemy {
 			}
 		}
 		room.addShock(this);
-<<<<<<< HEAD
-		Sounds.play("fuzzie3.roar");
+		//Sounds.play("fuzzie3.roar");
 		this.animationManager.changeAnimation("Movement");
-=======
 		sounds.play("fuzzie3.roar");
-		this.set_animation("walk", true);
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
+		//this.set_animation("walk", true);
 		this.isAttacking = false;
 		hitTimer.reset_timer();
 		

@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
+import com.pressx.managers.DesignHelper;
 import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
+import com.pressx.objects.enemy.MonsterManager;
 import com.pressx.objects.player.Player;
 import com.pressx.screens.game.Room;
 import com.pressx.screens.game.UI;
@@ -25,7 +27,6 @@ public class GameScreen extends BaseState {
 	UI gameUI;
 	Player player;
 	GameStats stats;
-	//DesignHelper helper;
 	
 	private Sprite background;
 	
@@ -43,6 +44,7 @@ public class GameScreen extends BaseState {
 		this.gameUI = gameUI;
 		this.controller = controller;
 		stats.setBox(box);
+		
 	}
 	
 	/* Game */
@@ -83,13 +85,15 @@ public class GameScreen extends BaseState {
 			//boolean gameIsOver = this.room.update(dt);
 			stats.updateTimeElapsed();
 			
-			spawner.update(dt);
+			//spawner.update(dt);
+			
 			if(stats.nukeState())
 			{
 				this.room.wipe();
 				stats.nukeStateOff();
 			}
 			this.room.update(dt);
+			
 		}
 		else
 			dt = 0;
@@ -97,9 +101,8 @@ public class GameScreen extends BaseState {
 		//Draw
 		gameUI.render();
 		this.room.render(batch, game.renderInfo);
-		
 		draw.draw(batch);
-		
+
 		stats.updateTimeElapsed();
 	}
 	

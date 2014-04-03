@@ -1,6 +1,6 @@
 1
 Loading
-12
+20
 Fuzzy1
 fuzz1
 3
@@ -140,6 +140,17 @@ Passive
 0 0 200 200
 1
 0
+MinePickup
+mine_drop
+1
+IdleBounce
+4
+0 0 128 128
+100 0 256 128
+200 0 384 128
+300 0 512 128
+6
+0 1 2 3 2 1
 Vortex
 vortex
 1
@@ -152,6 +163,28 @@ IdleSpin
 1600 0 2000 400
 5
 0 1 2 3 4
+VortexPickup
+vortex_drop
+1
+IdleBounce
+4
+0 0 100 100
+100 0 200 100
+200 0 300 100
+300 0 400 100
+6
+0 1 2 3 2 1
+WrenchPickup
+wrench
+1
+IdleBounce
+4
+0 0 128 150
+128 0 256 150
+256 0 384 150
+384 0 512 150
+6
+0 1 2 3 2 1
 TapIndicator
 indicate
 5
@@ -442,6 +475,33 @@ Death
 2048 256 2304 512
 9
 0 1 2 3 4 5 6 7 8
+AttackBlob
+attackBlob
+1
+AttackBlob
+5
+0 0 326 334
+326 0 652 334
+652 0 978 334
+978 0 1304 334
+1304 0 1630 334
+8
+0 1 2 3 4 3 2 1
+GasEject
+gasEject
+1
+GasEject
+8
+0 0 264 151
+264 0 528 151
+528 0 792 151
+792 0 1056 151
+1056 0 1320 151
+1320 0 1584 151
+1584 0 1848 151
+1848 0 2112 151
+8
+0 1 2 3 4 5 6 7
 Plant3
 plant3
 10
@@ -534,3 +594,33 @@ Bounce
 60 0 90 30
 3
 0 1 2
+Device
+device
+1
+Idle
+5
+0 0 200 200
+200 0 400 200
+400 0 600 200
+600 0 800 200
+800 0 1000 200
+8
+0 1 2 3 4 3 2 1
+DeviceSpawn
+device_spawn
+1
+Spawn
+3
+0 0 500 500
+500 0 1000 500
+1000 0 1500 500
+3
+0 1 2
+DeviceHit
+device_hit
+1
+HitFlash
+1
+0 0 500 500
+1
+0

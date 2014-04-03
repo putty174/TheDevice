@@ -84,7 +84,8 @@ public class AnimationManagerLoader {
 			handle.close();
 		}
 		catch(Exception e){
-			 System.out.println("agh");
+			 System.out.println(e);
+			 System.exit(-1);
 		}
 		
 		return temp;

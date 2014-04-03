@@ -20,9 +20,12 @@ public class VortexDrop extends AnimatedObject {
 				200, 200);
 		
 		this.stats = stats;
-		
-		this.add_animation("vortex_item",0, 0, 4, 8, true);
-		this.set_animation("vortex_item", true);
+		this.screenBound = true;
+		//this.add_animation("vortex_item",0, 0, 4, 8, true);
+		//this.set_animation("vortex_item", true);
+		this.animationManager = Textures.getAnimManager("VortexPickup");
+		this.animationManager.setStdCondition("IdleBounce");
+		this.animationManager.changeAnimation("IdleBounce", 60, true);
 	}
 	
 	@Override

@@ -21,7 +21,7 @@ public class Shockwave extends AnimatedObject {
 //		this.add_animation("shock", 0, 0, 3, 3, false);
 //		this.set_animation("shock", true);
 		
-		this.animator = null;
+		//this.animator = null;
 		
 		this.animationManager = Textures.getAnimManager("Shockwave").copy();
 		this.animationManager.changeAnimation("Shock", 10, false);

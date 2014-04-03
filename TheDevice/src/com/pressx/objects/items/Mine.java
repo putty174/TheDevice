@@ -20,13 +20,10 @@ public class Mine extends AnimatedObject {
 		
 		this.screenBound = true;
 		this.drawOffsetY = 6.5f;
-//		this.add_animation("mine_active", 1, 0, 5, 10, false);
-//		this.add_animation("mine_passive", 0, 0, 1, 1, true);
-//		this.animator.set_animation("mine_passive", true);
 		this.animationManager = Textures.getAnimManager("Landmine");
 		this.animationManager.changeAnimation("Passive", 10, true);
 		this.animationManager.setEndCondition("Explode");
-		this.animator = null;
+		//this.animator = null;
 	}
 	
 	@Override

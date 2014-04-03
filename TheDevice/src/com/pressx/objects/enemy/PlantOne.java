@@ -1,12 +1,9 @@
 package com.pressx.objects.enemy;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 
 import com.pressx.control.GameTimer;
-=======
 import com.pressx.managers.Draw;
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -47,7 +44,7 @@ public class PlantOne extends Enemy {
 		this.animationManager.changeAnimation("Movement", 30, true);
 		this.animationManager.setEndCondition("Death");
 		this.animationManager.setStdCondition("Movement");
-		this.animator = null;
+		//this.animator = null;
 		
 	}
 	
@@ -81,7 +78,7 @@ public class PlantOne extends Enemy {
 			activityTimer.update_timer(dt);
 		}
 		if(this.animationManager.getCurrentAnimation().equals("MovementGlow") && this.animationManager.isDone()){
-			this.room.spawn_object(new XP(this));
+			this.room.spawn_object(new XP(this.draw, this.sounds, this.textures, this));
 			usingAction = false;
 			this.animationManager.changeAnimation("Movement", 30, true);
 		}

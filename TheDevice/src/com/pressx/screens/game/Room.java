@@ -12,6 +12,7 @@ import com.pressx.draw.Animator;
 import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
+import com.pressx.managers.DesignHelper;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.device.Device;
 import com.pressx.objects.enemy.projectiles.GasCloud;
@@ -29,6 +30,8 @@ public class Room implements Controllable {
 	private Draw draw;
 	private Sounds sounds;
 	private GameStats stats;
+	
+	private DesignHelper helper;
 	
 	/* Background */
 	private Sprite background;
@@ -97,6 +100,9 @@ public class Room implements Controllable {
 		warning = new Animator("warning",warningS,62,62);
 		warning.add_animation("warning", 0, 0, 4, 5, true);
 		warning.set_animation("warning", true);
+		
+		helper = new DesignHelper(draw, sounds, textures, player, this, stats);
+		
 	}//END Room
 	
 	/* Object Management */
@@ -460,7 +466,7 @@ public class Room implements Controllable {
 	}
 	
 	public void addSeed(GameObject start, GameObject end){
-		this.spawn_object(new Seed(start, end));
+		this.spawn_object(new Seed(draw, sounds, textures, start, end));
 	}
 	
 	public void toggleSpawn(){

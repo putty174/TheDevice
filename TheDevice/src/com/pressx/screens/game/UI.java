@@ -2,7 +2,7 @@ package com.pressx.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.pressx.items.PlayerInventory;
+import com.pressx.gadgets.PlayerInventory;
 import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;

@@ -13,17 +13,10 @@ public class Vortex extends AnimatedObject {
 	GameTimer actTimer = new GameTimer(10);
 	float scaleBase = 3;
 
-<<<<<<< HEAD
-	public Vortex(float posX, float posY) {
-		super("vortex",14, posX, posY, 0, 0, 5, 5, 0, 0,
-				false, 2.5f, false, 4, 4, Textures.getArtAsset("vortex"),
-				256, 256);
-=======
 	public Vortex(Draw d, Sounds s, Textures t, float posX, float posY) {
 		super(d,s,t,"vortex",14, posX, posY, 0, 0, 5, 5, 0, 0,
 				false, 2.5f, false, 4, 4, t.getArtAsset("vortex"),
 				400, 400);
->>>>>>> e994d722661d7bf24cb2732f372f0d1b48ec50b0
 		
 //		this.add_animation("vortex_active", 0, 0, 5, 30, true);
 //		this.set_animation("vortex_active", true);
@@ -33,7 +26,7 @@ public class Vortex extends AnimatedObject {
 		this.animationManager.setEndCondition("IdleSpin");
 		this.animationManager.setStdCondition("IdleSpin");
 		
-		this.animator = null;
+		//this.animator = null;
 		
 		s.play("hero.vortex");
 	}

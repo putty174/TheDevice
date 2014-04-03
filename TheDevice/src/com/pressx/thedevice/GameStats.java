@@ -1,6 +1,6 @@
 package com.pressx.thedevice;
 import com.badlogic.gdx.Gdx;
-import com.pressx.items.*;
+import com.pressx.gadgets.*;
 import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;

@@ -1,0 +1,81 @@
+package com.pressx.managers;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+import com.pressx.objects.GameObject;
+import com.pressx.objects.enemy.MonsterManager;
+import com.pressx.screens.game.Room;
+
+public class DesignHelper {
+	
+	
+	MonsterManager mon;
+	GameObject emeny;
+	Room r;
+	boolean isSpawned = false;
+	
+	public DesignHelper(Draw d, Sounds s, Textures t, GameObject o, Room room){
+		mon = new MonsterManager(d,s,t,o,room);
+		r = room;
+		JFrame frame = new JFrame("Design_Helper_0.2");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JButton spawnFuzzOne = new JButton("Spawn Fuzz One");
+		
+		spawnFuzzOne.addActionListener(
+			new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					emeny = mon.spawnMonster(1, 0 , 0);
+					isSpawned = false;
+				}
+		});
+		
+		JButton spawnFuzzTwo = new JButton("Spawn Fuzz Two");
+		
+		spawnFuzzTwo.addActionListener(
+			new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					emeny = mon.spawnMonster(2, 0, 0);
+					isSpawned = false;
+			}
+		});
+		
+		JButton spawnFuzzThree = new JButton("Spawn Fuzz Three");
+		JButton spawnPlantOne = new JButton("Spawn Plant One");
+		JButton spawnPlantTwo = new JButton("Spawn Plant Two");
+		JButton spawnPlantThree = new JButton("Spawn Plant Three");
+		JButton addMine = new JButton("Add mine");
+		
+		addMine.addActionListener(
+			new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			}
+				);
+		
+		JButton addVort = new JButton("Add vortex");
+		
+		frame.getContentPane().setLayout(new GridLayout(3,2));
+		frame.add(spawnFuzzOne);
+		frame.add(spawnFuzzTwo);
+		frame.add(spawnFuzzThree);
+		frame.add(spawnPlantOne);
+		frame.add(spawnPlantTwo);
+		frame.add(spawnPlantThree);
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	public GameObject update(){
+		if(emeny != null && !isSpawned){
+			isSpawned = true;
+			return emeny;
+		}
+		return null;
+	}
+}

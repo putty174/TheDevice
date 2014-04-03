@@ -21,6 +21,10 @@ public class MonsterManager {
 		this.r = room;
 	}
 	
+	public void addMonster(int ID){
+		this.r.add_object(this.spawnMonster(ID, 0, 0));
+	}
+	
 	public Enemy spawnMonster(int ID, float xPos, float yPos){
 		if(ID == 1){
 			return new FuzzOne(d, s, t, o, xPos, yPos, r);
@@ -36,6 +40,9 @@ public class MonsterManager {
 		}
 		if(ID == 5){
 			return new PlantTwo(d, s, t, o, xPos, yPos, r);
+		}
+		if(ID == 6){
+			return new PlantThree(d, s, t, o ,xPos, yPos, r);
 		}
 		return null;
 	}

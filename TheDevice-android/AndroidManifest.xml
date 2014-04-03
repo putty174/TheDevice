@@ -9,7 +9,7 @@
         android:label="@string/app_name" >
     	</activity>
        	<activity
-       	    android:name=".MainActivity"
+       	    android:name="com.pressx.thedevice2.MainActivity"
        	    android:label="@string/app_name"
        	    android:screenOrientation="landscape"
        	    android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
@@ -30,7 +30,7 @@
                	<data android:host="*" />
            	</intent-filter>
         </activity>
-       	<activity android:name=".SocialActivity" android:label="@string/app_name">
+       	<activity android:name="com.pressx.thedevice2.SocialActivity" android:label="@string/app_name">
        	</activity>
     </application>
 </manifest>

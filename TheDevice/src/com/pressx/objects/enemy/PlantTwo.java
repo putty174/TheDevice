@@ -40,7 +40,7 @@ public class PlantTwo extends Enemy {
 		this.animationManager.changeAnimation("Movement", 60, true);
 		this.animationManager.setEndCondition("Death");
 		this.animationManager.setStdCondition("Movement");
-		this.animator = null;
+		//this.animator = null;
 	}
 	
 	public void playSound(){
@@ -83,10 +83,10 @@ public class PlantTwo extends Enemy {
 	@Override
 	protected void evolve(){
 		this.worth = 0;
-		GameObject monster = new PlantThree(device, this.get_positionX(), this.get_positionY(), room);
+		GameObject monster = new PlantThree(this.draw, this.sounds, this.textures, device, this.get_positionX(), this.get_positionY(), room);
 		this.terminate();
 		monster.levelUp = 3;
 		room.spawn_object(monster);
-		Sounds.play("monster.level");
+		sounds.play("monster.level");
 	}
 }
