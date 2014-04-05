@@ -99,7 +99,6 @@ public class TheDevice implements ApplicationListener {
 	
 	public void moveToMain(){
 		sounds.unloadSoundAssets();
-		textures.unloadArtAssets();
 		sounds.loadSoundAssets(Sounds.PACKS.MAIN);
 		textures.loadArtAssets("Main");
 		sounds.playBGM();
@@ -109,7 +108,6 @@ public class TheDevice implements ApplicationListener {
 	}
 	
 	public void moveToTutorial(){
-		textures.unloadArtAssets();
 		textures.loadArtAssets("Tutorial");
 		posStates[4] = new TutorialScreen(this, textures, sounds);
 		posStates[4].create();
@@ -117,7 +115,6 @@ public class TheDevice implements ApplicationListener {
 	}
 	
 	public void moveToLevelSelect(){
-		textures.unloadArtAssets();
 		textures.loadArtAssets("LevelSelect");
 		posStates[9] = new LevelSelectScreen(this);
 		posStates[9].create();
@@ -127,7 +124,6 @@ public class TheDevice implements ApplicationListener {
 	public void moveToLoading() {
 		sounds.stopBGM();
 		sounds.unloadSoundAssets();
-		textures.unloadArtAssets();
 		sounds.loadSoundAssets(Sounds.PACKS.GAME);
 		textures.loadArtAssets("Loading");
 		posStates[7] = new LoadingScreen(this,sounds,textures);
@@ -136,7 +132,6 @@ public class TheDevice implements ApplicationListener {
 	}
 
 	public void moveToSequence(String seq){
-		textures.unloadArtAssets();
 		textures.loadArtAssets(seq);
 		if(seq.equals("Intro")){
 			posStates[2]=new CutsceneScreen(this, textures, "Intro");
@@ -159,7 +154,6 @@ public class TheDevice implements ApplicationListener {
 		sounds.stopBGM();
 		sounds.unloadSoundAssets();
 		sounds.loadSoundAssets(Sounds.PACKS.END);
-		textures.unloadArtAssets();
 		textures.loadArtAssets("End");
 		posStates[5] = new GameOverScreen(this, sounds, textures, stats);
 		posStates[5].create();
@@ -167,7 +161,6 @@ public class TheDevice implements ApplicationListener {
 	}
 	
 	public void moveToShop(){
-		textures.unloadArtAssets();
 		textures.loadArtAssets("Shop");
 		posStates[8] = new ShopScreen(this);
 		posStates[8].create();
