@@ -693,7 +693,7 @@ public class GameObject implements Comparable<GameObject>{
 		this.update_friction(dt);
 		try{
 			Device dev = (Device) this;
-			this.setHp(9001);
+			//this.setHp(9001);
 		}
 		catch (Exception e){
 			
