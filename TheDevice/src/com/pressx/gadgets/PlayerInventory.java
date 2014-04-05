@@ -28,10 +28,10 @@ public class PlayerInventory{
 	}
 	
 	public void initializeItemsForGame(){
-		if(item0 != null)
-			item0.initializeForGame();
-		if(item1 != null)
-			item1.initializeForGame();
+//		if(item0 != null)
+//			item0.initializeForGame();
+//		if(item1 != null)
+//			item1.initializeForGame();
 	}
 	
 	public void updateItemShopButtons(ShopItem item){
