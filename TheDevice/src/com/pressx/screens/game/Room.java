@@ -206,7 +206,6 @@ public class Room implements Controllable {
 			if(obj.getID() == 2)
 			{
 				gameIsLost = false;
-				stats.setBoxHP(obj.getHp());
 			}//fi
 			
 			this.objects.add(obj);
