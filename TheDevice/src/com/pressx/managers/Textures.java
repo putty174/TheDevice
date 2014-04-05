@@ -112,13 +112,9 @@ public final class Textures {
 				"end_retry", "data/art/end/buttons/retry.png",
 				"end_quit", "data/art/end/buttons/quitter.png");
 		
-<<<<<<< HEAD
 		animManagers = AnimationManagerLoader.placeHolderShit();
 		
-		final String path = "data/art/shop/";
-=======
 		final String shop = "data/art/shop/";
->>>>>>> b59a385e5277770502cfcc66deed8e600679ddb5
 		addPath(
 				"Shop",
 				"shop_background",shop+"shop_background.png",
@@ -207,9 +203,4 @@ public final class Textures {
 			}
 		}
 	}
-<<<<<<< HEAD
-	
 }
-=======
-}
->>>>>>> b59a385e5277770502cfcc66deed8e600679ddb5
