@@ -21,7 +21,7 @@ public class Vortex extends AnimatedObject {
 //		this.add_animation("vortex_active", 0, 0, 5, 30, true);
 //		this.set_animation("vortex_active", true);
 		
-		this.animationManager = Textures.getAnimManager("Vortex");
+		this.animationManager = Textures.getAnimManager("Vortex").copy();
 		this.animationManager.changeAnimation("IdleSpin", 30, true);
 		this.animationManager.setEndCondition("IdleSpin");
 		this.animationManager.setStdCondition("IdleSpin");

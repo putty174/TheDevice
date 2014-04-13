@@ -20,7 +20,7 @@ public class Mine extends AnimatedObject {
 		
 		this.screenBound = true;
 		this.drawOffsetY = 6.5f;
-		this.animationManager = Textures.getAnimManager("Landmine");
+		this.animationManager = Textures.getAnimManager("Landmine").copy();
 		this.animationManager.changeAnimation("Passive", 10, true);
 		this.animationManager.setEndCondition("Explode");
 		//this.animator = null;

@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import com.pressx.objects.GameObject;
+import com.pressx.objects.device.Device;
 import com.pressx.objects.enemy.MonsterManager;
 import com.pressx.objects.items.MineDrop;
 import com.pressx.screens.game.Room;
@@ -26,7 +27,7 @@ public class DesignHelper extends JFrame{
 	Room r;
 	GameStats stats;
 	
-	public DesignHelper(Draw d, Sounds s, Textures t, GameObject o, Room room, GameStats stats){
+	public DesignHelper(Draw d, Sounds s, Textures t, final GameObject o, Room room, GameStats stats){
 		mon = new MonsterManager(d, s, t, o, room);
 		//MineDrop drop1 = new MineDrop(d, s, t, stats, 30, 30);
 		this.d = d;
@@ -94,14 +95,29 @@ public class DesignHelper extends JFrame{
 		addMine.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					
+					try{
+						Device d = (Device) o;
+						d.toggleGodMode();
+					}
+					catch(Exception ex){
+						
+					}
 				}
 			}
 		);
 		
 		JButton addVort = new JButton("Add Vortex");
 		
-		this.getContentPane().setLayout(new GridLayout(4,2));
+		JButton setDeviceInvincible = new JButton("God Mode");
+		
+		setDeviceInvincible.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						
+					}
+				});
+		
+		this.getContentPane().setLayout(new GridLayout(5,2));
 		this.add(spawnFuzzOne);
 		this.add(spawnFuzzTwo);
 		this.add(spawnFuzzThree);
@@ -110,6 +126,7 @@ public class DesignHelper extends JFrame{
 		this.add(spawnPlantThree);
 		this.add(addMine);
 		this.add(addVort);
+		this.add(setDeviceInvincible);
 		this.pack();
 		this.setVisible(true);
 	}

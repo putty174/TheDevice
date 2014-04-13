@@ -12,8 +12,9 @@ import com.pressx.thedevice.GameStats;
 
 public class MineDrop extends AnimatedObject {
 	GameStats stats;
-	GameTimer timeToExpire = new GameTimer(10);
-	boolean isActive;
+	GameTimer timeToExpire = new GameTimer(10), blinkTimer = new GameTimer(0.1f);
+	boolean isActive, isBlink;
+	private int blinkCount;
 	
 	public MineDrop(Draw d, Sounds s, Textures t, GameStats stats, float posX, float posY){
 		super(d,s,t,"mine",99, posX, posY, 1, 90, 5, 5, 0, 0,
@@ -25,7 +26,7 @@ public class MineDrop extends AnimatedObject {
 		this.screenBound = true;
 		//this.add_animation("mine_item", 0, 0, 4, 8, true);
 		//this.set_animation("mine_item", true);
-		this.animationManager = Textures.getAnimManager("MinePickup");
+		this.animationManager = Textures.getAnimManager("MinePickup").copy();
 		this.animationManager.setStdCondition("IdleBounce");
 		this.animationManager.changeAnimation("IdleBounce", 60, true);
 		this.stats = stats;
@@ -42,10 +43,31 @@ public class MineDrop extends AnimatedObject {
 	
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects){
-		super.update(dt, objects);
-		timeToExpire.update_timer(dt);
-		if(timeToExpire.isDone() && !isActive){
-			this.terminate();
-		}		
+		//super.update(dt, objects);
+		if(timeToExpire.isDone()){
+			if(blinkCount > 15){
+				this.terminate();
+				return;
+			}
+			if(blinkTimer.isDone()){
+				blinkTimer.reset_timer();
+				isBlink = !isBlink;
+				blinkCount += 1;
+			}
+			else{
+				blinkTimer.update_timer(dt);				
+				super.update(dt, objects);
+				if(isBlink){
+					this.sprite.setAlpha(0);					
+				}
+				else{
+					this.sprite.setAlpha(1);
+				}
+			}
+		}
+		else{
+			timeToExpire.update_timer(dt);	
+			super.update(dt, objects);
+		}	
 	}
 }

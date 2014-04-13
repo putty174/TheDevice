@@ -11,8 +11,10 @@ import com.pressx.objects.GameObject;
 import com.pressx.thedevice.GameStats;
 
 public class VortexDrop extends AnimatedObject {
-	GameTimer existTimer = new GameTimer(5);
+	GameTimer existTimer = new GameTimer(5), blinkTimer = new GameTimer(.1f);
 	GameStats stats;
+	private boolean isBlink = false;
+	private int blinkCount;
 	
 	public VortexDrop(Draw d, Sounds s, Textures t, GameStats stats, float posX, float posY) {
 		super(d,s,t,"vortexicon",14, posX, posY, 0, 0, 5, 5, 0, 0,
@@ -23,7 +25,7 @@ public class VortexDrop extends AnimatedObject {
 		this.screenBound = true;
 		//this.add_animation("vortex_item",0, 0, 4, 8, true);
 		//this.set_animation("vortex_item", true);
-		this.animationManager = Textures.getAnimManager("VortexPickup");
+		this.animationManager = Textures.getAnimManager("VortexPickup").copy();
 		this.animationManager.setStdCondition("IdleBounce");
 		this.animationManager.changeAnimation("IdleBounce", 60, true);
 	}
@@ -42,9 +44,29 @@ public class VortexDrop extends AnimatedObject {
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects){
 		if(existTimer.isDone()){
-			this.terminate();
+			if(blinkCount > 15){
+				this.terminate();
+				return;
+			}
+			if(blinkTimer.isDone()){
+				blinkTimer.reset_timer();
+				isBlink = !isBlink;
+				blinkCount += 1;
+			}
+			else{
+				blinkTimer.update_timer(dt);				
+				super.update(dt, objects);
+				if(isBlink){
+					this.sprite.setAlpha(0);
+				}
+				else{
+					this.sprite.setAlpha(1);
+				}
+			}
 		}
-		existTimer.update_timer(dt);
-		super.update(dt, objects);
+		else{
+			existTimer.update_timer(dt);	
+			super.update(dt, objects);
+		}
 	}
 }

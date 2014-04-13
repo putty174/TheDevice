@@ -46,7 +46,7 @@ public final class Textures {
 				"exp", "data/art/game/objects/device/exp.png",
 				"hero", "data/art/game/objects/hero/hero.png",
 				"mine","data/art/game/objects/mine/mine.png",
-				"mine_drop","data/art/game/objects/mine/minepickup.png",
+				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
 				"deathRing", "data/art/game/objects/nuke/death_ring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
 				"vortex_drop","data/art/game/objects/vortex/vortexpickup.png",
