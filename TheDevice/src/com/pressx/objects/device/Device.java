@@ -142,12 +142,14 @@ public class Device extends AnimatedObject {
 			this.timer.update_timer(dt);
 			if(this.timer.isDone())
 			{
-				sounds.play("device.spawn");
-				this.timer_count = this.timer_count - 1;
-				this.room.spawn_object(exp1);
+				if(!this.room.spawner.isAtEndOfWave){
+					sounds.play("device.spawn");
+					this.timer_count = this.timer_count - 1;
+					this.room.spawn_object(exp1);
+					this.isSpawning = true;
+					this.spawnManager.changeAnimation("Spawn", 60, false);
+				}
 				this.timer.reset_timer();
-				this.isSpawning = true;
-				this.spawnManager.changeAnimation("Spawn", 60, false);
 				//this.spawn_animator.set_animation("device_spawn", false);
 				
 			}//fi

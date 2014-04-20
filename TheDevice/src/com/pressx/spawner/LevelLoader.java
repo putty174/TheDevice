@@ -2,24 +2,21 @@ package com.pressx.spawner;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.AssetLoader;
+import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
-
 import com.pressx.editors.shared.LevelWave;
 import com.pressx.editors.shared.SingleFormation;
 import com.pressx.editors.shared._G;
 
-public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,LevelLoader.LevelInput>{//SpawnLoaderParameter>{
+public class LevelLoader extends AsynchronousAssetLoader<LevelLoader.LevelData,LevelLoader.LevelInput>{//SpawnLoaderParameter>{
 	/////LevelInput class (input)
 	public class LevelInput extends AssetLoaderParameters<LevelLoader.LevelData>{
 		public String name;
@@ -53,6 +50,10 @@ public class LevelLoader extends SynchronousAssetLoader<LevelLoader.LevelData,Le
 	}
 	
 	int convbyte(byte b){return b & 0xff;}
+	@Override
+	public LevelLoader.LevelData loadSync(AssetManager a,String b,FileHandle c,LevelInput d){ return load(a,b,c,d);}
+	@Override
+	public void loadAsync(AssetManager a,String b,FileHandle c,LevelInput d){load(a,b,c,d);}
 	public LevelLoader.LevelData load(AssetManager assetManager,String filename,FileHandle cheese,LevelInput uselessparam){
 		formationManager = new AssetManager();
     	formationManager.setLoader(FormationLoader.FormationData.class,new FormationLoader(new InternalFileHandleResolver()));

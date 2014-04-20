@@ -48,6 +48,8 @@ public class CustomSpawner {
 	
 	private ArrayList<SingleFormation> currentWaveFormationOrder;
 	
+	public boolean isAtEndOfWave;
+	
 	public CustomSpawner(Draw d, Sounds s, Textures t, String levelname,GameObject gameObject/*,GraphicsManager graphicsManager*/,Room room){
 		this.levelName = levelname;
 		this.gameObject = gameObject;
@@ -147,10 +149,12 @@ public class CustomSpawner {
 			formationtimer = 0;
 			if(currentFormationIndex == currentWave.numFormationsUsed){
 				nextwavedelaytimer = DELAYBETWEENWAVES;
+				isAtEndOfWave = true;
 			}else{
 				spawnFormation(currentWaveFormationOrder.get(currentFormationIndex));
+				isAtEndOfWave = false;
 			}
-			++currentFormationIndex;
+			++currentFormationIndex; 
 		}
 		
 		/////Enemy counter (for UI)

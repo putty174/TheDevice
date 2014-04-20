@@ -9,24 +9,24 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controllable;
 import com.pressx.draw.Animator;
+import com.pressx.managers.DesignHelper;
 import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
-import com.pressx.managers.DesignHelper;
-import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.device.Device;
 import com.pressx.objects.enemy.projectiles.GasCloud;
 import com.pressx.objects.enemy.projectiles.Seed;
 import com.pressx.objects.enemy.projectiles.Shockwave;
-import com.pressx.objects.items.MineDrop;
-import com.pressx.objects.items.VortexDrop;
 import com.pressx.objects.items.WrenchDrop;
 import com.pressx.objects.player.Player;
 import com.pressx.particles.GraphicIndicators;
+import com.pressx.spawner.CustomSpawner;
 import com.pressx.thedevice.GameStats;
 
 public class Room implements Controllable {
+	public CustomSpawner spawner;
+	
 	private Textures textures;
 	private Draw draw;
 	private Sounds sounds;
@@ -108,6 +108,12 @@ public class Room implements Controllable {
 		helper = new DesignHelper(draw, sounds, textures, player, this, stats);
 		
 	}//END Room
+	
+	
+	
+	public void setSpawner(CustomSpawner spawner){
+		this.spawner = spawner;
+	}
 	
 	/* Object Management */
 	/**

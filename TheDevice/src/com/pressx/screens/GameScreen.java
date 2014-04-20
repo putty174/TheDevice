@@ -45,6 +45,7 @@ public class GameScreen extends BaseState {
 		this.controller = controller;
 		
 		gameUI.setSpawner(spawner);
+		room.setSpawner(spawner);
 		
 		g.inventory.initializeItemsForGame();
 		
@@ -90,7 +91,7 @@ public class GameScreen extends BaseState {
 			//boolean gameIsOver = this.room.update(dt);
 			stats.updateTimeElapsed();
 			
-			//spawner.update(dt);
+			spawner.update(dt);
 			
 			if(stats.nukeState())
 			{
