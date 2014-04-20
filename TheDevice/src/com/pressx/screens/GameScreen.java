@@ -90,7 +90,7 @@ public class GameScreen extends BaseState {
 			//boolean gameIsOver = this.room.update(dt);
 			stats.updateTimeElapsed();
 			
-			spawner.update(dt);
+			//spawner.update(dt);
 			
 			if(stats.nukeState())
 			{

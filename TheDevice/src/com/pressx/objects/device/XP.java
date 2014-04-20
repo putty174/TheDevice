@@ -26,7 +26,7 @@ public class XP extends AnimatedObject {
 				false, //Solid or not
 				0, //Touch Radius
 				true, //Touchable
-				3, 3, //Draw width and height
+				4, 4, //Draw width and height
 				t.getArtAsset("exp"), //Spritesheet
 				128, 128 //srcwidth and height
 				);

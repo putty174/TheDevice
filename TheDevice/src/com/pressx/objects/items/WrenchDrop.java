@@ -20,7 +20,7 @@ public class WrenchDrop extends AnimatedObject{
 	
 	public WrenchDrop(Draw d, Sounds s, Textures t, GameStats st, float posX, float posY) {
 		super(d,s,t,"wrench",1005, posX, posY, 0, 0, 5, 5, 0, 0,
-				false, 5, false, 13, 13,
+				false, 5, false, 7, 7,
 				t.getArtAsset("wrench"), 200, 200);
 		
 		this.stats = st;

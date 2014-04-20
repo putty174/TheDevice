@@ -70,10 +70,10 @@ public final class Textures {
 				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
 				"deathRing", "data/art/game/objects/nuke/death_ring.png",
 				"vortex","data/art/game/objects/vortex/vortex.png",
-				"vortex_drop","data/art/game/objects/vortex/vortexpickup.png",
-				"gear_drop","data/art/game/objects/gear/gearpickup.png",
-				"hammer_drop","data/art/game/objects/hammer/hammerpickup.png",
-				"wrench_drop","data/art/game/objects/wrench/wrenchpickup.png",
+				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
+				"gear_drop","data/art/game/objects/gear/gear_pickup.png",
+				"hammer_drop","data/art/game/objects/hammer/hammer_pickup.png",
+				"wrench_drop","data/art/game/objects/wrench/wrench_pickup.png",
 				"gear", "data/art/game/objects/gear/gear.png",
 				"wrench", "data/art/game/objects/wrench/wrench.png",
 				"indicate", "data/art/game/ui/extra/indication_sheet.png",
@@ -137,12 +137,12 @@ public final class Textures {
 				"largeicon_vortex",shop+"vortex_large.png",
 				"largeicon_control",shop+"control_large.png",
 				"largeicon_gear",shop+"gear_large.png",
-				"mine_drop","data/art/game/objects/mine/minepickup.png",
-				"vortex_drop","data/art/game/objects/vortex/vortexpickup.png",
-				"gear_drop","data/art/game/objects/gear/gearpickup.png",
-				"controller_drop","data/art/game/objects/controller/controllerpickup.png",
-				"hammer_drop","data/art/game/objects/hammer/hammerpickup.png",
-				"loadoutbar",shop+"loadoutbar.png");		
+				"mine_drop","data/art/game/objects/mine/mine_pickup.png",
+				"vortex_drop","data/art/game/objects/vortex/vortex_pickup.png",
+				"gear_drop","data/art/game/objects/gear/gear_pickup.png",
+				"controller_drop","data/art/game/objects/controller/controller_pickup.png",
+				"hammer_drop","data/art/game/objects/hammer/hammer_pickup.png",
+				"loadoutbar",shop+"loadoutbar.png");
 		final String lselect = "data/art/levelselect/";
 		addPath(
 				"LevelSelect",
@@ -164,7 +164,7 @@ public final class Textures {
 	{
 		currentPackage = entries.get(packName);
 		for(String str : currentPackage.values()){
-			System.out.println(str);
+			//System.out.println(str);
 			a_manager.load(str, Texture.class);
 		}
 		a_manager.finishLoading();
