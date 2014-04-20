@@ -18,6 +18,7 @@ public class Seed extends AnimatedObject{
 	GameTimer timeAlive;
 	GameObject end;
 	Vector2 direction;
+	boolean alreadyHit;
 	
 	public Seed(Draw d, Sounds s, Textures t, GameObject start, GameObject target){
 		super(d, s, t, "seed", 30, start.get_positionX(), start.get_positionY(), 1, 1, 0, 0, 0, 0,
@@ -35,6 +36,7 @@ public class Seed extends AnimatedObject{
 		this.position = new Vector2(this.position.x + this.drawWidth/2 + this.drawOffsetX, 
 				this.position.y + this.drawHeight/2  + this.drawOffsetY);
 		this.direction = (target.get_position().sub(new Vector2(target.get_hitOffsetX()/2,0))).sub(this.get_position());
+		alreadyHit = false;
 		//this.animator = null;
 		
 	}
@@ -69,15 +71,21 @@ public class Seed extends AnimatedObject{
 	public void behavior_collision(GameObject obj){
 		try{
 			Player p = (Player) obj;
-			((Player)obj).stun(this);
+			Vector2 temp = direction.scl(10);
+			p.slow();
+			obj.impact(50, Math.atan2(temp.y, temp.x));
+			
 			this.terminate();
 		}
 		catch(Exception e){
 			
 		}
 		try{
-			Device d = (Device) obj;
-			obj.setHp(obj.getHp() - 1);
+			if(!alreadyHit){
+				Device d = (Device) obj;
+				obj.setHp(obj.getHp() - 1);
+				alreadyHit = true;
+			}	
 		}
 		catch(Exception e){
 			

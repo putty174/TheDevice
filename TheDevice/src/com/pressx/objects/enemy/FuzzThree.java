@@ -60,6 +60,9 @@ public class FuzzThree extends Enemy {
 					else if(obj.getID() == 1){
 						obj.setHp(obj.getHp() - this.attack.damage);
 					}
+					else{
+						continue;
+					}
 					obj.impact(-150, Math.atan2(yDist, xDist));
 				}
 			}

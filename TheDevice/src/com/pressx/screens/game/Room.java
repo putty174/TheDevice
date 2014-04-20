@@ -13,6 +13,7 @@ import com.pressx.managers.Draw;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.managers.DesignHelper;
+import com.pressx.objects.AnimatedObject;
 import com.pressx.objects.GameObject;
 import com.pressx.objects.device.Device;
 import com.pressx.objects.enemy.projectiles.GasCloud;
@@ -74,6 +75,9 @@ public class Room implements Controllable {
 	
 	//Condition to toggle monster spawns.
 	private boolean canSpawn = true;
+	
+	//Checks to see if the room is in a nuke state.
+	private boolean isWiped = false;
 	
 	/* Constructor */
 	public Room(Textures textures, Draw draw, Sounds sounds, GameStats stats, Player player)
@@ -234,11 +238,15 @@ public class Room implements Controllable {
 				
 				if(obj.getID() == 3)
 				{
+					if(obj.worth == 0){
+						iter.remove();
+						continue;
+					}
 					if(stats.item0.checkShouldDropItem())
 						drops.add(stats.item0.dropAmmo(obj.get_positionX(),obj.get_positionY()));
 					if(stats.item1.checkShouldDropItem())
 						drops.add(stats.item1.dropAmmo(obj.get_positionX(),obj.get_positionY()));
-					if(Math.random() < 0.9)
+					if(Math.random() < 1)
 						drops.add(new WrenchDrop(draw,sounds,textures,stats,obj.get_positionX(),obj.get_positionY()));
 					if(obj.getHp() == 0)
 					{
@@ -454,6 +462,15 @@ public class Room implements Controllable {
 				obj.worth = 0;
 			}//fi
 		}//elihw
+		Iterator<GameObject> iter2 = this.objects.iterator();
+		while(iter2.hasNext()){
+			GameObject obj = iter2.next();
+			if(!(obj.getID() == 1 || obj.getID() == 0)){
+				obj.terminate();
+				obj.worth = 0;
+			}
+		}
+		isWiped = true;
 	}//END wipe
 	
 	public void addShock(GameObject obj){

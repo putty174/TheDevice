@@ -41,6 +41,7 @@ public class Player extends AnimatedObject{
 	/* Touch */
 	private GameObject target = null;
 	private boolean touch_pause = false;
+	private boolean control_disabled = false;
 	
 	/* Constructor */
 	/**
@@ -143,6 +144,9 @@ public class Player extends AnimatedObject{
 	
 	public void input_touchDown(float x, float y, int pointer, int button, GameObject target)
 	{
+		if(control_disabled){
+			return;
+		}
 		if(!this.touch_pause)
 		{
 			if(!this.attack.isAttacking)
@@ -183,6 +187,9 @@ public class Player extends AnimatedObject{
 	
 	public void input_touchDrag(float x, float y, int pointer)
 	{
+		if(control_disabled){
+			return;
+		}
 		if(!this.touch_pause)
 		{
 			if(!this.attack.isAttacking)
@@ -200,6 +207,9 @@ public class Player extends AnimatedObject{
 	
 	public void input_touchUp(float x, float y, int pointer, int button)
 	{
+		if(control_disabled){
+			return;
+		}
 		if(!this.touch_pause)
 		{
 			if(!this.attack.isAttacking)
@@ -318,27 +328,24 @@ public class Player extends AnimatedObject{
 			temp = locVec.angle();
 			if(temp <= 45){
 				this.animationManager.changeAnimation("AttackEast", 60, false);
-				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex()) % 8))));
+				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex() + 4) % 8))));
 			}
 			else if(facing_angle <= 135){
 				this.animationManager.changeAnimation("AttackNorth", 60, false);
-				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex()) % 8))));
+				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex() + 4) % 8))));
 			}
 			else if(temp <= 225){
 				this.animationManager.changeAnimation("AttackWest", 60, false);
-				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex()) % 8))));
+				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex() + 4) % 8))));
 			}
 			else if(temp <= 315){
 				this.animationManager.changeAnimation("AttackSouth", 60, false);
-				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex()) % 8))));
+				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex() + 4) % 8))));
 			}
 			else{
 				this.animationManager.changeAnimation("AttackEast", 60, false);
-				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex()) % 8))));
+				this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex() + 4) % 8))));
 			}
-			//this.animationManager.changeAnimation("Attack".concat(Integer.toString(this.get_facingAngleIndex())), 60, false);
-			//this.animationManager.setStdCondition("Idle".concat("Idle".concat(Integer.toString((this.get_facingAngleIndex() + 4) % 8))));
-			//this.animator.playAnimation("attack_".concat(Integer.toString((int)((this.facing_angle + 45)%360)/(90))), 15, false);
 		}
 		else if(animation_state == ANIMATION_WALKING)
 		{
@@ -443,7 +450,7 @@ public class Player extends AnimatedObject{
 						this.action_queue.add_action(this.heldAction);
 					}//fi
 					this.isStunned = false;
-					this.friction = 1000;
+					this.control_disabled = false;
 					stunTime.reset_timer();
 				}
 				return;
@@ -481,9 +488,10 @@ public class Player extends AnimatedObject{
 	
 	public void stun(GameObject obj){
 		this.sprite.setColor(0.5f,0.5f,1f,0.8f);
-		this.isStunned = true;
-		this.friction = 100;
 		this.velocity = obj.get_velocity();	
+		this.isStunned = true;
+		this.control_disabled = true;
+		
 	}
 	
 	public void slow(){
