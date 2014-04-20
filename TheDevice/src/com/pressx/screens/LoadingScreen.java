@@ -48,41 +48,44 @@ public class LoadingScreen extends BaseState{
 	
 	public void create() {
 		levelName = "level1";
-		player = new Player(draw, sounds, textures,
-				0, //ID
-				50, 30, //Position
-				1, //Mass
-				100, //Friction
-				5, 2, //Hitbox
-				0, 0, //Hitoffset
-				true, //Solid
-				8, //Touch Radius
-				false, //Touchability
-				8, (16 + 2/3) * 0.8f, //Draw width and height
-				150, 250
-				);
-		stats = new GameStats(draw, textures, sounds, player);
 		
-		room = new Room(textures, draw, sounds, stats, player);
-		box = new Device(draw, sounds, textures, 25,25, room);
-		this.room.add_object(this.box);
-		this.room.add_object(player);
-		spawner = new CustomSpawner(draw, sounds, textures, levelName,box,room);//temporary path
-		
-		gameUI = new UI(draw, sounds, textures, stats, room, game.inventory);
-		this.controller = new Controller(stats, game.renderInfo);
-		this.controller.add_controllable(room);
-		Gdx.input.setInputProcessor(this.controller);
 	}
 	
 	public void update() {
-		if(textures.a_manager.update() && sounds.s_manager.update() && spawner.getUpdate())
+		textures.loadArtAssets("Game");
+		if(textures.a_manager.update() && sounds.s_manager.update())
 		{
 			done = true;
 			complete = 1;
+			player = new Player(draw, sounds, textures,
+					0, //ID
+					50, 30, //Position
+					1, //Mass
+					100, //Friction
+					5, 2, //Hitbox
+					0, 0, //Hitoffset
+					true, //Solid
+					8, //Touch Radius
+					false, //Touchability
+					8, (16 + 2/3) * 0.8f, //Draw width and height
+					150, 250
+					);
+			stats = new GameStats(draw, textures, sounds, player);
+			
+			room = new Room(textures, draw, sounds, stats, player);
+			box = new Device(draw, sounds, textures, 25,25, room);
+			this.room.add_object(this.box);
+			this.room.add_object(player);
+			spawner = new CustomSpawner(draw, sounds, textures, levelName,box,room);//temporary path
+			
+			gameUI = new UI(draw, sounds, textures, stats, room, game.inventory);
+			this.controller = new Controller(stats, game.renderInfo);
+			this.controller.add_controllable(room);
+			Gdx.input.setInputProcessor(this.controller);
 			if(Gdx.input.isTouched())
-				if(play.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()))
+				if(spawner.getUpdate() && play.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY())) {
 					game.moveToGame(player, textures, stats, gameUI, box, spawner, room, controller);
+				}
 		}
 		else
 			complete = Interpolation.linear.apply(complete, (textures.a_manager.getProgress()+sounds.s_manager.getProgress()+spawner.getProgress())/4, 0.1f);

@@ -9,5 +9,10 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="C:/Program Files/ADT/sdk/extras/android/support/v4/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="E:/Users/Max/.eclipse/org.eclipse.platform_4.3.0_1067111946_win32_win32_x86_64/plugins/com.google.gwt.eclipse.sdkbundle_2.5.1/gwt-2.5.1/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/E:/Users/Max/.eclipse/org.eclipse.platform_4.3.0_1067111946_win32_win32_x86_64/plugins/com.google.gwt.eclipse.sdkbundle_2.5.1/gwt-2.5.1/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

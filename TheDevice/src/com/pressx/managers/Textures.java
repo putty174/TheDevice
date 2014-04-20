@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public final class Textures {
-	public static AssetManager a_manager = new AssetManager();
-	private static HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
-	private static HashMap<String, String> currentPackage = new HashMap<String, String>();
+	public AssetManager a_manager = new AssetManager();
+	private HashMap<String, HashMap<String, String>> entries = new HashMap<String, HashMap<String, String>>();
+	private HashMap<String, String> currentPackage = new HashMap<String, String>();
 	private static HashMap<String, HashMap<String, AnimationManager>> animManagers = new HashMap<String, HashMap<String, AnimationManager>>();
 
 	
@@ -18,9 +18,30 @@ public final class Textures {
 		addPath(
 				"Loading",
 				"bg","data/art/game/grass.png",
+				"play", "data/art/main/buttons/play.png"
+				);
+		
+		addPath(
+				"Main",
+				"main_play","data/art/main/buttons/play.png",
+				"main_bg","data/art/main/screen/titlescreen.png",
+				"main_help","data/art/main/buttons/help.png",
 				"exp", "data/art/game/objects/device/exp.png",
-				"play", "data/art/main/buttons/play.png",
+				"shopbutton", "data/art/shop/shop_button.png"
+				);
+		
+		addPath(
+				"Tutorial",
+				"tut_pg1", "data/art/tutorial/screen/tut1.png",
+				"tut_pg2", "data/art/tutorial/screen/tut2.png",
+				"tut_nav_left", "data/art/tutorial/buttons/nav_left.png",
+				"tut_nav_right","data/art/tutorial/buttons/nav_right.png",
+				"tut_nav_exit", "data/art/tutorial/buttons/nav_exit.png");
+		
+		addPath(
+				"Game",
 				"game_bg","data/art/game/grass.png",
+				"exp", "data/art/game/objects/device/exp.png",
 				"fuzz1", "data/art/game/monsters/Fuzzies/1/Fuzzies1.png",
 				"fuzz2", "data/art/game/monsters/Fuzzies/2/Fuzzies2.png",
 				"dust","data/art/game/monsters/Fuzzies/2/dust.png",
@@ -69,28 +90,6 @@ public final class Textures {
 				"ui_pause", "data/art/game/ui/uibase/pause.png",
 				"ui_base","data/art/game/ui/uibase/ui_base.png"
 				);
-		
-		addPath(
-				"Main",
-				"main_play","data/art/main/buttons/play.png",
-				"main_bg","data/art/main/screen/titlescreen.png",
-				"main_help","data/art/main/buttons/help.png",
-				"exp", "data/art/game/objects/device/exp.png",
-				"shopbutton", "data/art/shop/shop_button.png"
-				);
-		
-		addPath(
-				"Tutorial",
-				"tut_pg1", "data/art/tutorial/screen/tut1.png",
-				"tut_pg2", "data/art/tutorial/screen/tut2.png",
-				"tut_nav_left", "data/art/tutorial/buttons/nav_left.png",
-				"tut_nav_right","data/art/tutorial/buttons/nav_right.png",
-				"tut_nav_exit", "data/art/tutorial/buttons/nav_exit.png");
-		
-//		addPath(
-//				"Game",
-//				
-//				);
 		
 		addPath(
 				"Intro",
@@ -169,12 +168,10 @@ public final class Textures {
 			a_manager.load(str, Texture.class);
 		}
 		a_manager.finishLoading();
-		if(packName.equals("Loading")){
-			
-			for(AnimationManager m : animManagers.get(packName).values()){
-				
-					m.setSprite(new Sprite(getArtAsset(m.texturesAccessor)));
-	
+		while(!a_manager.update()){};
+		if(packName.equals("Game")){
+			for(AnimationManager m : animManagers.get("Loading").values()){
+				m.setSprite(new Sprite(getArtAsset(m.texturesAccessor)));
 			}
 		}	
 	}
