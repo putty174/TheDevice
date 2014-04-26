@@ -88,7 +88,8 @@ public final class Textures {
 				"ui_vortex", "data/art/game/ui/uibase/buttons/vortex/vortex.png",
 				"ui_minecount", "data/art/game/ui/uibase/buttons/count.png",
 				"ui_pause", "data/art/game/ui/uibase/pause.png",
-				"ui_base","data/art/game/ui/uibase/ui_base.png"
+				"ui_base","data/art/game/ui/uibase/ui_base.png",
+				"ui_wavebar","data/art/game/ui/uibase/wavebar/top_bar.png"
 				);
 		
 		addPath(
