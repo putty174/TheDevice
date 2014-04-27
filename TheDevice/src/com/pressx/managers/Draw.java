@@ -25,7 +25,7 @@ public class Draw {
 	
 	public enum TYPES {BACKGROUND, ACTOR, HPBAR, UI, BUTTON, EXTRAS, SUPEREXTRAS, MEGAEXTRAS};
 	
-	public final BitmapFont font = new BitmapFont(Gdx.files.internal("data/fonts/lilitaone/lilitaone.fnt"/*bearz/bearz.fnt"*/),Gdx.files.internal("data/fonts/lilitaone/lilitaone.png"/*bearz/bearz.png"*/), false);
+	public final BitmapFont font = new BitmapFont(Gdx.files.internal("data/fonts/lilita/lilita.fnt"/*bearz/bearz.fnt"*/),Gdx.files.internal("data/fonts/lilita/lilita.png"/*bearz/bearz.png"*/), false);
 	
 	public Draw()
 	{
