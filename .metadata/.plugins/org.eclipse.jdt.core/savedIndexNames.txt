@@ -27,7 +27,6 @@ INDEX VERSION 1.126+E:\Users\Max\Documents\GitHub\TheDevice\.metadata\.plugins\o
 1115467115.index
 1267385672.index
 1898188748.index
-127422619.index
 3133528496.index
 3974580528.index
 2549710462.index
