@@ -25,7 +25,7 @@ public class Draw {
 	
 	public enum TYPES {BACKGROUND, ACTOR, HPBAR, UI, BUTTON, EXTRAS, SUPEREXTRAS, MEGAEXTRAS};
 	
-	public final BitmapFont font = new BitmapFont(Gdx.files.internal("data/fonts/bearz/bearz.fnt"),Gdx.files.internal("data/fonts/bearz/bearz.png"), false);
+	public final BitmapFont font = new BitmapFont(Gdx.files.internal("data/fonts/lilitaone/lilitaone.fnt"/*bearz/bearz.fnt"*/),Gdx.files.internal("data/fonts/lilitaone/lilitaone.png"/*bearz/bearz.png"*/), false);
 	
 	public Draw()
 	{
@@ -121,7 +121,7 @@ public class Draw {
 		text.clear();
 	}
 	
-	public void draw()
+	/*public void draw()
 	{
 		SpriteBatch s = new SpriteBatch();
 		s.begin();
@@ -144,7 +144,7 @@ public class Draw {
 		for(Entry<Point, String> entry : text.entrySet())
 			font.draw(s, entry.getValue(), entry.getKey().x, entry.getKey().y);
 		s.end();
-	}
+	}*/
 	
 	public void clearAll()
 	{
