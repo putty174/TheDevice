@@ -13,16 +13,16 @@
 		<item value="true" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="this." key="selection"/>
+		<item value="spr_button" key="selection"/>
 		<list key="findhistory">
+			<item value="uibase"/>
+			<item value="spr_button"/>
+			<item value="spr"/>
+			<item value="ui_bomb"/>
 			<item value="frame."/>
 			<item value="frame"/>
 			<item value="device_sp"/>
 			<item value="device"/>
-			<item value="offscreen"/>
-			<item value="screenbound"/>
-			<item value="click"/>
-			<item value="gas"/>
 		</list>
 		<list key="replacehistory">
 			<item value="this."/>

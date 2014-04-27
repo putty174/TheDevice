@@ -108,8 +108,6 @@ public class GameScreen extends BaseState {
 		gameUI.render();
 		this.room.render(batch, game.renderInfo);
 		draw.draw(batch);
-
-		stats.updateTimeElapsed();
 	}
 	
 	public void update() {

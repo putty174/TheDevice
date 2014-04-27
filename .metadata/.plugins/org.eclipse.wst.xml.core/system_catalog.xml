@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="urn:ui:com.google.gwt.uibinder" uri="http://dl.google.com/gwt/dtd/uibinder.xsd"/>
+  <uri name="urn:import:com.google.gwt.user.client.ui" uri="http://dl.google.com/gwt/dtd/com.google.gwt.user.client.ui.xsd"/>
+  <uri id="org.w3c.xinclude" name="http://www.w3.org/2001/XInclude" uri="jar:file:/E:/Users/Max/.eclipse/org.eclipse.platform_4.3.0_1067111946_win32_win32_x86_64/plugins/org.eclipse.wst.xsl.core_1.1.0.v201004290328.jar!/xslt-schemas/xinclude.xsd"/>
+</catalog>

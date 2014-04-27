@@ -25,7 +25,6 @@
 <fullyQualifiedTypeName name="com.pressx.objects.device.Device"/>
 <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 <fullyQualifiedTypeName name="com.pressx.managers.Sounds"/>
-<fullyQualifiedTypeName name="com.pressx.managers.Draw"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="javax.swing.JLabel"/>
@@ -40,4 +39,6 @@
 <fullyQualifiedTypeName name="com.pressx.thedevice.GameStats"/>
 <fullyQualifiedTypeName name="com.pressx.objects.items.MineDrop"/>
 <fullyQualifiedTypeName name="com.pressx.actions.Goto"/>
+<fullyQualifiedTypeName name="com.pressx.managers.Draw"/>
+<fullyQualifiedTypeName name="com.pressx.managers.Draw.TYPES"/>
 </qualifiedTypeNameHistroy>

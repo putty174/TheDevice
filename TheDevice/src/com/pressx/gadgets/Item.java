@@ -45,9 +45,9 @@ public abstract class Item extends ShopItem{
 	public void updateButton(){
 		buttonup = ammo > 0 && !activated;
 		if(buttonup)
-			spr_button.setRegion(0,0,124,95);
+			spr_button.setRegion(0, 0, 128, 110);
 		else
-			spr_button.setRegion(124,0,124,95);
+			spr_button.setRegion(128, 0, 128, 110);
 		spr_count.setRegion(39*(getMaxAmmo()-ammo),0,39,38);
 	}
 	
@@ -112,11 +112,11 @@ public abstract class Item extends ShopItem{
 	/////draw
 	public void drawButton(Draw draw,int index){//0 for the first item, 1 for the second item (can be changed if we want more carryable items)
 		if(spr_button == null){
-			spr_button = getspr(getButtonSpriteName());
+			spr_button = getspr("ui");
 			spr_count = getspr(getCountSpriteName());
 			updateButton();
 		}
-		draw.draw(Draw.TYPES.BUTTON,spr_button,.83f,.35f+.22f*index,.17f,.165f);
-		draw.draw(Draw.TYPES.EXTRAS,spr_count,.935f,(buttonup ? .40f : .38f)+.22f*index,.04f,.06f);
+		draw.draw(Draw.TYPES.BUTTON,spr_button,.823f,.33f+.18f*index,.17f,.165f);
+		draw.draw(Draw.TYPES.EXTRAS,spr_count,.933f,(buttonup ? .365f : .345f)+.18f*index,.04f,.06f);
 	}
 }

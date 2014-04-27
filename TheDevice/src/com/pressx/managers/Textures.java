@@ -18,6 +18,7 @@ public final class Textures {
 		addPath(
 				"Loading",
 				"bg","data/art/game/grass.png",
+				"gear", "data/art/loading/gear.png",
 				"play", "data/art/main/buttons/play.png"
 				);
 		
@@ -89,7 +90,8 @@ public final class Textures {
 				"ui_minecount", "data/art/game/ui/uibase/buttons/count.png",
 				"ui_pause", "data/art/game/ui/uibase/pause.png",
 				"ui_base","data/art/game/ui/uibase/ui_base.png",
-				"ui_wavebar","data/art/game/ui/uibase/wavebar/top_bar.png"
+				"ui_wavebar","data/art/game/ui/uibase/wavebar/top_bar.png",
+				"ui", "data/art/game/ui/sidebar_full.png"
 				);
 		
 		addPath(

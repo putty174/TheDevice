@@ -19,6 +19,10 @@ public class UI {
 	
 	private Sprite pause;
 	
+	private Sprite XPBar;
+	private Sprite emtpy;
+	private Sprite fill;
+	
 	private Sprite nukeCount1;
 	private Sprite nukeCount2;
 	private Sprite nukeCount3;
@@ -39,12 +43,23 @@ public class UI {
 		this.textures = textures;
 		this.stats = stats;
 		this.room = room;
-		UIBase = new Sprite(textures.getArtAsset("ui_base"));
-		pause = new Sprite(textures.getArtAsset("ui_pause"));
-		nuke = new Sprite(textures.getArtAsset("ui_bomb"));
-		nukeCount1 = new Sprite(textures.getArtAsset("ui_bombcount"));
-		nukeCount2 = new Sprite(textures.getArtAsset("ui_bombcount"));
-		nukeCount3 = new Sprite(textures.getArtAsset("ui_bombcount"));
+		UIBase = new Sprite(textures.getArtAsset("ui"));
+		UIBase.setRegion(0, 400, 152, 640);
+		XPBar = new Sprite(textures.getArtAsset("ui"));
+		XPBar.setRegion(180, 265, 55, 115);
+		XPBar.setRotation(90);
+		emtpy = new Sprite(textures.getArtAsset("ui"));
+		emtpy.setRegion(180, 380, 55, 1);
+		emtpy.setRotation(90);
+		fill = new Sprite(textures.getArtAsset("ui"));
+		fill.setRegion(180, 381, 55, 1);
+		fill.setRotation(90);
+		
+		pause = new Sprite(textures.getArtAsset("ui"));
+		nuke = new Sprite(textures.getArtAsset("ui"));
+		nukeCount1 = new Sprite(textures.getArtAsset("ui"));
+		nukeCount2 = new Sprite(textures.getArtAsset("ui"));
+		nukeCount3 = new Sprite(textures.getArtAsset("ui"));
 		
 		waveUI = new Sprite(textures.getArtAsset("ui_wavebar"));
 		
@@ -85,32 +100,32 @@ public class UI {
 	}
 	
 	private void updateButtons()
-	{	
+	{
 		//Update Nuke Button
 		if(stats.nukeReady())
-			nuke.setRegion(0,0,134,105);
+			nuke.setRegion(0,117,128,139);
 		else
-			nuke.setRegion(135,0,134,105);
+			nuke.setRegion(128,117,128,139);
 		
 		//Update NukeCount
 		if(stats.nukeCount() > 0)
-			nukeCount1.setRegion(0,0,93,64);
+			nukeCount1.setRegion(156,915,45,47);
 		else
-			nukeCount1.setRegion(94,0,93,64);
+			nukeCount1.setRegion(209,915,45,47);
 		if(stats.nukeCount() > 1)
-			nukeCount2.setRegion(0,0,93,64);
+			nukeCount2.setRegion(156,915,45,47);
 		else
-			nukeCount2.setRegion(94,0,93,64);
+			nukeCount2.setRegion(209,915,45,47);
 		if(stats.nukeCount() > 2)
-			nukeCount3.setRegion(0,0,93,64);
+			nukeCount3.setRegion(156,915,45,47);
 		else
-			nukeCount3.setRegion(94,0,93,64);
+			nukeCount3.setRegion(209,915,45,47);
 		
 		//Update Pause
 		if (!stats.pauseState())
-			pause.setRegion(0,0,57,57);
+			pause.setRegion(159,976,41,46);
 		else
-			pause.setRegion(58,0,57,57);
+			pause.setRegion(210,976,41,46);
 	}
 	
 	private void checkInput()
@@ -138,6 +153,12 @@ public class UI {
 	{
 		//Draw UIBase
 		draw.draw(Draw.TYPES.UI, UIBase,0.8f,0,0.2f,1);
+		
+		//Draw XPBar
+		draw.draw(Draw.TYPES.BUTTON, emtpy, 0.983f, 0.708f, 0.055f, 0.2026f);
+		draw.draw(Draw.TYPES.EXTRAS, fill, 0.835f, 0.708f, 0.055f, 0.19f * -stats.getXPpercent());
+		draw.draw(Draw.TYPES.SUPEREXTRAS, XPBar, 0.983f, 0.708f, 0.055f, 0.2026f);
+		
 		
 		//Draw Pause
 		draw.draw(Draw.TYPES.BUTTON, pause, 0.90f, 0.90f, 0.05f, 0.09f);
