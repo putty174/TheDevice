@@ -75,6 +75,13 @@ public class GameScreen extends BaseState {
 	public void render(SpriteBatch batch) {
 		this.background.draw(batch);
 		
+		if(stats.item0.activated && stats.item0.activated){
+			stats.item0.deactivate();
+			stats.item0.updateButton();
+			stats.item1.deactivate();
+			stats.item1.updateButton();
+		}
+		
 		if(stats.placeItem() != 0)
 			this.player.pause_touch();
 		

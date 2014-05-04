@@ -10,7 +10,7 @@ import com.pressx.screens.game.Room;
 import com.pressx.thedevice.GameStats;
 
 public abstract class Item extends ShopItem{
-	protected boolean activated;//if the button has been pressed
+	public boolean activated;//if the button has been pressed
 	
 	protected Sprite spr_button,spr_count;//button sprite and number sprite
 	protected int ammo;//ammo currently available (maximum ammo found using getMaxAmmo())
@@ -75,7 +75,7 @@ public abstract class Item extends ShopItem{
 	void activate(){
 		activated = true;
 	}
-	void deactivate(){
+	public void deactivate(){
 		activated = false;
 	}
 	
@@ -116,7 +116,7 @@ public abstract class Item extends ShopItem{
 			spr_count = getspr(getCountSpriteName());
 			updateButton();
 		}
-		draw.draw(Draw.TYPES.BUTTON,spr_button,.823f,.33f+.18f*index,.17f,.165f);
+		draw.draw(Draw.TYPES.BUTTON,spr_button,.823f,.33f+.18f*index,.17f,.17f);
 		draw.draw(Draw.TYPES.EXTRAS,spr_count,.933f,(buttonup ? .365f : .345f)+.18f*index,.04f,.06f);
 	}
 }

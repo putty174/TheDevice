@@ -417,14 +417,23 @@ public class Room implements Controllable {
 				{
 					lvlup = mlevel;
 				}
-				drawWidth = 4 * (4-obj.levelUp);
-				drawHeight = 0.88f * (3-obj.levelUp);
+				float f;
+				if(obj.levelUp > 2.5f){
+					f = obj.levelUp-2.5f;
+					f = 1-f*f;
+				}else{
+					f = 1-obj.levelUp/2.5f;
+					f = 1-f*f*f*f*f*f*f*f;//looks funny, but better than Math.pow
+				}
+				drawWidth = 16 * f;//(4-obj.levelUp);
+				drawHeight = 0.88f * f*4;//(3-obj.levelUp);
 				lvlup.setOrigin(renderInfo[2] * (drawWidth/2),
 						renderInfo[2] * (drawHeight/2));
 				lvlup.setSize(renderInfo[2] * (drawWidth),
 						renderInfo[2] * (drawHeight));
 				lvlup.setPosition(renderInfo[2] * (obj.get_positionX() - drawWidth/2),
 						renderInfo[2] * (obj.get_positionY() - drawHeight/2  + obj.getSpriteHeight()));
+				lvlup.setAlpha(f);
 				lvlup.draw(spritebatch);
 				obj.levelUp -= this.quickDT;
 			}

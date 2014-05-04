@@ -176,27 +176,30 @@ public class UI {
 		draw.draw(Draw.TYPES.BUTTON, nukeCount3, 0.925f, 0.20f,0.08f,0.095f);
 		
 		//Draw time
-		draw.write(time, (((draw.screenWidth * 0.8f) - draw.font.getBounds(time).width) / 2) / draw.screenWidth, 0.99f);
+		draw.write(time, draw.getPositionToCenterText(time,.4f,1f/1700), 0.995f,1f/1700);
 		
 		//Draw Score
 		draw.write(score, ((draw.screenWidth * 0.99f) - draw.font.getBounds(score).width) / draw.screenWidth, 0.825f);
-
+		
+		final float WAVEUI_CENTER = .5f-.1f;//.1f because of the side UI
 		if(room.monsterCount == 0 && spawner.nextwavedelaytimer > 0){
-			draw.write("Next wave in "+(int)spawner.nextwavedelaytimer+" seconds",.35f,.9f);
-		}else{
-			final float WAVEUI_SIZEX = .25f;
-			final float WAVEUI_SIZEY = WAVEUI_SIZEX*.47f;
-			final float WAVEUI_POSX = .5f-WAVEUI_SIZEX/2-.1f;//.1f because of the side UI
-			final float WAVEUI_POSY = 1-WAVEUI_SIZEY;
-			draw.draw(Draw.TYPES.BUTTON,waveUI,WAVEUI_POSX,WAVEUI_POSY,WAVEUI_SIZEX,WAVEUI_SIZEY);//682x232 (.340,2.94)
-			draw.write(""+spawner.ui_enemiesLeftInWave,WAVEUI_POSX+WAVEUI_SIZEX*.85f,WAVEUI_POSY+WAVEUI_SIZEY*.6f);
-			draw.write(""+spawner.ui_currentWaveNumber,WAVEUI_POSX+WAVEUI_SIZEX*.05f,WAVEUI_POSY+WAVEUI_SIZEY*.7f);
-			draw.write(""+spawner.ui_totalWaveCount,WAVEUI_POSX+WAVEUI_SIZEX*.15f,WAVEUI_POSY+WAVEUI_SIZEY*.6f);
-			//Draw wave info (temporary)
-			//draw.write("Wave "+spawner.ui_currentWaveNumber+'/'+spawner.ui_totalWaveCount,.45f,.9f);
-			//Draw enemies left (temporary)
-			//draw.write("Enemies left: "+spawner.ui_enemiesLeftInWave,.35f,.8f);
+			String nextwavetext ="Next wave in "+(int)spawner.nextwavedelaytimer+" seconds"; 
+			draw.write(nextwavetext,draw.getPositionToCenterText(nextwavetext,.4f,1f/1000),.85f,1f/1000);
 		}
+		final float WAVEUI_SIZEX = .25f;
+		final float WAVEUI_SIZEY = WAVEUI_SIZEX*.47f;
+		final float WAVEUI_POSX = WAVEUI_CENTER-WAVEUI_SIZEX/2;
+		final float WAVEUI_POSY = 1-WAVEUI_SIZEY;
+		final float WAVEUI_FONTSCALE = 1f/1500;
+		draw.draw(Draw.TYPES.BUTTON,waveUI,WAVEUI_POSX,WAVEUI_POSY,WAVEUI_SIZEX,WAVEUI_SIZEY);//682x232 (.340,2.94)
+		draw.write(""+spawner.ui_enemiesLeftInWave,WAVEUI_POSX+WAVEUI_SIZEX*.85f,WAVEUI_POSY+WAVEUI_SIZEY*.6f,WAVEUI_FONTSCALE);
+		draw.write(""+spawner.ui_currentWaveNumber,WAVEUI_POSX+WAVEUI_SIZEX*.035f,WAVEUI_POSY+WAVEUI_SIZEY*.67f,WAVEUI_FONTSCALE);
+		draw.write(""+spawner.ui_totalWaveCount,WAVEUI_POSX+WAVEUI_SIZEX*.135f,WAVEUI_POSY+WAVEUI_SIZEY*.58f,WAVEUI_FONTSCALE);
+		draw.write("",0,0);
+		//Draw wave info (temporary)
+		//draw.write("Wave "+spawner.ui_currentWaveNumber+'/'+spawner.ui_totalWaveCount,.45f,.9f);
+		//Draw enemies left (temporary)
+		//draw.write("Enemies left: "+spawner.ui_enemiesLeftInWave,.35f,.8f);
 	}
 	
 	public void setDraw(Draw d) {

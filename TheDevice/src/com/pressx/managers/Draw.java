@@ -9,6 +9,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+class TextSetting{
+	public TextSetting(String _text,float _fontscale){text = _text;fontscale = _fontscale;}
+	public String text;
+	public float fontscale;
+}
+
 public class Draw {
 	public int screenWidth = Gdx.graphics.getWidth();
 	public int screenHeight = Gdx.graphics.getHeight();
@@ -21,7 +27,7 @@ public class Draw {
 	private HashSet<Sprite> extras0 = new HashSet<Sprite>();
 	private HashSet<Sprite> extras1 = new HashSet<Sprite>();
 	private HashSet<Sprite> extras2 = new HashSet<Sprite>();
-	private TreeMap<Point, String> text = new TreeMap<Point, String>();
+	private TreeMap<Point, TextSetting> text = new TreeMap<Point, TextSetting>();
 	
 	public enum TYPES {BACKGROUND, ACTOR, HPBAR, UI, BUTTON, EXTRAS, SUPEREXTRAS, MEGAEXTRAS};
 	
@@ -30,6 +36,7 @@ public class Draw {
 	public Draw()
 	{
 		font.setScale((float)screenHeight / 500, (float)screenHeight / 500);
+//		font.setScale((float)screenHeight / 1400, (float)screenHeight / 1400);
 	}
 	
 	void addextra(HashSet<Sprite> extras, Sprite sprite, float xPos, float yPos, float width, float height){
@@ -92,9 +99,15 @@ public class Draw {
 	}
 	
 	/** Write text to screen**/
-	public void write(String string, float xPos, float yPos)
+	public void write(String string,float xPos,float yPos){
+		write(string,xPos,yPos,1f/500);
+	}
+	public void write(String string, float xPos, float yPos,float fontscale)//fontscale si based on the size of the screen
 	{
-		text.put(new Point(xPos*screenWidth, yPos*screenHeight), string);
+		text.put(new Point(xPos*screenWidth, yPos*screenHeight), new TextSetting(string,fontscale));
+	}
+	public float getPositionToCenterText(String string,float xcenter,float fontscale){
+		return xcenter-font.getBounds(string).width/screenWidth*500*fontscale/2;
 	}
 	
 	public void draw(SpriteBatch s)
@@ -115,9 +128,20 @@ public class Draw {
 			sprite.draw(s);
 		for(Sprite sprite : extras2)
 			sprite.draw(s);
-		if(!text.isEmpty())
-		for(Entry<Point, String> entry : text.entrySet())
-			font.draw(s, entry.getValue(), entry.getKey().x, entry.getKey().y);
+		if(!text.isEmpty()){
+			//float screenx = (float)screenWidth;
+			float screeny = (float)screenHeight;
+			float oldscale = -1;
+			for(Entry<Point, TextSetting> entry : text.entrySet()){
+				float scale = entry.getValue().fontscale;
+				if(scale != oldscale){
+					font.setScale(screeny*scale, screeny*scale);
+					oldscale = scale;
+				}
+				font.draw(s, entry.getValue().text, entry.getKey().x, entry.getKey().y);
+			}
+			font.setScale(screeny/500, screeny/500);
+		}
 		text.clear();
 	}
 	

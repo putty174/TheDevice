@@ -151,10 +151,11 @@ public class ShopScreen extends BaseState {
 		draw.draw(Draw.TYPES.BUTTON,spr_backbutton,.05f,.9f,.15f,.075f);
 		
 		//Draw experience count
-		int anim_exp = (animcycle/5)%4;
-		spr_experience.setRegion(128*(anim_exp == 0 ? 0 : anim_exp == 2 ? 2 : 1), 0, 128, 128);
-		draw.draw(Draw.TYPES.BUTTON,spr_experience,.275f,.9f,1f/20,/*.075f*/1f/15f);
-		draw.write(""+game.inventory.numExperience,.33f,.975f);
+		int anim_exp = (animcycle/5)%8;
+		final int SPR_EXPERIENCE_FRAMESIZE = 150;
+		spr_experience.setRegion(SPR_EXPERIENCE_FRAMESIZE*anim_exp, 0, SPR_EXPERIENCE_FRAMESIZE, SPR_EXPERIENCE_FRAMESIZE);
+		draw.draw(Draw.TYPES.BUTTON,spr_experience,.24f,.9f,1f/15,/*.075f*/4f/45);
+		draw.write(""+game.inventory.numExperience,.3f,.975f,1f/650);
 		
 		//Draw items
 		for(int i = (int)itemscroll; i < (int)itemscroll+NUMITEMSPERPAGE_MAX; i++){
