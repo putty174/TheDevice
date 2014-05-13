@@ -1,4 +1,4 @@
 .metadata/
 *.class
 Thumbs.db
-TheDevice-android/.classpath
+*.classpath
