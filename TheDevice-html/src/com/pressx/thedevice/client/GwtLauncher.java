@@ -12,7 +12,6 @@ public class GwtLauncher extends GwtApplication {
 		return cfg;
 	}
 
-	@Override
 	public ApplicationListener getApplicationListener () {
 		return new TheDevice();
 	}
