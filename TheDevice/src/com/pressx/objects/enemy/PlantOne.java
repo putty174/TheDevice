@@ -62,27 +62,20 @@ public class PlantOne extends Enemy {
 	
 	@Override
 	public void update(float dt, ArrayList<GameObject> objects){
-		if(this.getHp() <= 0){
-			super.update(dt, objects);
-			return;
-		}
-		if(this.attack.isAttacking){
-			this.atkBehavior(dt);
+		super.update(dt, objects);
+		if(!usingAction && !activityTimer.isDone()){
+			activityTimer.update_timer(dt);
 		}
 		if(activityTimer.isDone()){
 			usingAction = true;
 			this.animationManager.changeAnimation("MovementGlow", 30, false);
 			activityTimer.reset_timer();
 		}
-		else if(!usingAction){
-			activityTimer.update_timer(dt);
-		}
 		if(this.animationManager.getCurrentAnimation().equals("MovementGlow") && this.animationManager.isDone()){
 			this.room.spawn_object(new XP(this.draw, this.sounds, this.textures, this));
 			usingAction = false;
 			this.animationManager.changeAnimation("Movement", 30, true);
 		}
-		super.update(dt, objects);
 	}
 	
 	@Override
@@ -90,6 +83,8 @@ public class PlantOne extends Enemy {
 		atkTimer.update_timer(dt);
 		if(atkTimer.isDone()){
 			this.action_queue.clear();
+			atkTimer.reset_timer();
+			this.attack.isAttacking = false;
 		}
 		return;
 	}
