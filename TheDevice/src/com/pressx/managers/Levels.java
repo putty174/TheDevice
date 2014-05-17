@@ -23,7 +23,7 @@ public class Levels {
 				"3_fuzzy_bodyguard_north", "data/leveldata/formations/3_fuzzie/bodyguard_north.spawnformation",
 				"4_fuzzy_backandforth", "data/leveldata/formations/4_fuzzy_backandforth.spawnformation",
 				"5_fuzzy_semicircle", "data/leveldata/formations/5_fuzzy_semiciricle.spawnformation",
-				"6_fuzzies_"
+				"8_fuzzie_onetwopunch_eastsouth", "data/leveldata/formation/8_fuzzie_onetwopunch_eastsouth.spawnformation"
 				);
 	}
 	
