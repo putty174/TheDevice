@@ -84,8 +84,7 @@ public class Device extends AnimatedObject {
 		this.animationManager.changeAnimation("Idle", 60, true);
 		
 		this.spawnManager.setStdCondition("Spawn");
-		this.spawnManager.setEndCondition("Spawn");
-		this.spawnManager.changeAnimation("Spawn", 60, false);
+		this.spawnManager.changeAnimation("Spawn", 60, true);
 		
 		this.hitManager.setStdCondition("HitFlash");
 		this.hitManager.changeAnimation("HitFlash", 60, true);
@@ -147,7 +146,6 @@ public class Device extends AnimatedObject {
 					this.timer_count = this.timer_count - 1;
 					this.room.spawn_object(exp1);
 					this.isSpawning = true;
-					this.spawnManager.changeAnimation("Spawn", 60, false);
 				}
 				this.timer.reset_timer();
 				//this.spawn_animator.set_animation("device_spawn", false);
@@ -195,6 +193,7 @@ public class Device extends AnimatedObject {
 		if(this.isSpawning)
 		{
 			spawn = this.spawnManager.update();
+			System.out.println(spawnManager.getCurrentFrame());
 			this.spawn.setOrigin(renderInfo[2] * (this.drawWidth/2),
 					renderInfo[2] * (this.drawHeight/2));
 			this.spawn.setSize(renderInfo[2] * (this.drawWidth),
