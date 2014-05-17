@@ -16,7 +16,7 @@ public class GasCloud extends AnimatedObject {
 	
 	public GasCloud(Draw d, Sounds s, Textures t,float posX, float posY) {
 		super(d,s,t,"gasCloud", 18, posX, posY, 1, 1, 0, 0, 0, 0,
-				false, 0, false, 10, 10, t.getArtAsset("gas_cloud"),
+				false, 0, false, 10, 10, t.getArtAsset("gasEject"),
 				264, 151);
 		
 		
@@ -25,7 +25,7 @@ public class GasCloud extends AnimatedObject {
 //		this.animator.add_animation("gas_loop", 0, 0, 10, true, 0,1,2,3);
 //		this.animator.add_animation("gas_end", 0, 0, 10, false, 3);
 //		this.animator.set_animation("gas_start", false);
-		this.animationManager = Textures.getAnimManager("GasEject");
+		this.animationManager = Textures.getAnimManager("GasEject").copy();
 		this.animationManager.setStdCondition("GasEject");
 		this.animationManager.setEndCondition("GasEject");
 		this.animationManager.changeAnimation("GasEject", 60, false);

@@ -111,6 +111,8 @@ public class Enemy extends AnimatedObject {
 		atkTimer.update_timer(dt);
 		if(atkTimer.isDone()){
 			this.action_queue.clear();
+			atkTimer.reset_timer();
+			this.attack.isAttacking = false;
 		}
 		return;
 	}
