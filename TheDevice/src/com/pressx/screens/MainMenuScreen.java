@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.managers.Draw;
+import com.pressx.managers.Levels;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.TheDevice;
@@ -14,6 +15,7 @@ public class MainMenuScreen extends BaseState {
 	Draw draw;
 	Sounds sounds;
 	Textures textures;
+	Levels levels;
 	Sprite bgArt, play, help, post, shop;
 	String key;
 	File blah;

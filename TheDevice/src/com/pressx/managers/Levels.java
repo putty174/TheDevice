@@ -24,6 +24,7 @@ public class Levels {
 		levelManager.setLoader(LevelData.class,levelLoader); 
 		formationManager.setLoader(FormationData.class,formationLoader);
 		addPath_Level(
+				"level_list",
 				"1-1", "data/leveldata/levels/level1.devicelevel"
 				);
 		
@@ -37,6 +38,7 @@ public class Levels {
 				"8_fuzzie_onetwopunch_eastsouth", "data/leveldata/formation/8_fuzzie_onetwopunch_eastsouth.spawnformation"
 				);
 	}
+	
 
 	public void addPath_Level(String packageName, String... args){
 		if(!entries_levels.containsKey(packageName))
