@@ -138,7 +138,10 @@ public final class Textures {
 				"gear_drop","data/art/game/objects/gear/gear_pickup.png",
 				"controller_drop","data/art/game/objects/controller/controller_pickup.png",
 				"hammer_drop","data/art/game/objects/hammer/hammer_pickup.png",
-				"loadoutbar",shop+"loadoutbar.png");
+				"loadoutbar",shop+"loadoutbar.png",
+				"shop1",shop+"workshop_1.png",
+				"shop2",shop+"workshop_2.png"
+				);
 		final String lselect = "data/art/levelselect/";
 		addPath(
 				"LevelSelect",
