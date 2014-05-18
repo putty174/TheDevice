@@ -26,21 +26,26 @@ public class ShopScreen extends BaseState {
 	final float NEW_LEFTPANEL_OFFSETX = 0, NEW_LEFTPANEL_OFFSETY = 0;	
 	final float NEW_LEFTPANEL_WIDTH = .546f, NEW_LEFTPANEL_HEIGHT = 1;
 	final float BACKBUTTON_WIDTH = NEW_LEFTPANEL_WIDTH*2/5, BACKBUTTON_HEIGHT = 92f/800*NEW_LEFTPANEL_HEIGHT;
-	
-	final float ITEMUNIT_OFFSETX = .5f;//ITEMUNIT: The list of items
+	final float ITEMUNIT_OFFSETX = NEW_LEFTPANEL_OFFSETX+NEW_LEFTPANEL_WIDTH;//ITEMUNIT: Each box in the list of items	
 	final float ITEMUNIT_OFFSETMULTY = 1f/NUMITEMSPERPAGE;
-	final float ITEMUNIT_WIDTH = .45f;
-	final float ITEMUNIT_HEIGHT = ITEMUNIT_OFFSETMULTY-.02f;
+	final float ITEMUNIT_WIDTH = .4125f;//5f;
+	final float ITEMUNIT_HEIGHT = ITEMUNIT_OFFSETMULTY;//-.02f;
+	final float NEW_RIGHTPANEL_WIDTH = 1-ITEMUNIT_OFFSETX-ITEMUNIT_WIDTH/*.1125f*/, NEW_RIGHTPANEL_HEIGHT = 1;
+	final float NEW_RIGHTPANEL_OFFSETX = 1-NEW_RIGHTPANEL_WIDTH, NEW_RIGHTPANEL_OFFSETY = 0;
+	final float ITEMICON_EXTRASPACE = .015f;//Space between the top side of the itemunit and the top of the item icon 
+	final float ITEMICON_HEIGHT = ITEMUNIT_HEIGHT-ITEMICON_EXTRASPACE*2;
+	final float ITEMICON_OFFSETX = ITEMICON_EXTRASPACE;
+	final float ITEMICON_OFFSETY = ITEMICON_EXTRASPACE;
+	final float ITEMTITLE_CENTERX = ITEMUNIT_OFFSETX+ITEMICON_OFFSETX*2+ITEMICON_HEIGHT*5/4;//ITEMTITLE: Name of item on the itemunits
+	final float ITEMTITLE_OFFSETY = ITEMUNIT_HEIGHT*4/7;
+	final float NEW_LOADOUT_WIDTH = 410f/960, NEW_LOADOUT_HEIGHT = 152f/600;
+	final float NEW_LOADOUT_OFFSETX = 522f/960, NEW_LOADOUT_OFFSETY = 1f-NEW_LOADOUT_HEIGHT;
+
+	//OLD VALUES BELOW
 	final float ITEMUNIT_OFFSETMULTY_HEIGHT_DIFF = ITEMUNIT_OFFSETMULTY-ITEMUNIT_HEIGHT;
 	final float SELECTEDITEMUNITBACKGROUNDRATIO_X = 680f/634;//SELECTEDITEMUNITBACKGROUNDRATIO: The animated flashing effect for the currently-selected item
 	final float SELECTEDITEMUNITBACKGROUNDRATIO_Y = 255f/209;
-	final float ITEMICON_EXTRASPACE = .015f;//Space between the top side of the itemunit and the top of the item icon 
-	final float ITEMICON_HEIGHT = ITEMUNIT_HEIGHT-ITEMICON_EXTRASPACE*2;
 	//final float ITEMICON_WIDTH = ITEMICON_HEIGHT*3/4;//not used; instead calculated from screen size to make square icons
-	final float ITEMICON_OFFSETX = ITEMICON_EXTRASPACE;
-	final float ITEMICON_OFFSETY = ITEMICON_EXTRASPACE;
-	final float ITEMTITLE_OFFSETX = ITEMUNIT_OFFSETX+ITEMICON_OFFSETX*2+ITEMICON_HEIGHT*3/4;//ITEMTITLE: Name of item on the itemunits
-	final float ITEMTITLE_OFFSETY = ITEMUNIT_HEIGHT/2+.05f;
 	final float ITEMBUTTON_WIDTH = ITEMUNIT_WIDTH/2.1f/1.2f;//ITEMBUTTON: Small nonfunctional "button" on every itemunit
 	final float ITEMBUTTON_HEIGHT = ITEMUNIT_HEIGHT/2.5f/1.2f;
 	final float ITEMBUTTON_OFFSETX = ITEMUNIT_OFFSETX+.2f;
@@ -65,22 +70,24 @@ public class ShopScreen extends BaseState {
 	final float LOADOUT_HEIGHT = ITEMICON_HEIGHT;//+.05f;
 	final float LOADOUT_OFFSETX = 1-LOADOUT_WIDTH;
 	final float LOADOUT_OFFSETY = 0;
-	final float LOADOUTICON0_OFFSETX_CENTER = LOADOUT_OFFSETX+LOADOUT_WIDTH/4+.025f;
-	final float LOADOUTICON1_OFFSETX_CENTER = LOADOUT_OFFSETX+LOADOUT_WIDTH*3/4+.025f;
-	final float LOADOUTICON_OFFSETY = LOADOUT_HEIGHT-ITEMICON_HEIGHT-.0125f;
+	final float LOADOUTICON0_OFFSETX_CENTER = NEW_LOADOUT_OFFSETX+.1f;//+.025f;
+	final float LOADOUTICON1_OFFSETX_CENTER = NEW_LOADOUT_OFFSETX+NEW_LOADOUT_WIDTH*3/4;//+.025f;
+	final float LOADOUTICON_OFFSETY = NEW_LOADOUT_OFFSETY+NEW_LOADOUT_HEIGHT-ITEMICON_HEIGHT-.0125f;
 	
-	float ITEMSCROLL_MAX;
+	float ITEMSCROLL_MIN,ITEMSCROLL_MAX;//defined in constructor based on the total number of items
 	
 	Sprite spr_background,spr_itemselectback,spr_experience;
 	Sprite spr_arrow_up,spr_arrow_down;
-	Sprite spr_desc_background,spr_desc_icon;
+	Sprite /*spr_desc_background,*/spr_desc_icon;
 	Sprite[] spr_desc_bigbuttons;
 	Sprite spr_desc_bigbutton_current;
 	Sprite spr_bigbutton_upgrade;
 	Sprite spr_loadoutbar;
 	Sprite spr_loadouticon0,spr_loadouticon1;
 	
-	Sprite newspr_leftside,spr_backbutton;
+	Sprite newspr_leftside,newspr_rightside;
+	Sprite newspr_loadoutbar;
+	Sprite spr_backbutton;
 	
 	ShopItem[] items;
 
@@ -94,7 +101,9 @@ public class ShopScreen extends BaseState {
 
 	public ShopScreen(TheDevice g){
 		super(g);
-		ITEMSCROLL_MAX = g.inventory.allItems.length-NUMITEMSPERPAGE+LOADOUT_HEIGHT/ITEMUNIT_HEIGHT;
+		ITEMSCROLL_MIN = -LOADOUT_HEIGHT/ITEMUNIT_HEIGHT-.25f;
+		ITEMSCROLL_MAX = g.inventory.allItems.length-NUMITEMSPERPAGE+.25f;//+LOADOUT_HEIGHT/ITEMUNIT_HEIGHT;
+		itemscroll = ITEMSCROLL_MIN;
 		
 		draw = new Draw();
 		sounds = g.sounds;//new Sounds();
@@ -109,7 +118,7 @@ public class ShopScreen extends BaseState {
 		spr_arrow_up = getspr("uparrow");
 		spr_arrow_down = getspr("uparrow");
 		
-		spr_desc_background = getspr("itemdescbackground");
+		//spr_desc_background = getspr("itemdescbackground");
 		
 		spr_loadoutbar = getspr("loadoutbar");
 		
@@ -124,6 +133,10 @@ public class ShopScreen extends BaseState {
 		newspr_leftside.setRegion(0,0,695,800);
 		spr_backbutton = getspr("shop2");
 		spr_backbutton.setRegion(0,0,280,92);
+		newspr_rightside = getspr("shop1");
+		newspr_rightside.setRegion(1189,0,90,800);
+		newspr_loadoutbar = getspr("shop1");
+		newspr_loadoutbar.setRegion(640,0,545,202);
 		
 		items = game.inventory.allItems;
 		
@@ -160,14 +173,14 @@ public class ShopScreen extends BaseState {
 		
 		//Draw background and "Back" button
 		//draw.draw(Draw.TYPES.BACKGROUND,spr_background,0,0,1f,1f);
-		draw.draw(Draw.TYPES.BUTTON,spr_backbutton,NEW_LEFTPANEL_OFFSETX,1-BACKBUTTON_HEIGHT,BACKBUTTON_WIDTH,BACKBUTTON_HEIGHT);
+		draw.draw(Draw.TYPES.EXTRAS,spr_backbutton,NEW_LEFTPANEL_OFFSETX,1-BACKBUTTON_HEIGHT,BACKBUTTON_WIDTH,BACKBUTTON_HEIGHT);
 		
 		//Draw experience count
 		int anim_exp = (animcycle/5)%8;
 		final int SPR_EXPERIENCE_FRAMESIZE = 150;
 		spr_experience.setRegion(SPR_EXPERIENCE_FRAMESIZE*anim_exp, 0, SPR_EXPERIENCE_FRAMESIZE, SPR_EXPERIENCE_FRAMESIZE);
-		draw.draw(Draw.TYPES.BUTTON,spr_experience,.3f,.9f,1f/15,4f/45);
-		draw.write(""+game.inventory.numExperience,.36f,.975f,1f/650);
+		draw.draw(Draw.TYPES.EXTRAS,spr_experience,.3f,.9f,4f/45/1.6f,4f/45);
+		draw.write(""+game.inventory.numExperience,.36f,.975f,1f/750);
 		
 		//Draw items
 		for(int i = (int)itemscroll; i < (int)itemscroll+NUMITEMSPERPAGE_MAX; i++){
@@ -190,12 +203,13 @@ public class ShopScreen extends BaseState {
 			draw.draw(Draw.TYPES.EXTRAS,items[i].icon,ITEMUNIT_OFFSETX+ITEMICON_OFFSETX,posy+ITEMICON_OFFSETY,itemiconwidth,ITEMICON_HEIGHT);
 			draw.draw(Draw.TYPES.BUTTON,items[i].background,ITEMUNIT_OFFSETX,posy,ITEMUNIT_WIDTH,ITEMUNIT_HEIGHT);
 			draw.draw(Draw.TYPES.EXTRAS,items[i].button,ITEMBUTTON_OFFSETX,posy+ITEMBUTTON_OFFSETY,ITEMBUTTON_WIDTH,ITEMBUTTON_HEIGHT);
-			draw.write(items[i].name,ITEMTITLE_OFFSETX,posy+ITEMTITLE_OFFSETY);
+			float scale = draw.getFontScaleToFitText(items[i].name,ITEMUNIT_WIDTH*.6f,1f/600);
+			draw.write(items[i].name,draw.getPositionToCenterText(items[i].name,ITEMTITLE_CENTERX,scale),posy+ITEMTITLE_OFFSETY+scale*24,scale);
 		}
 		
 		//Draw animated arrows on the right
 		int anim_arrow = (animcycle)%14;
-		if(itemscroll > 0){
+		if(itemscroll > ITEMSCROLL_MIN){
 			draw.draw(Draw.TYPES.BUTTON,spr_arrow_up,.97f,.8f+.002f*anim_arrow,.02f,.15f);
 		}
 		anim_arrow = (animcycle+7)%14;
@@ -203,8 +217,27 @@ public class ShopScreen extends BaseState {
 			draw.draw(Draw.TYPES.BUTTON,spr_arrow_down,.97f,.2f-.002f*anim_arrow+LOADOUT_HEIGHT+LOADOUT_OFFSETY,.02f,-.15f);
 		}
 		
-		//Draw left panel
-		draw.draw(Draw.TYPES.UI,newspr_leftside,NEW_LEFTPANEL_OFFSETX,NEW_LEFTPANEL_OFFSETY,NEW_LEFTPANEL_WIDTH,NEW_LEFTPANEL_HEIGHT);
+		//Draw left and right panels
+		draw.draw(Draw.TYPES.BUTTON,newspr_leftside,NEW_LEFTPANEL_OFFSETX,NEW_LEFTPANEL_OFFSETY,NEW_LEFTPANEL_WIDTH,NEW_LEFTPANEL_HEIGHT);
+		draw.draw(Draw.TYPES.UI,newspr_rightside,NEW_RIGHTPANEL_OFFSETX,NEW_RIGHTPANEL_OFFSETY,NEW_RIGHTPANEL_WIDTH,NEW_RIGHTPANEL_HEIGHT);
+		//Draw description
+		if(selectedItem != null){
+			float fontscale = draw.getFontScaleToFitText(selectedItem.name,.3f);
+			fontscale = fontscale > 1f/500 ? 1f/500 : fontscale;
+			draw.write(selectedItem.name,.1f,0.78f+fontscale*24,fontscale);
+			draw.write(selectedItem.description, 0f, 0.5f);
+			ShopItem.ShopItemState blah = selectedItem.getState();
+			if(blah == ShopItem.ShopItemState.UNLOCKED && game.inventory.checkLoadoutFull())
+				blah = ShopItem.ShopItemState.NULL;
+			spr_desc_bigbutton_current = spr_desc_bigbuttons[blah.ordinal()];
+			if(blah == ShopItem.ShopItemState.LOCKED && game.inventory.numExperience < selectedItem.getCost())
+				spr_desc_bigbutton_current.setColor(new Color(.5f,.5f,1,1));
+			else
+				spr_desc_bigbutton_current.setColor(new Color(1,1,1,1));
+			draw.draw(Draw.TYPES.EXTRAS,spr_desc_bigbutton_current,ITEMDESCBUTTON_OFFSETX,ITEMDESCBUTTON_OFFSETY,ITEMDESCBUTTON_WIDTH,ITEMDESCBUTTON_HEIGHT);
+			draw.draw(Draw.TYPES.EXTRAS,selectedItem.largeicon,ITEMLARGEICON_OFFSETX,ITEMLARGEICON_OFFSETY,ITEMLARGEICON_WIDTH,ITEMLARGEICON_HEIGHT);
+			draw.draw(Draw.TYPES.EXTRAS,spr_bigbutton_upgrade,ITEMLARGEUPGRADE_OFFSETX,ITEMLARGEUPGRADE_OFFSETY,ITEMLARGEUPGRADE_WIDTH,ITEMLARGEUPGRADE_HEIGHT);
+		}
 		
 		//Draw description (old)
 		/*if(selectedItem != null){
@@ -225,7 +258,8 @@ public class ShopScreen extends BaseState {
 		}*/
 
 		//Draw loadout bar and two equipped items
-		draw.draw(Draw.TYPES.SUPEREXTRAS,spr_loadoutbar,LOADOUT_OFFSETX,LOADOUT_OFFSETY,LOADOUT_WIDTH,LOADOUT_HEIGHT);
+		//draw.draw(Draw.TYPES.SUPEREXTRAS,spr_loadoutbar,LOADOUT_OFFSETX,LOADOUT_OFFSETY,LOADOUT_WIDTH,LOADOUT_HEIGHT);
+		draw.draw(Draw.TYPES.SUPEREXTRAS,newspr_loadoutbar,NEW_LOADOUT_OFFSETX,NEW_LOADOUT_OFFSETY,NEW_LOADOUT_WIDTH,NEW_LOADOUT_HEIGHT);
 		draw.write("1",LOADOUTICON0_OFFSETX_CENTER-.1f,LOADOUTICON_OFFSETY+ITEMICON_HEIGHT/2+.01f);
 		if(game.inventory.item0 != null){
 			spr_loadouticon0.setRegion(0,0,128,128);
@@ -254,8 +288,6 @@ public class ShopScreen extends BaseState {
 		float relativemousex = (float)x/Gdx.graphics.getWidth();
 		float relativemousey = (float)y/Gdx.graphics.getHeight();
 		
-		System.out.println(spr_backbutton.getBoundingRectangle());
-		
 		if(Gdx.input.isTouched()){
 			if(mousehelddownfor < 0){
 				mousehelddownfor = 0;
@@ -265,7 +297,7 @@ public class ShopScreen extends BaseState {
 			}else if(draggingitemlist){
 				//if(!upgradeScreenOpen){
 				mousehelddownfor += dt;
-				float b = itemscroll < 0 ? -itemscroll+1 : itemscroll > ITEMSCROLL_MAX ? itemscroll-ITEMSCROLL_MAX+1 : 1;
+				float b = itemscroll < ITEMSCROLL_MIN ? ITEMSCROLL_MIN-itemscroll+1 : itemscroll > ITEMSCROLL_MAX ? itemscroll-ITEMSCROLL_MAX+1 : 1;
 				float a = (relativemousey-lastmouseposy)*NUMITEMSPERPAGE/b;
 				itemscrollvelocity = a/dt;
 				itemscroll += a;
@@ -275,10 +307,10 @@ public class ShopScreen extends BaseState {
 		}else{
 			draggingitemlist = false;
 			itemscroll += itemscrollvelocity*dt;
-			if(itemscroll < 0 || itemscroll > ITEMSCROLL_MAX){
+			if(itemscroll < ITEMSCROLL_MIN || itemscroll > ITEMSCROLL_MAX){
 				itemscrollvelocity = 0;
 				float lerp = (float)Math.pow(ITEMSCROLL_BOUNCINESSONMAX,dt);
-				itemscroll = itemscroll*(lerp)+(itemscroll < 0 ? 0 : ITEMSCROLL_MAX)*(1-lerp);
+				itemscroll = itemscroll*(lerp)+(itemscroll < ITEMSCROLL_MIN ? ITEMSCROLL_MIN : ITEMSCROLL_MAX)*(1-lerp);
 			}
 			itemscrollvelocity *= Math.pow(ITEMSCROLL_SLIPPERINESS,dt);
 			

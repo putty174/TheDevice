@@ -61,6 +61,8 @@ public class CustomSpawner {
 		rand = new Random();
 		vmath = new VectorMath();
 		
+		System.out.println("CUSTOM SPAWNER USED");
+		
 		reset();
 	}
 	

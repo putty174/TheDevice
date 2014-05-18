@@ -35,7 +35,9 @@ public abstract class ShopItem{
 		this.icon = getspr(iconname);
 		this.largeicon = getspr(largeiconname);
 		this.description = "DESCRIPTION HERE";
-		background = getspr("itembackground");
+		//background = getspr("itembackground");
+		background = getspr("shop1");
+		background.setRegion(1280,0,526,190);
 		setState(ShopItemState.NULL);
 	}
 	

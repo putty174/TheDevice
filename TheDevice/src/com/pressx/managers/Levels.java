@@ -14,7 +14,7 @@ public class Levels {
 	public AssetManager formationManager = new AssetManager();
 	private HashMap<String, HashMap<String, String>> entries_levels = new HashMap<String, HashMap<String, String>>();
 	private HashMap<String, HashMap<String, String>> entries_formations = new HashMap<String, HashMap<String, String>>();
-	
+
 	private HashMap<String, String> currentPackage = new HashMap<String, String>();
 	
 	private LevelLoader levelLoader = new LevelLoader(new InternalFileHandleResolver());

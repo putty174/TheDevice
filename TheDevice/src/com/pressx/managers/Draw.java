@@ -102,12 +102,19 @@ public class Draw {
 	public void write(String string,float xPos,float yPos){
 		write(string,xPos,yPos,1f/500);
 	}
-	public void write(String string, float xPos, float yPos,float fontscale)//fontscale si based on the size of the screen
+	public void write(String string, float xPos, float yPos,float fontscale)//fontscale is based on the size of the screen
 	{
 		text.put(new Point(xPos*screenWidth, yPos*screenHeight), new TextSetting(string,fontscale));
 	}
 	public float getPositionToCenterText(String string,float xcenter,float fontscale){
 		return xcenter-font.getBounds(string).width/screenWidth*500*fontscale/2;
+	}
+	public float getFontScaleToFitText(String string,float desiredwidth){
+		return desiredwidth/(font.getBounds(string).width/screenWidth*500);
+	}
+	public float getFontScaleToFitText(String string,float desiredwidth,float maxscale){
+		float scale = getFontScaleToFitText(string,desiredwidth);
+		return scale > maxscale ? maxscale : scale;
 	}
 	
 	public void draw(SpriteBatch s)
@@ -124,10 +131,6 @@ public class Draw {
 			sprite.draw(s);
 		for(Sprite sprite : extras0)
 			sprite.draw(s);
-		for(Sprite sprite : extras1)
-			sprite.draw(s);
-		for(Sprite sprite : extras2)
-			sprite.draw(s);
 		if(!text.isEmpty()){
 			//float screenx = (float)screenWidth;
 			float screeny = (float)screenHeight;
@@ -143,6 +146,10 @@ public class Draw {
 			font.setScale(screeny/500, screeny/500);
 		}
 		text.clear();
+		for(Sprite sprite : extras1)
+			sprite.draw(s);
+		for(Sprite sprite : extras2)
+			sprite.draw(s);
 	}
 	
 	/*public void draw()
