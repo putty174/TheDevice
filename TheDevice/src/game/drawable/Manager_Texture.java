@@ -64,7 +64,7 @@ public class Manager_Texture {
 	public void load_ids(String file_name) {
 		/* Load Content */
 		FileHandle handle = Gdx.files.internal(file_name);
-		String content[] = handle.readString().split("\n");
+		String content[] = handle.readString().split("\\r?\\n");
 		
 		/* Extract Data */
 		for(String i : content) {

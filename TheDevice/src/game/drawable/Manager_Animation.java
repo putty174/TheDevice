@@ -27,7 +27,7 @@ public class Manager_Animation {
 	public void load_animations(String file_name) {
 		/* Load Content */
 		FileHandle handle = Gdx.files.internal(file_name);
-		String content[] = handle.readString().split("\n");
+		String content[] = handle.readString().split("\\r?\\n");
 		
 		/* Extract Data */
 		int i = 0, j = 0;
@@ -41,6 +41,7 @@ public class Manager_Animation {
 				AnimationPacket packet = this.animations.get(animation_group);
 				
 				//Parse Animations
+				System.out.println(content[i+ j]);
 				int num_animations = Integer.parseInt(content[i + j + 1]);
 				for(int k = 0; k < num_animations; k++) {	
 					String animation_name = content[i + j + k + 2];

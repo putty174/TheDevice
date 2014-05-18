@@ -34,7 +34,7 @@ public class Manager_Object {
 	public void load_data(String file_name) {
 		/* Load Content */
 		FileHandle handle = Gdx.files.internal(file_name);
-		String content[] = handle.readString().split("\n");
+		String content[] = handle.readString().split("\\r?\\n");
 		
 		/* Iterate and parse through content. */
 		String obj_name = null;
