@@ -14,11 +14,22 @@ public class Levels {
 	public Levels() {
 		addPath(
 				"level_list",
-				"1-1", "data/leveldata/levels/level1.devicelevel"
+				"1-1", "data/leveldata/levels/level1.devicelevel",
+				"1-2", "data/leveldata/levels/kn1-2.devicelevel"
 				);
 		
 		addPath(
-				"level1",
+				"level1-1",
+				"1_fuzzy", "data/leveldata/formations/1_fuzzy.spawnformation",
+				"2_fuzzy_oppositesides", "data/leveldata/formations/2_fuzzy_oppositesides.spawnformation",
+				"3_fuzzy_bodyguard_north", "data/leveldata/formations/3_fuzzie/bodyguard_north.spawnformation",
+				"4_fuzzy_backandforth", "data/leveldata/formations/4_fuzzy_backandforth.spawnformation",
+				"5_fuzzy_semicircle", "data/leveldata/formations/5_fuzzy_semiciricle.spawnformation",
+				"8_fuzzie_onetwopunch_eastsouth", "data/leveldata/formation/8_fuzzie_onetwopunch_eastsouth.spawnformation"
+				);
+		
+		addPath(
+				"level1-2",
 				"1_fuzzy", "data/leveldata/formations/1_fuzzy.spawnformation",
 				"2_fuzzy_oppositesides", "data/leveldata/formations/2_fuzzy_oppositesides.spawnformation",
 				"3_fuzzy_bodyguard_north", "data/leveldata/formations/3_fuzzie/bodyguard_north.spawnformation",
