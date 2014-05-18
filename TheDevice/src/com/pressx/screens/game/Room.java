@@ -105,7 +105,7 @@ public class Room implements Controllable {
 		warning.add_animation("warning", 0, 0, 4, 5, true);
 		warning.set_animation("warning", true);
 		
-		//helper = new DesignHelper(draw, sounds, textures, player, this, stats);
+		helper = new DesignHelper(draw, sounds, textures, player, this, stats);
 		
 	}//END Room
 	
