@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.managers.Draw;
+import com.pressx.managers.Levels;
 import com.pressx.managers.Textures;
 import com.pressx.thedevice.TheDevice;
 
@@ -17,13 +18,15 @@ public class LevelSelectScreen extends BaseState{
 	
 	Draw draw;
 	Textures textures;
+	Levels level;
 	
 	Sprite spr_background;
 	Sprite[] spr_buttons;
 	
-	public LevelSelectScreen(TheDevice g){
+	public LevelSelectScreen(TheDevice g, Levels l){
 		super(g);
 		textures = g.textures;
+		level = l;
 		draw = new Draw();
 		
 		spr_background = getspr("levelselect_background");
@@ -49,6 +52,7 @@ public class LevelSelectScreen extends BaseState{
 		
 		if(Gdx.input.isTouched()){
 			if(spr_buttons[0].getBoundingRectangle().contains(x,y)){
+				level.loadLevelAssets("level1");
 				game.moveToSequence("Intro");
 			}
 		}

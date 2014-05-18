@@ -13,6 +13,7 @@ public class Levels {
 	
 	public Levels() {
 		addPath(
+				"level_list",
 				"1-1", "data/leveldata/levels/level1.devicelevel"
 				);
 		
@@ -35,7 +36,7 @@ public class Levels {
 			entries.get(packageName).put(args[i], args[++i]);
 	}
 	
-	public boolean loadSoundAssets(String packageName)
+	public boolean loadLevelAssets(String packageName)
 	{
 		if(entries.containsKey(packageName))
 		{
