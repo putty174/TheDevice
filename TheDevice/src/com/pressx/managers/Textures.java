@@ -43,15 +43,6 @@ public final class Textures {
 				"Game",
 				"game_bg","data/art/game/grass.png",
 				"exp", "data/art/game/objects/device/exp.png",
-				"fuzz1", "data/art/game/monsters/Fuzzies/1/Fuzzies1.png",
-				"fuzz2", "data/art/game/monsters/Fuzzies/2/Fuzzies2.png",
-				"dust","data/art/game/monsters/Fuzzies/2/dust.png",
-				"fuzz3", "data/art/game/monsters/Fuzzies/3/Fuzzies3.png",
-				"shock_wave","data/art/game/monsters/Fuzzies/3/shock_wave.png",
-				"plant1", "data/art/game/monsters/Plants/1/plant_one.png",
-				"plant2", "data/art/game/monsters/Plants/2/plant_two.png",
-				"plant3", "data/art/game/monsters/Plants/3/plant_three.png",
-				//"gas_cloud", "data/art/game/monsters/Plants/2/gas_cloud.png",
 				"fuzz1", "data/art/game/monsters/fuzzies/1/fuzzies1.png",
 				"fuzz2", "data/art/game/monsters/fuzzies/2/fuzzies2.png",
 				"dust","data/art/game/monsters/fuzzies/2/dust.png",
@@ -59,6 +50,8 @@ public final class Textures {
 				"shock_wave","data/art/game/monsters/fuzzies/3/shock_wave.png",
 				"plant1", "data/art/game/monsters/plants/1/plant_one.png",
 				"plant2", "data/art/game/monsters/plants/2/plant_two.png",
+				"plant3", "data/art/game/monsters/plants/3/plant_three.png",
+				//"gas_cloud", "data/art/game/monsters/Plants/2/gas_cloud.png",
 				"gasEject", "data/art/game/monsters/plants/2/gas_eject.png",
 				"attackBlob", "data/art/game/monsters/plants/2/gas_atk.png",
 				"device", "data/art/game/objects/device/device.png",
@@ -145,7 +138,10 @@ public final class Textures {
 				"gear_drop","data/art/game/objects/gear/gear_pickup.png",
 				"controller_drop","data/art/game/objects/controller/controller_pickup.png",
 				"hammer_drop","data/art/game/objects/hammer/hammer_pickup.png",
-				"loadoutbar",shop+"loadoutbar.png");
+				"loadoutbar",shop+"loadoutbar.png",
+				"shop1",shop+"workshop_1.png",
+				"shop2",shop+"workshop_2.png"
+				);
 		final String lselect = "data/art/levelselect/";
 		addPath(
 				"LevelSelect",

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.pressx.control.Controller;
 import com.pressx.gadgets.PlayerInventory;
+import com.pressx.managers.Levels;
 import com.pressx.managers.Sounds;
 import com.pressx.managers.Textures;
 import com.pressx.objects.GameObject;
@@ -29,6 +30,7 @@ public class TheDevice implements ApplicationListener {
 	
 	public Sounds sounds;
 	public Textures textures;
+	public Levels levels;
 	
 	int currentState;
 	BaseState[] posStates;
@@ -55,6 +57,7 @@ public class TheDevice implements ApplicationListener {
 		
 		sounds = new Sounds();
 		textures = new Textures();
+		levels = new Levels();
 		inventory = new PlayerInventory(sounds,textures);
 		
 		float width = Gdx.graphics.getWidth();
@@ -116,7 +119,7 @@ public class TheDevice implements ApplicationListener {
 	
 	public void moveToLevelSelect(){
 		textures.loadArtAssets("LevelSelect");
-		posStates[9] = new LevelSelectScreen(this);
+		posStates[9] = new LevelSelectScreen(this, levels);
 		posStates[9].create();
 		currentState = 9;
 	}

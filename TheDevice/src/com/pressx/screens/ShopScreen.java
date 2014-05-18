@@ -23,6 +23,10 @@ public class ShopScreen extends BaseState {
 	final float ITEMSCROLL_SLIPPERINESS = .1f;//multiplied to velocity per second
 	final float ITEMSCROLL_BOUNCINESSONMAX = .002f;//how much it "stretches" when hitting the top or bottom
 	
+	final float NEW_LEFTPANEL_OFFSETX = 0, NEW_LEFTPANEL_OFFSETY = 0;	
+	final float NEW_LEFTPANEL_WIDTH = .546f, NEW_LEFTPANEL_HEIGHT = 1;
+	final float BACKBUTTON_WIDTH = NEW_LEFTPANEL_WIDTH*2/5, BACKBUTTON_HEIGHT = 92f/800*NEW_LEFTPANEL_HEIGHT;
+	
 	final float ITEMUNIT_OFFSETX = .5f;//ITEMUNIT: The list of items
 	final float ITEMUNIT_OFFSETMULTY = 1f/NUMITEMSPERPAGE;
 	final float ITEMUNIT_WIDTH = .45f;
@@ -67,7 +71,7 @@ public class ShopScreen extends BaseState {
 	
 	float ITEMSCROLL_MAX;
 	
-	Sprite spr_background,spr_backbutton,spr_itemselectback,spr_experience;
+	Sprite spr_background,spr_itemselectback,spr_experience;
 	Sprite spr_arrow_up,spr_arrow_down;
 	Sprite spr_desc_background,spr_desc_icon;
 	Sprite[] spr_desc_bigbuttons;
@@ -75,6 +79,9 @@ public class ShopScreen extends BaseState {
 	Sprite spr_bigbutton_upgrade;
 	Sprite spr_loadoutbar;
 	Sprite spr_loadouticon0,spr_loadouticon1;
+	
+	Sprite newspr_leftside,spr_backbutton;
+	
 	ShopItem[] items;
 
 	float itemscrollvelocity,itemscroll;//the velocity it will scroll at (ITEMUNIT_OFFSETMULTY/second) if the mouse is not held down and how far it's scrolled down (ITEMUNIT_OFFSETMULTY) 
@@ -95,7 +102,7 @@ public class ShopScreen extends BaseState {
 		sounds.loadSoundAssets(Sounds.PACKS.SHOP);
 		textures.loadArtAssets("Shop");
 		spr_background = getspr("shop_background");
-		spr_backbutton = getspr("shop_backbutton");
+		//spr_backbutton = getspr("shop_backbutton");
 		spr_itemselectback = getspr("itembackground_selected");
 		spr_experience = getspr("exp");
 
@@ -112,6 +119,11 @@ public class ShopScreen extends BaseState {
 		spr_desc_bigbuttons[2] = getspr("itembutton_equip_big");
 		spr_desc_bigbuttons[3] = getspr("itembutton_unequip_big");
 		spr_bigbutton_upgrade = getspr("itembutton_upgrade_big");
+		
+		newspr_leftside = getspr("shop2");
+		newspr_leftside.setRegion(0,0,695,800);
+		spr_backbutton = getspr("shop2");
+		spr_backbutton.setRegion(0,0,280,92);
 		
 		items = game.inventory.allItems;
 		
@@ -147,15 +159,15 @@ public class ShopScreen extends BaseState {
 		animcycle++;
 		
 		//Draw background and "Back" button
-		draw.draw(Draw.TYPES.BACKGROUND,spr_background,0,0,1f,1f);
-		draw.draw(Draw.TYPES.BUTTON,spr_backbutton,.05f,.9f,.15f,.075f);
+		//draw.draw(Draw.TYPES.BACKGROUND,spr_background,0,0,1f,1f);
+		draw.draw(Draw.TYPES.BUTTON,spr_backbutton,NEW_LEFTPANEL_OFFSETX,1-BACKBUTTON_HEIGHT,BACKBUTTON_WIDTH,BACKBUTTON_HEIGHT);
 		
 		//Draw experience count
 		int anim_exp = (animcycle/5)%8;
 		final int SPR_EXPERIENCE_FRAMESIZE = 150;
 		spr_experience.setRegion(SPR_EXPERIENCE_FRAMESIZE*anim_exp, 0, SPR_EXPERIENCE_FRAMESIZE, SPR_EXPERIENCE_FRAMESIZE);
-		draw.draw(Draw.TYPES.BUTTON,spr_experience,.24f,.9f,1f/15,/*.075f*/4f/45);
-		draw.write(""+game.inventory.numExperience,.3f,.975f,1f/650);
+		draw.draw(Draw.TYPES.BUTTON,spr_experience,.3f,.9f,1f/15,4f/45);
+		draw.write(""+game.inventory.numExperience,.36f,.975f,1f/650);
 		
 		//Draw items
 		for(int i = (int)itemscroll; i < (int)itemscroll+NUMITEMSPERPAGE_MAX; i++){
@@ -191,8 +203,11 @@ public class ShopScreen extends BaseState {
 			draw.draw(Draw.TYPES.BUTTON,spr_arrow_down,.97f,.2f-.002f*anim_arrow+LOADOUT_HEIGHT+LOADOUT_OFFSETY,.02f,-.15f);
 		}
 		
-		//Draw description
-		if(selectedItem != null){
+		//Draw left panel
+		draw.draw(Draw.TYPES.UI,newspr_leftside,NEW_LEFTPANEL_OFFSETX,NEW_LEFTPANEL_OFFSETY,NEW_LEFTPANEL_WIDTH,NEW_LEFTPANEL_HEIGHT);
+		
+		//Draw description (old)
+		/*if(selectedItem != null){
 			draw.draw(Draw.TYPES.UI,spr_desc_background,ITEMDESC_OFFSETX,ITEMDESC_OFFSETY,ITEMDESC_WIDTH,ITEMDESC_HEIGHT);
 			draw.write(selectedItem.name, .1f, 0.85f);
 			draw.write(selectedItem.description, 0f, 0.4f);
@@ -207,7 +222,7 @@ public class ShopScreen extends BaseState {
 			draw.draw(Draw.TYPES.BUTTON,spr_desc_bigbutton_current,ITEMDESCBUTTON_OFFSETX,ITEMDESCBUTTON_OFFSETY,ITEMDESCBUTTON_WIDTH,ITEMDESCBUTTON_HEIGHT);
 			draw.draw(Draw.TYPES.BUTTON,selectedItem.largeicon,ITEMLARGEICON_OFFSETX,ITEMLARGEICON_OFFSETY,ITEMLARGEICON_WIDTH,ITEMLARGEICON_HEIGHT);
 			draw.draw(Draw.TYPES.BUTTON,spr_bigbutton_upgrade,ITEMLARGEUPGRADE_OFFSETX,ITEMLARGEUPGRADE_OFFSETY,ITEMLARGEUPGRADE_WIDTH,ITEMLARGEUPGRADE_HEIGHT);
-		}
+		}*/
 
 		//Draw loadout bar and two equipped items
 		draw.draw(Draw.TYPES.SUPEREXTRAS,spr_loadoutbar,LOADOUT_OFFSETX,LOADOUT_OFFSETY,LOADOUT_WIDTH,LOADOUT_HEIGHT);
@@ -238,6 +253,8 @@ public class ShopScreen extends BaseState {
 		int y = Gdx.graphics.getHeight() - Gdx.input.getY();
 		float relativemousex = (float)x/Gdx.graphics.getWidth();
 		float relativemousey = (float)y/Gdx.graphics.getHeight();
+		
+		System.out.println(spr_backbutton.getBoundingRectangle());
 		
 		if(Gdx.input.isTouched()){
 			if(mousehelddownfor < 0){
