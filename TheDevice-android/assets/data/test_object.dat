@@ -15,13 +15,33 @@ Attributes --> ...
 END //make sure all lower
 
 begin
+fuzz1
+fuzz1
+fuzz1 fuzz1
+true 25 25 0.25 0.25 0 -3.25
+true -2
+behavior_fuzz1 true
+true 13 5 0 -1 0 0
+true 13 10 0 -0.25 0 0
+10000
+100
+movement_speed 100
+movement_acceleration 10000
+attack_speed 10
+attack_damage 7.5
+test_stat5 1.1
+health 10
+health_max 10
+end
+
+begin
 player
 player
 hero hero
-true 50 50 0.5 0.5 0 -7.5
-true 6
+true 25 25 0.25 0.25 0 -3.25
+true 2
 behavior_player true
-true 10 10 0.5 0 0 0
+true 5 10 -0.75 -0.5 0 5
 true 15 15 0 0 0 0
 10000
 100

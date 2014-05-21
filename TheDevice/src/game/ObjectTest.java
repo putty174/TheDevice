@@ -46,10 +46,13 @@ public class ObjectTest implements ApplicationListener {
 		
 		this.room.spawn_object("player", new Vector2(50,50));
 		this.room.spawn_object("box", new Vector2(50,50));
+		this.room.spawn_object("fuzz1", new Vector2(80, 80));
 		
 		/* Inputs */
 		Gdx.input.setInputProcessor(this.inputs);
 		this.inputs.add_controllable(this.room);
+		
+		
 	}//END create
 
 	@Override

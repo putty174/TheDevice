@@ -1,4 +1,5 @@
 # Device Objects #
-hero data/fuzzies1.png
+hero data\art\game\objects\hero\hero.png
 box data/test.png
 halo data/halo.png
+fuzz1 data\art\game\monsters\fuzzies\1\fuzzies1.png

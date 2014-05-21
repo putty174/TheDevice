@@ -22,6 +22,7 @@ public class Room extends Controllable {
 	public ArrayList<DeviceObject> objects = new ArrayList<DeviceObject>();
 	private HashSet<Spawn_Pair> spawn_list = new HashSet<Spawn_Pair>();
 	private ArrayList<DeviceObject> controllable_objects = new ArrayList<DeviceObject>();
+	private ArrayList<String> monsterID = new ArrayList<String>();
 	
 	/* Attachment Management */
 	public HashSet<Attachment> attachments = new HashSet<Attachment>();
@@ -54,6 +55,15 @@ public class Room extends Controllable {
 		this.loader = loader;
 		this.textures = textures;
 		this.animations = animations;
+		
+		//Definitions of monsterIDs to determine which objects receive device as target in update(float)
+		monsterID.add("fuzz1");
+		monsterID.add("fuzz2");
+		monsterID.add("fuzz3");
+		monsterID.add("plant1");
+		monsterID.add("plant2");
+		monsterID.add("plant3");
+		
 	}//END Room
 	
 	/* Object Management */
@@ -141,7 +151,13 @@ public class Room extends Controllable {
 		
 		/* Construct object. */
 		ObjectData data = this.loader.get_objData(object_id);
-		DeviceObject object = new DeviceObject(this, data);
+		DeviceObject object = null;
+		if(monsterID.contains(object_id)){
+			object = new Enemy(this, data);
+		}
+		else{
+			object = new DeviceObject(this, data);
+		}
 		object.position_set(p);
 		
 		/* Add object to the manager */
@@ -182,6 +198,7 @@ public class Room extends Controllable {
 		
 		/* Initialize New Object */
 		object.initialize();
+		
 	}//END add_object
 	
 	/* Debug Display */
@@ -261,14 +278,27 @@ public class Room extends Controllable {
 	public void update(float dt) {
 		//Update objects in room.
 		Iterator<DeviceObject> iter = this.objects.iterator();
+		DeviceObject target = null;
+		ArrayList<DeviceObject> deliverTargets = new ArrayList<DeviceObject>();
 		while(iter.hasNext()) {
 			DeviceObject obj = iter.next();
 			obj.update(dt);
 			if(obj.isDead()) {
 				obj.finalize();
 				iter.remove();
+				continue;
 			}//fi
+			if(obj.identity.equals("box")){
+				target = obj;
+			}
+			else if(monsterID.contains(obj.identity)){
+				deliverTargets.add(obj);
+			}
 		}//elihw
+		for(DeviceObject obj : deliverTargets){
+			((Enemy)(obj)).setTarget(target);
+
+		}
 		
 		//Update attachments in room.
 		Iterator<Attachment> jter = this.attachments.iterator();

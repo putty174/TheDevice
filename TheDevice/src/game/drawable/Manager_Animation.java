@@ -45,6 +45,7 @@ public class Manager_Animation {
 				int num_animations = Integer.parseInt(content[i + j + 1]);
 				for(int k = 0; k < num_animations; k++) {	
 					String animation_name = content[i + j + k + 2];
+					System.out.println(animation_name);
 					//Frames
 					int num_frames = Integer.parseInt(content[i + j + k + 3]);
 					int frames[][] = new int[num_frames][4];
@@ -64,7 +65,7 @@ public class Manager_Animation {
 					packet.add_animation(animation_name, frames, frame_order);
 					j += num_frames + 2;
 				}//rof
-				i += 5;
+				i += num_animations + 2;
 			}//yrt
 			catch (IndexOutOfBoundsException e) {
 				break;

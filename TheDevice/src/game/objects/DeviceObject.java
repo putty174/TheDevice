@@ -9,6 +9,7 @@ import game.drawable.infomation.PositionObject;
 import game.objects.behavior.Behavior;
 import game.objects.behavior.tasks.Task;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -44,7 +45,7 @@ public class DeviceObject implements PositionObject {
 	
 	/* Behavior */
 	public final String identity; //The type of object this is.
-	private Behavior behavior; //The behavior of this object.
+	protected Behavior behavior; //The behavior of this object.
 	private boolean controllable; //Whether or not the object is controllable.
 	private Task current_task = null; //The current task of this object.
 	private boolean tasks_locked = false; //Whether or not new tasks can be taken.
@@ -384,6 +385,13 @@ public class DeviceObject implements PositionObject {
 		Vector2 oldPosition = this.position.cpy();
 		//Calculate and set offset.
 		Vector2 positionOffset = this.velocity.cpy().scl(dt);
+		Vector2 boundsCheck = this.position.cpy().add(positionOffset);
+		if(boundsCheck.x < 0 || boundsCheck.x >  (100 * Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) - this.touch_width){
+			positionOffset.x = 0;
+		}
+		if(boundsCheck.y < 0 || boundsCheck.y > 100 - this.touch_height){
+			positionOffset.y = 0;
+		}
 		this.position.add(positionOffset); //Add the offset.
 		
 		//Do collision checking.

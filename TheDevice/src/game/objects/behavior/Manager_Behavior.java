@@ -21,6 +21,7 @@ public class Manager_Behavior {
 		this.behaviors.put("behavior_none", new Behavior());
 		this.behaviors.put("behavior_player", new Behavior_Player());
 		this.behaviors.put("behavior_common", new Behavior_Common());
+		this.behaviors.put("behavior_fuzz1", new Behavior_FuzzOne());
 	}//END initialize
 
 	/**

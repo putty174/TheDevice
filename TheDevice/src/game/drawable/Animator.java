@@ -2,7 +2,7 @@ package game.drawable;
 
 public class Animator {
 	/* Directions */
-	private static final String[] DIRECTIONS = {"Left", "UpLeft", "Up", "UpRight", "Right", "DownRight", "Down", "DownLeft"};
+	private static final String[] DIRECTIONS = {"Right", "UpRight", "Up", "UpLeft", "Left", "DownLeft", "Down", "DownRight"};//{"Left", "UpLeft", "Up", "UpRight", "Right", "DownRight", "Down", "DownLeft"};
 	
 	/* Drawable */
 	private Drawable_Sprite sprite;
@@ -93,6 +93,7 @@ public class Animator {
 	 * @param animation the name of the animation to play.
 	 */
 	public void switch_animation(String animation) {
+		System.out.println(this.animations == null);
 		this.current_animation = this.animations.get_animation(animation);
 		this.current_animation_name = animation;
 	}//END switch_animation
