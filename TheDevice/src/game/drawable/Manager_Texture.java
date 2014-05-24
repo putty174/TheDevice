@@ -24,7 +24,7 @@ public class Manager_Texture {
 		/* Texture */
 		public Texture getTexture() {
 			if(!this.preloaded) {
-				System.err.println("File, " + this.file_path + ", is being loaded despite not being preloaded.");
+				System.err.println("Texture, " + this.file_path + ", is being loaded despite not being preloaded.");
 			}//fi
 			
 			if(this.texture == null) {
