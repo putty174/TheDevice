@@ -7,6 +7,7 @@ import game.drawable.Renderer;
 import game.objects.Manager_Object;
 import game.objects.Room;
 import game.objects.behavior.Manager_Behavior;
+import game.sounds.Jukebox;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -24,6 +25,8 @@ public class ObjectTest implements ApplicationListener {
 	/* Test */
 	public static final float BASE_HEIGHT = 100;
 	
+	Jukebox jukebox = new Jukebox();
+	
 	/* Application Listener */
 	@Override
 	public void create() {
@@ -33,6 +36,9 @@ public class ObjectTest implements ApplicationListener {
 		Manager_Object test_loader = new Manager_Object(behavior);
 		test_loader.load_data("data/test_object.dat");
 		animation.load_animations("data/test_animation.dat");
+		jukebox.load_music("data/test_music.dat");
+		jukebox.music_setup("game");
+		jukebox.music_play(1, true);
 		
 		Manager_Texture textures = new Manager_Texture();
 		textures.load_ids("data/test_drawable.dat");
@@ -61,18 +67,18 @@ public class ObjectTest implements ApplicationListener {
 	public void pause() {
 		// TODO Auto-generated method stub		
 	}//END pause
-	
-	int num = 1;
+
+	float sound = 0;
 	
 	@Override
 	public void render() {
 		/* Get Delta-Time */
 		float dt = Gdx.graphics.getDeltaTime();
-//		System.out.println("FPS:" + 1/dt);
-//		System.out.println("OBJ:" + num);
-		num++;
+		System.out.println("FPS:" + 1/dt);
 		/* Update Room */
 		this.room.update(dt);
+
+		jukebox.music_volume((float)Math.abs(Math.sin(sound+=dt)));
 		
 		/* Draw */
 		this.renderer.draw();
