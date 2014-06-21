@@ -11,6 +11,7 @@ import game.sounds.Jukebox;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -25,8 +26,6 @@ public class ObjectTest implements ApplicationListener {
 	/* Test */
 	public static final float BASE_HEIGHT = 100;
 	
-	Jukebox jukebox = new Jukebox();
-	
 	/* Application Listener */
 	@Override
 	public void create() {
@@ -34,11 +33,11 @@ public class ObjectTest implements ApplicationListener {
 		Manager_Animation animation = new Manager_Animation();
 		Manager_Behavior behavior = new Manager_Behavior();
 		Manager_Object test_loader = new Manager_Object(behavior);
+		Jukebox jukebox = new Jukebox();
 		test_loader.load_data("data/test_object.dat");
 		animation.load_animations("data/test_animation.dat");
 		jukebox.load_music("data/test_music.dat");
-		jukebox.music_setup("game");
-		jukebox.music_play(1, true);
+		jukebox.load_sound("data/test_sound.dat");
 		
 		Manager_Texture textures = new Manager_Texture();
 		textures.load_ids("data/test_drawable.dat");
@@ -48,7 +47,7 @@ public class ObjectTest implements ApplicationListener {
 		this.inputs = new GameInputs(scalar);
 		this.renderer = new Renderer(3, scalar);
 		Rectangle room_area = new Rectangle(0,0,BASE_HEIGHT,base_width);
-		this.room = new Room(room_area, this.renderer, test_loader, textures, animation);
+		this.room = new Room(room_area, this.renderer, test_loader, textures, animation, jukebox);
 		
 		this.room.spawn_object("player", new Vector2(50,50));
 		this.room.spawn_object("box", new Vector2(50,50));
@@ -77,8 +76,6 @@ public class ObjectTest implements ApplicationListener {
 		System.out.println("FPS:" + 1/dt);
 		/* Update Room */
 		this.room.update(dt);
-
-		jukebox.music_volume((float)Math.abs(Math.sin(sound+=dt)));
 		
 		/* Draw */
 		this.renderer.draw();

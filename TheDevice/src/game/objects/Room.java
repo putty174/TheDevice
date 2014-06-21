@@ -8,6 +8,7 @@ import game.drawable.Drawable_Sprite;
 import game.drawable.Manager_Animation;
 import game.drawable.Manager_Texture;
 import game.drawable.Renderer;
+import game.sounds.Jukebox;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +37,9 @@ public class Room extends Controllable {
 	private boolean display_hitbox = false;
 	private boolean display_touchArea = false;
 	
+	/* Sound */
+	public Jukebox jukebox;
+	
 	/* Object Managers */
 	private Manager_Object loader;
 	private Manager_Texture textures;
@@ -48,12 +52,17 @@ public class Room extends Controllable {
 	 * @param renderer 
 	 */
 	public Room(Rectangle playble_area, Renderer renderer,
-			Manager_Object loader, Manager_Texture textures, Manager_Animation animations) {
+			Manager_Object loader, Manager_Texture textures, Manager_Animation animations,
+			Jukebox jukebox) {
 		super(playble_area);
 		this.renderer = renderer;
 		this.loader = loader;
 		this.textures = textures;
 		this.animations = animations;
+		this.jukebox = jukebox;
+		
+		this.jukebox.music_setup("game");
+		this.jukebox.music_play(1, true);
 	}//END Room
 	
 	/* Object Management */

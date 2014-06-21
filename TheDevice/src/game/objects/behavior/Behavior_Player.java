@@ -46,6 +46,7 @@ public class Behavior_Player extends Behavior {
 	/* Update */
 	@Override
 	public void event_updateStart(DeviceObject self) {
+		System.out.println(self.room.jukebox.sound_play("s_0", 1, 1, 0));
 //		ArrayList<DeviceObject> objects = self.room.objects;
 //		Iterator<DeviceObject> iter = objects.iterator();
 //		while(iter.hasNext()) {
