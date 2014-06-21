@@ -386,7 +386,7 @@ public class DeviceObject implements PositionObject {
 		//Calculate and set offset.
 		Vector2 positionOffset = this.velocity.cpy().scl(dt);
 		Vector2 boundsCheck = this.position.cpy().add(positionOffset);
-		if(boundsCheck.x < 0 || boundsCheck.x >  (100 * Gdx.graphics.getWidth() / Gdx.graphics.getHeight()) - this.touch_width){
+		if(boundsCheck.x < 0 || boundsCheck.x > (100 * Gdx.graphics.getWidth() * 0.8 / Gdx.graphics.getHeight()) - this.touch_width){
 			positionOffset.x = 0;
 		}
 		if(boundsCheck.y < 0 || boundsCheck.y > 100 - this.touch_height){

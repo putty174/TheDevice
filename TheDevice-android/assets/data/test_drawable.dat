@@ -3,3 +3,6 @@ hero data\art\game\objects\hero\hero.png
 box data/test.png
 halo data/halo.png
 fuzz1 data\art\game\monsters\fuzzies\1\fuzzies1.png
+fuzz2 data\art\game\monsters\fuzzies\2\fuzzies2.png
+fuzz3 data\art\game\monsters\fuzzies\3\fuzzies3.png
+dust data\art\game\monsters\fuzzies\2\dust.png

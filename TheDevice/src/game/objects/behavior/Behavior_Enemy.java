@@ -1,6 +1,7 @@
 package game.objects.behavior;
 
 import game.objects.DeviceObject;
+import game.objects.behavior.tasks.Task;
 import game.objects.behavior.tasks.Task_Attack;
 import game.objects.behavior.tasks.Task_Die;
 import game.objects.behavior.tasks.Task_GotoObject;
@@ -10,12 +11,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Behavior_Enemy extends Behavior{
 	
-	protected DeviceObject target;
+	protected DeviceObject deviceTarget, playerTarget;
 	private boolean canDie = false, isClicked = false, isDying = false;
-	private int health = 2;
+	protected int health = 1;
 
-	public void setTarget(DeviceObject obj){
-		this.target = obj;
+	public void setTarget(DeviceObject box, DeviceObject hero){
+		this.deviceTarget = box;
+		this.playerTarget = hero;
 	}
 	
 	@Override
@@ -48,11 +50,12 @@ public class Behavior_Enemy extends Behavior{
 	public void event_collision(DeviceObject self, DeviceObject other){
 		if(other.identity.equals("player")){
 			if(isClicked){
-				isDying = true;
+				health--;
+				if(health <= 0){
+					isDying = true;
+				}
+				isClicked = false;
 			}
-		}
-		if(other.identity.equals("box")){
-			self.task_set(new Task_Attack(other, 2f));
 		}
 	}
 	
@@ -60,11 +63,6 @@ public class Behavior_Enemy extends Behavior{
 	public void event_updateStart(DeviceObject self){
 		if(isDying){
 			self.task_set(new Task_Die(10f));
-		}
-		else{
-			if(target != null && !self.task_has()){
-				self.task_set(new Task_GotoObject(target, 1f));
-			}
 		}
 	}
 	

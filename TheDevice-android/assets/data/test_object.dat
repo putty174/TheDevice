@@ -15,6 +15,26 @@ Attributes --> ...
 END //make sure all lower
 
 begin
+fuzz3
+fuzz3
+fuzz3 fuzz3
+true 25 25 0.25 0.25 0 -3.25
+true -2
+behavior_fuzz3 true
+true 13 5 0 -1 0 0
+true 13 10 0 -0.25 0 0
+10000
+100
+movement_speed 20
+movement_acceleration 2
+attack_speed 10
+attack_damage 7.5
+test_stat5 1.1
+health 10
+health_max 10
+end
+
+begin
 fuzz1
 fuzz1
 fuzz1 fuzz1
@@ -25,8 +45,28 @@ true 13 5 0 -1 0 0
 true 13 10 0 -0.25 0 0
 10000
 100
-movement_speed 100
-movement_acceleration 10000
+movement_speed 20
+movement_acceleration 2
+attack_speed 10
+attack_damage 7.5
+test_stat5 1.1
+health 10
+health_max 10
+end
+
+begin
+fuzz2
+fuzz2
+fuzz2 fuzz2
+true 25 25 0.25 0.25 0 -3.25
+true -2
+behavior_fuzz2 true
+true 13 5 0 -1 0 0
+true 13 10 0 -0.25 0 0
+10000
+100
+movement_speed 20
+movement_acceleration 2
 attack_speed 10
 attack_damage 7.5
 test_stat5 1.1

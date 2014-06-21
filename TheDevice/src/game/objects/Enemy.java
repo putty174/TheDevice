@@ -5,7 +5,7 @@ import game.objects.behavior.Behavior_Enemy;
 public class Enemy extends DeviceObject{
 	
 	//Target field so enemies know where to go and what to hit.
-	DeviceObject target;
+	DeviceObject deviceTarget, playerTarget;
 	
 	//Extended enemy class to keep things organized. 
 	//Only addition is the target field, w/ getters and setters.
@@ -14,13 +14,9 @@ public class Enemy extends DeviceObject{
 		super(room, object_data);
 	}
 	
-	public void setTarget(DeviceObject obj){
-		this.target = obj;
-		((Behavior_Enemy)(behavior)).setTarget(obj);
+	public void setTargets(DeviceObject box, DeviceObject player){
+		this.deviceTarget = box;
+		this.playerTarget = player;
+		((Behavior_Enemy)(behavior)).setTarget(box, player);
 	}
-	
-	public DeviceObject getTarget(){
-		return target;
-	}
-	
 }

@@ -41,11 +41,11 @@ public class Manager_Animation {
 				AnimationPacket packet = this.animations.get(animation_group);
 				
 				//Parse Animations
-				System.out.println(content[i+ j]);
+				//System.out.println(content[i+ j]);
 				int num_animations = Integer.parseInt(content[i + j + 1]);
 				for(int k = 0; k < num_animations; k++) {	
 					String animation_name = content[i + j + k + 2];
-					System.out.println(animation_name);
+					//System.out.println(animation_name);
 					//Frames
 					int num_frames = Integer.parseInt(content[i + j + k + 3]);
 					int frames[][] = new int[num_frames][4];

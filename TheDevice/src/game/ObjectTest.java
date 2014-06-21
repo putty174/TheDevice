@@ -47,6 +47,8 @@ public class ObjectTest implements ApplicationListener {
 		this.room.spawn_object("player", new Vector2(50,50));
 		this.room.spawn_object("box", new Vector2(50,50));
 		this.room.spawn_object("fuzz1", new Vector2(80, 80));
+		this.room.spawn_object("fuzz2", new Vector2(30,30));
+		this.room.spawn_object("fuzz3", new Vector2(10,60));
 		
 		/* Inputs */
 		Gdx.input.setInputProcessor(this.inputs);

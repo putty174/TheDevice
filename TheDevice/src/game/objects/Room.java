@@ -23,6 +23,7 @@ public class Room extends Controllable {
 	private HashSet<Spawn_Pair> spawn_list = new HashSet<Spawn_Pair>();
 	private ArrayList<DeviceObject> controllable_objects = new ArrayList<DeviceObject>();
 	private ArrayList<String> monsterID = new ArrayList<String>();
+	private DeviceObject deviceTarget, playerTarget;
 	
 	/* Attachment Management */
 	public HashSet<Attachment> attachments = new HashSet<Attachment>();
@@ -157,6 +158,12 @@ public class Room extends Controllable {
 		}
 		else{
 			object = new DeviceObject(this, data);
+			if(object_id.equals("box")){
+				this.deviceTarget = object;
+			}
+			else if(object_id.equals("player")){
+				this.playerTarget = object;
+			}
 		}
 		object.position_set(p);
 		
@@ -288,16 +295,14 @@ public class Room extends Controllable {
 				iter.remove();
 				continue;
 			}//fi
-			if(obj.identity.equals("box")){
-				target = obj;
-			}
 			else if(monsterID.contains(obj.identity)){
 				deliverTargets.add(obj);
 			}
 		}//elihw
-		for(DeviceObject obj : deliverTargets){
-			((Enemy)(obj)).setTarget(target);
-
+		if(this.deviceTarget != null){
+			for(DeviceObject obj : deliverTargets){
+				((Enemy)(obj)).setTargets(this.deviceTarget, this.playerTarget);
+			}
 		}
 		
 		//Update attachments in room.
